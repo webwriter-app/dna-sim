@@ -1,6 +1,6 @@
-import {html, LitElement} from "lit"
+import {html} from "lit"
 import {property} from "lit/decorators.js"
-import {ScopedElementsMixin} from "@open-wc/scoped-elements/lit-element.js"
+import {LitElementWw} from "@webwriter/lit"
 import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.component.js"
 
 import {shoelaceLight} from "../../lib/shoelace-theme.js"
@@ -9,7 +9,7 @@ import {canvasAlertStyles} from "./canvas-alert.styles.js"
 export const CANVAS_ERROR_ALERT_MS = 2000
 export const CANVAS_INFO_ALERT_MS = 4500
 
-export class DnaCanvasAlert extends ScopedElementsMixin(LitElement) {
+export class DnaCanvasAlert extends LitElementWw {
   static styles = [shoelaceLight, canvasAlertStyles]
 
   static scopedElements = {
@@ -21,6 +21,7 @@ export class DnaCanvasAlert extends ScopedElementsMixin(LitElement) {
   @property({type: Number}) duration = CANVAS_ERROR_ALERT_MS
 
   private _outsideClickListening = false
+  private _outsideFrame = 0
   private _suppressDismiss = false
 
   disconnectedCallback() {
@@ -49,8 +50,10 @@ export class DnaCanvasAlert extends ScopedElementsMixin(LitElement) {
     if (!alert) return
     await alert.updateComplete
     if (alert.open) await alert.hide()
+    if (!this.isConnected) return
     await alert.show()
-    requestAnimationFrame(() => {
+    if (!this.isConnected) return
+    this._outsideFrame = requestAnimationFrame(() => {
       if (this.isConnected) this._ensureOutsideClick()
     })
   }

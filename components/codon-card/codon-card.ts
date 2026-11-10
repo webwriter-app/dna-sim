@@ -1,7 +1,7 @@
-import {html, LitElement, svg, type TemplateResult} from "lit"
+import {html, svg, type TemplateResult} from "lit"
 import {property, state} from "lit/decorators.js"
-import {localized, msg} from "@lit/localize"
-import {ScopedElementsMixin} from "@open-wc/scoped-elements/lit-element.js"
+import type {MsgFn} from "@lit/localize"
+import {LitElementWw} from "@webwriter/lit"
 import SlInput from "@shoelace-style/shoelace/dist/components/input/input.component.js"
 
 import {shoelaceLight} from "../../lib/shoelace-theme.js"
@@ -18,6 +18,7 @@ import {
   type WheelArc,
 } from "../../lib/phases/codon-wheel.js"
 import {localizedAminoAcidFullName} from "../../lib/localize-text.js"
+import {sourceMsg} from "../../localization/localizer.js"
 
 const CX = 200
 const CY = 200
@@ -36,12 +37,14 @@ export type CodonCardAction =
   | {action: "amino-drag-end"; payload: AminoDragPayload; clientX: number; clientY: number}
 
 /** Codon wheel / amino-acid list — the drawer's outer chrome (header, tabs, close button) lives on the parent widget. */
-@localized()
-export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
+export class DnaCodonCard extends LitElementWw {
+  @property({attribute: false}) msg: MsgFn = sourceMsg
+
   static styles = [shoelaceLight, codonCardStyles]
 
   static scopedElements = {
-    "sl-input": SlInput,
+    // Shoelace types autocorrect as a string, while lib.dom uses a boolean.
+    "sl-input": SlInput as unknown as CustomElementConstructor,
   }
 
   @property({type: String}) tab: CodonDrawerTab = "wheel"
@@ -56,6 +59,15 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
 
   private readonly _arcs: WheelArc[] = buildCodonWheelArcs()
   private readonly _aminoAcids: AminoAcidEntry[] = buildAminoAcidList()
+  private _activeDragCleanup: (() => void) | null = null
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this._activeDragCleanup?.()
+    this._activeDragCleanup = null
+    this._draggingId = null
+    this._dragGhost = null
+  }
 
   private _emit(detail: CodonCardAction) {
     this.dispatchEvent(
@@ -114,9 +126,7 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
 
     const end = (ev: PointerEvent) => {
       if (ev.pointerId !== pointerId) return
-      window.removeEventListener("pointermove", move)
-      window.removeEventListener("pointerup", end)
-      window.removeEventListener("pointercancel", end)
+      cleanup()
       if (!dragging) return
 
       try {
@@ -136,6 +146,20 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
       this.requestUpdate()
     }
 
+    const cleanup = () => {
+      window.removeEventListener("pointermove", move)
+      window.removeEventListener("pointerup", end)
+      window.removeEventListener("pointercancel", end)
+      try {
+        target?.releasePointerCapture?.(pointerId)
+      } catch {
+        /* capture may already have been released */
+      }
+      if (this._activeDragCleanup === cleanup) this._activeDragCleanup = null
+    }
+
+    this._activeDragCleanup?.()
+    this._activeDragCleanup = cleanup
     window.addEventListener("pointermove", move)
     window.addEventListener("pointerup", end)
     window.addEventListener("pointercancel", end)
@@ -162,7 +186,7 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
         y="${p.y}"
         text-anchor="middle"
         dominant-baseline="middle">
-        ${arc.isStop ? msg("Stop") : arc.label}
+        ${arc.isStop ? this.msg("Stop") : arc.label}
       </text>
     `
   }
@@ -185,7 +209,7 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
               @pointerdown=${(e: PointerEvent) => this._onAminoPointerDown(e, arc.drag!, arc.id)}
               @click=${(e: Event) => this._onAminoPick(e, arc.drag!.aminoAcid)}>
               ${this.pickable && !arc.isStop
-                ? svg`<title>${msg("Add to goal")}</title>`
+                ? svg`<title>${this.msg("Add to goal")}</title>`
                 : null}
               <path
                 d="${path}"
@@ -214,7 +238,7 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
         class="codon-wheel"
         viewBox="0 0 400 400"
         role="img"
-        aria-label="${msg("Amino acid codon wheel")}">
+        aria-label="${this.msg("Amino acid codon wheel")}">
         ${this._renderRing("amino", R3_OUT, R_AA_OUT, (R3_OUT + R_AA_OUT) / 2, "amino")}
         ${this._renderRing("base3", R2_OUT, R3_OUT, (R2_OUT + R3_OUT) / 2, "base")}
         ${this._renderRing("base2", R1_OUT, R2_OUT, (R1_OUT + R2_OUT) / 2, "base")}
@@ -227,7 +251,7 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
 
   private _matchesSearch(entry: AminoAcidEntry, query: string): boolean {
     if (!query) return true
-    const fullName = localizedAminoAcidFullName(entry.threeLetter)
+    const fullName = localizedAminoAcidFullName(this.msg, entry.threeLetter)
     return (
       fullName.toLowerCase().includes(query) ||
       entry.fullName.toLowerCase().includes(query) ||
@@ -247,7 +271,7 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
           class="aa-search"
           size="small"
           clearable
-          placeholder="${msg("Search amino acid…")}"
+          placeholder="${this.msg("Search amino acid…")}"
           .value=${this._search}
           @sl-input=${(e: Event) => {
             this._search = (e.target as SlInput).value as string
@@ -266,17 +290,17 @@ export class DnaCodonCard extends ScopedElementsMixin(LitElement) {
               return html`
                 <div
                   class="aa-cell ${entry.isStart ? "is-start" : ""} ${this.allowDrag ? "" : "is-static"} ${this.pickable ? "is-pickable" : ""} ${this._draggingId === dragId ? "is-dragging" : ""}"
-                  title=${this.pickable ? msg("Add to goal") : ""}
+                  title=${this.pickable ? this.msg("Add to goal") : ""}
                   @pointerdown=${(e: PointerEvent) => this._onAminoPointerDown(e, payload, dragId)}
                   @click=${(e: Event) => this._onAminoPick(e, entry.threeLetter)}>
                   <span class="aa-one-letter">${entry.oneLetter}</span>
-                  <span class="aa-name">${localizedAminoAcidFullName(entry.threeLetter)}</span>
+                  <span class="aa-name">${localizedAminoAcidFullName(this.msg, entry.threeLetter)}</span>
                   <span class="aa-three-letter">${entry.threeLetter}</span>
                   <span class="aa-codons">${entry.codons.join(", ")}</span>
                 </div>
               `
             })
-            : html`<p class="aa-empty">${msg("No matching amino acid.")}</p>`}
+            : html`<p class="aa-empty">${this.msg("No matching amino acid.")}</p>`}
         </div>
       </div>
     `

@@ -1,9 +1,9 @@
-import {msg, str} from "@lit/localize"
+import {str, type MsgFn} from "@lit/localize"
 
 import {PHASE_ENABLE_KEYS} from "./widget-options.js"
 
 /** Display name for a simulation phase. IDs stay English; this is UI-only. */
-export function localizedPhaseLabel(phase: string): string {
+export function localizedPhaseLabel(msg: MsgFn, phase: string): string {
   switch (phase) {
     case "Replication":
       return msg("Replication")
@@ -18,7 +18,7 @@ export function localizedPhaseLabel(phase: string): string {
   }
 }
 
-export function localizedMoleculeName(id: string): string {
+export function localizedMoleculeName(msg: MsgFn, id: string): string {
   switch (id) {
     case "helicase":
       return msg("Helicase")
@@ -52,7 +52,7 @@ export function localizedMoleculeName(id: string): string {
 }
 
 /** Full amino-acid name for the codon-list view. Three-letter codes stay as-is. */
-export function localizedAminoAcidFullName(threeLetter: string): string {
+export function localizedAminoAcidFullName(msg: MsgFn, threeLetter: string): string {
   switch (threeLetter) {
     case "Phe":
       return msg("Phenylalanine")
@@ -102,6 +102,7 @@ export function localizedAminoAcidFullName(threeLetter: string): string {
 }
 
 export function localizedPhaseEnableLabel(
+  msg: MsgFn,
   key: (typeof PHASE_ENABLE_KEYS)[number],
 ): string {
   switch (key) {
@@ -117,6 +118,7 @@ export function localizedPhaseEnableLabel(
 }
 
 export function localizedPhaseEnableDescription(
+  msg: MsgFn,
   key: (typeof PHASE_ENABLE_KEYS)[number],
 ): string {
   switch (key) {
@@ -132,11 +134,12 @@ export function localizedPhaseEnableDescription(
 }
 
 export function localizedPhaseCompleteMessage(
+  msg: MsgFn,
   phase: string,
   next: string | null,
   mutationSteps?: number,
 ): string {
-  const nextLabel = next ? localizedPhaseLabel(next) : ""
+  const nextLabel = next ? localizedPhaseLabel(msg, next) : ""
   if (phase === "Mutations") {
     const n = mutationSteps ?? 0
     if (!next) {
@@ -149,5 +152,5 @@ export function localizedPhaseCompleteMessage(
       : msg(str`Mutations complete in ${n} steps — continue to ${nextLabel}?`)
   }
   if (!next) return msg("Lesson complete")
-  return msg(str`${localizedPhaseLabel(phase)} complete — continue to ${nextLabel}?`)
+  return msg(str`${localizedPhaseLabel(msg, phase)} complete — continue to ${nextLabel}?`)
 }

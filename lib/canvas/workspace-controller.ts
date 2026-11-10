@@ -29,6 +29,7 @@ export class WorkspaceController implements ReactiveController {
 
   private _resizeObserver: ResizeObserver | null = null
   private _centerRaf = 0
+  private _pendingRafs = new Set<number>()
   private _didInitialCenter = false
   private _wheelTarget: HTMLElement | null = null
   private _isAdjusting = false
@@ -58,8 +59,13 @@ export class WorkspaceController implements ReactiveController {
     this._wheelTarget = null
     this._resizeObserver?.disconnect()
     this._resizeObserver = null
-    if (this._centerRaf) cancelAnimationFrame(this._centerRaf)
+    for (const raf of this._pendingRafs) cancelAnimationFrame(raf)
+    this._pendingRafs.clear()
+    this._centerRaf = 0
+    this.vp.cancelInteraction()
     if (this._adjustTimer) clearTimeout(this._adjustTimer)
+    this._adjustTimer = null
+    this._isAdjusting = false
   }
 
   hostUpdated() {
@@ -103,7 +109,7 @@ export class WorkspaceController implements ReactiveController {
    * sits in the middle of the visible canvas.
    */
   centerOnWorldPoint(worldX: number, worldY: number) {
-    requestAnimationFrame(() => requestAnimationFrame(() => this._panToWorld(worldX, worldY)))
+    this._afterLayout(() => this._panToWorld(worldX, worldY))
   }
 
   /**
@@ -112,7 +118,7 @@ export class WorkspaceController implements ReactiveController {
    * the CSS left/top transition after a successful amino-acid drop.
    */
   centerOnTranslationCodon(codonIndex: number, widthInset = 0) {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    this._afterLayout(() => {
       const content = this._contentEl
       const wrap = content?.querySelector(".strand-pairs-wrap") as HTMLElement | null
       if (!content || !wrap) {
@@ -132,14 +138,14 @@ export class WorkspaceController implements ReactiveController {
         wrapWorldY + local.y - TRANSLATION_CENTER_NUDGE_Y,
         widthInset,
       )
-    }))
+    })
   }
 
   /**
    * Center the polypeptide chain after stop-codon ribosome release.
    */
   centerOnTranslationPolypeptide(widthInset = 0) {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    this._afterLayout(() => {
       const vp = this._viewportEl
       const content = this._contentEl
       if (!vp || !content) {
@@ -172,7 +178,7 @@ export class WorkspaceController implements ReactiveController {
       const worldX = (screenCx - this.vp.panX) / scale
       const worldY = (screenCy - this.vp.panY) / scale
       this._panToWorld(worldX, worldY, widthInset)
-    }))
+    })
   }
 
   /**
@@ -180,7 +186,7 @@ export class WorkspaceController implements ReactiveController {
    * content) sits in the middle of the visible canvas.
    */
   centerOnSelector(selector: string) {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    this._afterLayout(() => {
       const vp = this._viewportEl
       const content = this._contentEl
       if (!vp || !content) return
@@ -227,7 +233,7 @@ export class WorkspaceController implements ReactiveController {
       }
 
       this._panToWorld(worldX, worldY)
-    }))
+    })
   }
 
   private _panToWorld(worldX: number, worldY: number, widthInset = 0) {
@@ -310,10 +316,29 @@ export class WorkspaceController implements ReactiveController {
   }
 
   private _scheduleCenter() {
-    if (this._centerRaf) cancelAnimationFrame(this._centerRaf)
-    this._centerRaf = requestAnimationFrame(() => {
-      this._centerRaf = requestAnimationFrame(() => this._maybeCenter())
+    if (this._centerRaf) {
+      cancelAnimationFrame(this._centerRaf)
+      this._pendingRafs.delete(this._centerRaf)
+    }
+    this._centerRaf = this._requestFrame(() => {
+      this._centerRaf = this._requestFrame(() => {
+        this._centerRaf = 0
+        this._maybeCenter()
+      })
     })
+  }
+
+  private _requestFrame(callback: FrameRequestCallback): number {
+    const id = requestAnimationFrame((time) => {
+      this._pendingRafs.delete(id)
+      callback(time)
+    })
+    this._pendingRafs.add(id)
+    return id
+  }
+
+  private _afterLayout(callback: () => void) {
+    this._requestFrame(() => this._requestFrame(callback))
   }
 
   private _maybeCenter() {
@@ -338,6 +363,11 @@ export class WorkspaceController implements ReactiveController {
         content.offsetHeight,
         this._bottomReserve(),
       )
+    } else {
+      // Keep the current focal point when the host or drawer changes size.
+      const {panX, panY} = this.vp
+      this._clampToBounds()
+      if (this.vp.panX !== panX || this.vp.panY !== panY) this._host.requestUpdate()
     }
   }
 

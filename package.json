@@ -6,8 +6,14 @@
     "webwriter-widget",
     "widget-simulational",
     "widget-practical",
-    "widget-lang-en",
-    "widget-lang-de",
+    "widget-lang-en-US",
+    "widget-lang-en-GB",
+    "widget-lang-en-CA",
+    "widget-lang-en-AU",
+    "widget-lang-en-IN",
+    "widget-lang-de-DE",
+    "widget-lang-de-AT",
+    "widget-lang-de-CH",
     "Biology",
     "DNA",
     "Gene Expression"
@@ -17,17 +23,20 @@
   "scripts": {
     "prepublishOnly": "npx @webwriter/build",
     "dev": "npx @webwriter/build dev",
-    "localize": "lit-localize extract && npx @webwriter/build localize && lit-localize build"
+    "localize": "node localization/build-locales.mjs",
+    "typecheck": "tsc --noEmit",
+    "localize:translate": "lit-localize extract && npx @webwriter/build localize && npm run localize",
+    "test": "node tests/chrome-regression.mjs"
   },
   "dependencies": {
     "@lit/localize": "^0.12.2",
     "@shoelace-style/shoelace": "^2.20.1",
-    "@webwriter/lit": "^2",
+    "@webwriter/lit": "^3.0.0",
     "lit": "^3"
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.8",
-    "@webwriter/build": "^1.12.0"
+    "@webwriter/build": "^1.13.1"
   },
   "exports": {
     "./widgets/webwriter-dna-simulation.*": {
@@ -35,7 +44,10 @@
       "default": "./dist/widgets/webwriter-dna-simulation.*"
     },
     "./icon": "./icon.svg",
-    "./editing-config.json": "./editing-config.json"
+    "./editing-config.json": "./editing-config.json",
+    "./snippets/dna-simulation.html": "./snippets/dna-simulation.html"
   },
-  "editingConfig": {}
+  "editingConfig": {
+    "./snippets/dna-simulation": {}
+  }
 }

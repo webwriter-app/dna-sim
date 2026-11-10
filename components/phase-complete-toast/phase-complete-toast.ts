@@ -1,9 +1,10 @@
-import {html, LitElement} from "lit"
+import {html} from "lit"
 import {property, state} from "lit/decorators.js"
-import {localized, msg} from "@lit/localize"
-import {ScopedElementsMixin} from "@open-wc/scoped-elements/lit-element.js"
+import type {MsgFn} from "@lit/localize"
+import {LitElementWw} from "@webwriter/lit"
 import SlButton from "@shoelace-style/shoelace/dist/components/button/button.component.js"
 
+import {sourceMsg} from "../../localization/localizer.js"
 import {shoelaceLight} from "../../lib/shoelace-theme.js"
 import {phaseCompleteToastStyles} from "./phase-complete-toast.styles.js"
 
@@ -17,8 +18,9 @@ export const PHASE_COMPLETE_TOAST_FADE_MS = 280
  * right-to-left countdown bar. Also dismissible by clicking outside it.
  * Fades out via CSS opacity transition before the dismiss/continue event fires.
  */
-@localized()
-export class DnaPhaseCompleteToast extends ScopedElementsMixin(LitElement) {
+export class DnaPhaseCompleteToast extends LitElementWw {
+  @property({attribute: false}) msg: MsgFn = sourceMsg
+
   static styles = [shoelaceLight, phaseCompleteToastStyles]
 
   static scopedElements = {
@@ -34,6 +36,7 @@ export class DnaPhaseCompleteToast extends ScopedElementsMixin(LitElement) {
   private _dismissTimer: ReturnType<typeof setTimeout> | null = null
   private _leaveTimer: ReturnType<typeof setTimeout> | null = null
   private _outsideClickListening = false
+  private _outsideFrame = 0
 
   connectedCallback() {
     super.connectedCallback()
@@ -41,12 +44,13 @@ export class DnaPhaseCompleteToast extends ScopedElementsMixin(LitElement) {
       () => this._beginLeave("dna-phase-complete-dismiss"),
       this.duration,
     )
-    requestAnimationFrame(() => {
+    this._outsideFrame = requestAnimationFrame(() => {
       if (this.isConnected) this._ensureOutsideClick()
     })
   }
 
   disconnectedCallback() {
+    cancelAnimationFrame(this._outsideFrame)
     this._clearDismissTimer()
     this._clearLeaveTimer()
     this._releaseOutsideClick()
@@ -119,7 +123,7 @@ export class DnaPhaseCompleteToast extends ScopedElementsMixin(LitElement) {
               size="small"
               ?disabled=${this._leaving}
               @click=${this._onContinueClick}>
-              ${msg("Next phase")}
+              ${this.msg("Next phase")}
             </sl-button>
           `
           : null}

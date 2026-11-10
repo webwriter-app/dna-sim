@@ -1,4 +1,4 @@
-import {msg, str} from "@lit/localize"
+import {str, type MsgFn} from "@lit/localize"
 
 import adenineSvg from "../../assets/base-adenine.svg"
 import thymineSvg from "../../assets/base-thymine.svg"
@@ -110,7 +110,7 @@ export type MutationStep = {
 }
 
 /** Compact chip label, 1-based position on the template (3′ → 5′). */
-export function formatMutationStepKindLabel(step: MutationStep): string {
+export function formatMutationStepKindLabel(msg: MsgFn, step: MutationStep): string {
   const pos = step.index + 1
   if (step.kind === "substitution") return msg(str`Sub ${pos}`)
   if (step.kind === "insertion") return msg(str`Ins ${pos}`)
@@ -118,8 +118,8 @@ export function formatMutationStepKindLabel(step: MutationStep): string {
 }
 
 /** Compact chip label including bases, 1-based position on the template (3′ → 5′). */
-export function formatMutationStepLabel(step: MutationStep): string {
-  const prefix = formatMutationStepKindLabel(step)
+export function formatMutationStepLabel(msg: MsgFn, step: MutationStep): string {
+  const prefix = formatMutationStepKindLabel(msg, step)
   if (step.kind === "substitution") {
     return `${prefix} ${step.from ?? "?"}→${step.to ?? "?"}`
   }

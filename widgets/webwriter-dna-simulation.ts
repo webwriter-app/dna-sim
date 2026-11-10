@@ -1,9 +1,10 @@
 import {html, type PropertyValues} from "lit"
 import {LitElementWw} from "@webwriter/lit"
-import {customElement, property, state} from "lit/decorators.js"
-import {msg, str} from "@lit/localize"
+import {customElement, state} from "lit/decorators.js"
+import {str, type MsgFn} from "@lit/localize"
+import {styleMap} from "lit/directives/style-map.js"
 
-import LOCALIZE from "../localization/generated"
+import {createLocalizer} from "../localization/localizer.js"
 
 import {widgetStyles} from "../lib/dna-simulation.styles.js"
 import {shoelaceLight} from "../lib/shoelace-theme.js"
@@ -23,11 +24,6 @@ import SlIcon from "@shoelace-style/shoelace/dist/components/icon/icon.component
 import SlButton from "@shoelace-style/shoelace/dist/components/button/button.component.js"
 import SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.component.js"
 import SlPopup from "@shoelace-style/shoelace/dist/components/popup/popup.component.js"
-import SlDetails from "@shoelace-style/shoelace/dist/components/details/details.component.js"
-import SlSwitch from "@shoelace-style/shoelace/dist/components/switch/switch.component.js"
-import SlSelect from "@shoelace-style/shoelace/dist/components/select/select.component.js"
-import SlOption from "@shoelace-style/shoelace/dist/components/option/option.component.js"
-import SlRange from "@shoelace-style/shoelace/dist/components/range/range.component.js"
 import arrowCounterclockwiseIcon from "../assets/arrow-counterclockwise.svg"
 import {WorkspaceController} from "../lib/canvas/workspace-controller.js"
 import {NavbarController, type NavbarHost, type NavbarMrnaInput} from "../lib/navbar/navbar-controller.js"
@@ -85,16 +81,8 @@ import {
 import {
   DEFAULT_MRNA_BATCH_VERIFY_MODE,
   DEFAULT_MRNA_INPUT_MODE,
-  MRNA_BATCH_VERIFY_MODE_ATTRIBUTE,
-  MRNA_INPUT_MODE_ATTRIBUTE,
-  normalizeMrnaBatchVerifyMode,
-  normalizeMrnaInputMode,
   readMrnaBatchVerifyModeAttr,
   readMrnaInputModeAttr,
-  writeMrnaBatchVerifyMode,
-  writeMrnaInputMode,
-  type MrnaBatchVerifyMode,
-  type MrnaInputMode,
 } from "../lib/phases/transcription.js"
 import {readingFrameFromTemplate} from "../lib/phases/translation.js"
 import {
@@ -104,13 +92,15 @@ import {
   mutationTargetChain,
   normalizeAminoAcidToken,
   normalizeMutationGoalMode,
+  parseTargetProtein,
   startMatchesMutationGoal,
   type MutationCheckResult,
-  type MutationGoalMode,
 } from "../lib/phases/mutation-goals.js"
-import {buildTeacherOptionsInput} from "../lib/build-teacher-options-input.js"
+import {lessonOptions} from "../lib/drawer-options.js"
+import {
+  DEFAULT_LESSON, LESSON_DATA_TYPE, findLessonBlock, readLesson, readLessonBlock, serializeLesson, type Lesson,
+} from "../lib/lesson-data.js"
 import {localizedPhaseCompleteMessage, localizedPhaseLabel} from "../lib/localize-text.js"
-import {renderTeacherOptions, teacherOptionsStyles} from "../lib/teacher-options-renderer.js"
 import {
   PHASE_ENABLE_KEYS,
   resolveVisiblePhases,
@@ -118,29 +108,15 @@ import {
   normalizePhaseSetMode,
   DEFAULT_PHASE_SET_MODE,
   ALL_PHASES_ENABLED,
-  PHASE_SET_MODE_ATTRIBUTE,
   readPhaseSetModeAttr,
-  writePhaseSetMode,
   readPhaseEnableFlag,
+  booleanFromAttribute,
+  writePersistedBoolean,
   writePhaseEnableFlag,
-  DEFAULT_ANIMATION_SPEED,
   DEFAULT_DNA_SEQUENCE,
   normalizeAnimationSpeed,
   scaledDurationMs,
-  SHOW_INFO_CARDS_ATTRIBUTE,
-  SHOW_SEQUENCE_TAB_ATTRIBUTE,
-  CROSS_PHASE_MUTATIONS_ATTRIBUTE,
-  MARK_CODONS_ATTRIBUTE,
-  MARK_STOP_CODONS_ATTRIBUTE,
-  CANONICAL_PHASE_ORDER_ATTRIBUTE,
-  MUTATION_GOAL_MODE_ATTRIBUTE,
-  MUTATION_TARGET_PROTEIN_ATTRIBUTE,
-  LEGACY_MUTATION_TARGET_DNA_ATTRIBUTES,
-  DNA_SEQUENCE_ATTRIBUTE,
-  DNA_SEQUENCE_CONVERTER,
   sanitizeDnaSequence,
-  writeDnaSequence,
-  readPersistedDnaSequence,
   readShowInfoCards,
   readShowSequenceTab,
   readCrossPhaseMutations,
@@ -148,17 +124,13 @@ import {
   readMarkStopCodons,
   readCanonicalPhaseOrder,
   readMutationGoalModeAttr,
-  readMutationTargetProtein,
   writeShowInfoCards,
   writeShowSequenceTab,
   writeCrossPhaseMutations,
   writeMarkCodons,
   writeMarkStopCodons,
   writeCanonicalPhaseOrder,
-  writeMutationGoalMode,
-  writeMutationTargetProtein,
   type PhaseEnableFlags,
-  type PhaseSetMode,
   type SimulationPhase,
 } from "../lib/widget-options.js"
 
@@ -170,9 +142,15 @@ const MUTATION_DNA_ICON = DNA_BASE_ICONS
 @customElement("webwriter-dna-simulation")
 export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, TranscriptionHost, TranslationHost, MoleculeDragHost, ResetHost {
 
-  localize = LOCALIZE
+  static override readonly dataType = LESSON_DATA_TYPE
+  static styles = [shoelaceLight, widgetStyles]
 
-  static styles = [shoelaceLight, widgetStyles, teacherOptionsStyles]
+  protected localize = createLocalizer(() => {
+    this.msg = this.localize.msg.bind(undefined)
+    this._refreshDrawer()
+    this.requestUpdate()
+  })
+  msg: MsgFn = this.localize.msg
 
   static scopedElements = {
     "dna-canvas-alert": DnaCanvasAlert,
@@ -184,104 +162,104 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     "sl-button": SlButton,
     "sl-dialog": SlDialog,
     "sl-popup": SlPopup,
-    "sl-details": SlDetails,
-    "sl-switch": SlSwitch,
-    "sl-select": SlSelect,
-    "sl-option": SlOption,
-    "sl-range": SlRange,
   }
 
-  /** Custom inspector UI via `[part=options]`; do not auto-generate fields. */
-  static override readonly options = {}
+  // @ts-expect-error The base declares this optional field but accepts instance getters.
+  get options() {
+    return lessonOptions(this.msg, this._phaseFlags, this.phaseSetMode, this.mrnaInputMode,
+      this.mutationGoalMode === "target-protein", this._canEditLesson)
+  }
 
-  @property({ type: String }) currentPhase = "Replication"
+  get optionGroups() {
+    return {
+      lesson: {label: this.msg("Lesson")},
+      phases: {label: this.msg("Phases")},
+      transcription: {label: this.msg("Transcription")},
+      mutations: {label: this.msg("Mutations")},
+      display: {label: this.msg("Display")},
+    }
+  }
 
-  @property({
-    type: String,
-    reflect: true,
-    attribute: DNA_SEQUENCE_ATTRIBUTE,
-    converter: DNA_SEQUENCE_CONVERTER,
-  })
-  dnaSequence = DEFAULT_DNA_SEQUENCE
+  // @ts-expect-error The base declares this optional field but accepts instance getters.
+  get actions() {
+    return {
+      restoreLessonDefaults: {
+        label: {_: this.msg("Restore default sequence and target")},
+        group: "lesson",
+        disabled: !this._canEditLesson,
+        confirm: {_: this.msg("Restore the default DNA sequence and clear the protein target?")},
+      },
+    }
+  }
 
-  @property({ type: Number, reflect: true })
-  animationSpeed = DEFAULT_ANIMATION_SPEED
+  restoreLessonDefaults() {
+    this._writeLesson(DEFAULT_LESSON)
+  }
 
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: SHOW_INFO_CARDS_ATTRIBUTE,
-  })
-  showInfoCards = true
+  @state() currentPhase = "Replication"
+  @state() dnaSequence = DEFAULT_DNA_SEQUENCE
+  @state() zoomLevel = 100
 
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: SHOW_SEQUENCE_TAB_ATTRIBUTE,
-  })
-  showSequenceTab = true
+  get lessonDnaSequence() { return this._lesson.dnaSequence }
+  set lessonDnaSequence(value: string | null) {
+    this._writeLesson({dnaSequence: value === null ? DEFAULT_DNA_SEQUENCE : sanitizeDnaSequence(value)})
+  }
 
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: MARK_CODONS_ATTRIBUTE,
-  })
-  markCodons = true
+  get lessonTargetProtein() { return this._lesson.mutationTargetProtein }
+  set lessonTargetProtein(value: string | null) { this._setMutationTargetProtein(value) }
 
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: MARK_STOP_CODONS_ATTRIBUTE,
-  })
-  markStopCodons = true
+  get animationSpeed() { return normalizeAnimationSpeed(this.getAttribute("animationspeed")) }
+  get phaseSetMode() { return readPhaseSetModeAttr(this) ?? DEFAULT_PHASE_SET_MODE }
+  get mrnaInputMode() { return readMrnaInputModeAttr(this) ?? DEFAULT_MRNA_INPUT_MODE }
+  get mrnaBatchVerifyMode() { return readMrnaBatchVerifyModeAttr(this) ?? DEFAULT_MRNA_BATCH_VERIFY_MODE }
+  get mutationGoalMode() { return readMutationGoalModeAttr(this) ?? "sandbox" }
+  get mutationTargetProtein() { return this._lesson.mutationTargetProtein }
 
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: CANONICAL_PHASE_ORDER_ATTRIBUTE,
-  })
-  canonicalPhaseOrder = false
+  get showInfoCards() { return readShowInfoCards(this) }
+  set showInfoCards(value: boolean) { this._setBooleanOption(writeShowInfoCards, value) }
+  get showSequenceTab() { return readShowSequenceTab(this) }
+  set showSequenceTab(value: boolean) { this._setBooleanOption(writeShowSequenceTab, value) }
+  get crossPhaseMutations() { return readCrossPhaseMutations(this) }
+  set crossPhaseMutations(value: boolean) { this._setBooleanOption(writeCrossPhaseMutations, value) }
+  get markCodons() { return readMarkCodons(this) }
+  set markCodons(value: boolean) { this._setBooleanOption(writeMarkCodons, value) }
+  get markStopCodons() { return readMarkStopCodons(this) }
+  set markStopCodons(value: boolean) { this._setBooleanOption(writeMarkStopCodons, value) }
+  get canonicalPhaseOrder() { return readCanonicalPhaseOrder(this) }
+  set canonicalPhaseOrder(value: boolean) { this._setBooleanOption(writeCanonicalPhaseOrder, value) }
+  get allowStudentPan() { return booleanFromAttribute(this.getAttribute("allow-student-pan")) }
+  set allowStudentPan(value: boolean) {
+    this._setBooleanOption((widget, on) => writePersistedBoolean(widget, "allow-student-pan", on), value)
+  }
 
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: CROSS_PHASE_MUTATIONS_ATTRIBUTE,
-  })
-  crossPhaseMutations = true
-
-  @property({
-    type: String,
-    reflect: true,
-    attribute: MUTATION_GOAL_MODE_ATTRIBUTE,
-    converter: {
-      fromAttribute: (value: string | null) => normalizeMutationGoalMode(value),
-      toAttribute: (value: MutationGoalMode) => normalizeMutationGoalMode(value),
-    },
-  })
-  mutationGoalMode: MutationGoalMode = "sandbox"
-
-  @property({
-    type: String,
-    reflect: true,
-    attribute: MUTATION_TARGET_PROTEIN_ATTRIBUTE,
-  })
-  mutationTargetProtein = ""
+  get enableReplication() { return this._readPhaseFlag("enableReplication") }
+  set enableReplication(value: boolean) { this._setPhaseFlag("enableReplication", value) }
+  get enableTranscription() { return this._readPhaseFlag("enableTranscription") }
+  set enableTranscription(value: boolean) { this._setPhaseFlag("enableTranscription", value) }
+  get enableTranslation() { return this._readPhaseFlag("enableTranslation") }
+  set enableTranslation(value: boolean) { this._setPhaseFlag("enableTranslation", value) }
+  get enableMutations() { return this._readPhaseFlag("enableMutations") }
+  set enableMutations(value: boolean) { this._setPhaseFlag("enableMutations", value) }
 
   get sequenceTabVisible() {
     return this.showSequenceTab || this._isTeacherEditing()
   }
 
+  get sequenceTabDna() {
+    return this.editable ? this.lessonDnaSequence : this.dnaSequence
+  }
+
   /** Sequence-tab hints for authors only — never shown in student view. */
   get sequenceTabWarnings(): readonly string[] {
     if (!this._isTeacherEditing()) return []
-    if (!this.dnaSequence) return []
-    const frame = readingFrameFromTemplate(this.dnaSequence)
+    if (!this.sequenceTabDna) return []
+    const frame = readingFrameFromTemplate(this.sequenceTabDna)
     const parts: string[] = []
-    if (this.dnaSequence.length % 3 !== 0) {
-      parts.push(msg("Sequence length is not divisible by 3."))
+    if (this.sequenceTabDna.length % 3 !== 0) {
+      parts.push(this.msg("Sequence length is not divisible by 3."))
     }
     if (frame.codons.length > 0 && !frame.hasStop) {
-      parts.push(msg("No stop codon in the sequence."))
+      parts.push(this.msg("No stop codon in the sequence."))
     }
     const chain = mutationTargetChain(this.mutationTargetProtein)
     if (
@@ -289,11 +267,11 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       chain.length > 0 &&
       startMatchesMutationGoal({
         mode: "target-protein",
-        startDna: this.dnaSequence,
+        startDna: this.sequenceTabDna,
         targetProteinRaw: formatPolypeptide(chain),
       })
     ) {
-      parts.push(msg("Sequence already matches the target protein."))
+      parts.push(this.msg("Sequence already matches the target protein."))
     }
     return parts
   }
@@ -302,76 +280,6 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   get mutationsSequence(): string {
     return this.crossPhaseMutations ? this.dnaSequence : this._mutationsWorkingCopy
   }
-
-  @property({ type: Number, reflect: true, attribute: "zoom-level" })
-  zoomLevel = 100
-
-  @property({ type: Boolean, attribute: "allow-student-pan" })
-  allowStudentPan = true
-
-  @property({
-    type: String,
-    attribute: MRNA_INPUT_MODE_ATTRIBUTE,
-    reflect: true,
-    converter: {
-      fromAttribute: (value: string | null): MrnaInputMode =>
-        normalizeMrnaInputMode(value),
-      toAttribute: (value: MrnaInputMode) => value,
-    },
-  })
-  mrnaInputMode: MrnaInputMode = DEFAULT_MRNA_INPUT_MODE
-
-  @property({
-    type: String,
-    attribute: MRNA_BATCH_VERIFY_MODE_ATTRIBUTE,
-    reflect: true,
-    converter: {
-      fromAttribute: (value: string | null): MrnaBatchVerifyMode =>
-        normalizeMrnaBatchVerifyMode(value),
-      toAttribute: (value: MrnaBatchVerifyMode) => value,
-    },
-  })
-  mrnaBatchVerifyMode: MrnaBatchVerifyMode = DEFAULT_MRNA_BATCH_VERIFY_MODE
-
-  @property({
-    type: String,
-    attribute: PHASE_SET_MODE_ATTRIBUTE,
-    reflect: true,
-    converter: {
-      fromAttribute: (value: string | null): PhaseSetMode =>
-        normalizePhaseSetMode(value),
-      toAttribute: (value: PhaseSetMode) => value,
-    },
-  })
-  phaseSetMode: PhaseSetMode = DEFAULT_PHASE_SET_MODE
-
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: "enablereplication",
-  })
-  enableReplication = true
-
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: "enabletranscription",
-  })
-  enableTranscription = true
-
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: "enabletranslation",
-  })
-  enableTranslation = true
-
-  @property({
-    type: Boolean,
-    reflect: true,
-    attribute: "enablemutations",
-  })
-  enableMutations = true
 
   private get _phaseFlags(): PhaseEnableFlags {
     return {
@@ -431,7 +339,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   private _workspace = new WorkspaceController(this, {
     getZoomLevel: () => this.zoomLevel,
     setZoomLevel: (z) => { this.zoomLevel = z },
-    getPanEnabled: () => this.allowStudentPan || this.hasAttribute("contenteditable"),
+    getPanEnabled: () => this.allowStudentPan || this.editable,
     onViewportClick: (e) => this._onMutationsViewportClick(e),
     onUserPanZoom: () => this._mutations.dismiss(),
   })
@@ -450,153 +358,167 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
   private _reset = new ResetController(this)
 
-  /** Lesson DNA as last set by the teacher (sequence tab / options). */
-  private _lessonDnaSnapshot = DEFAULT_DNA_SEQUENCE
+  private _lesson = DEFAULT_LESSON
+  private _animationSpeed = this.animationSpeed
+  private _crossPhaseMutations = this.crossPhaseMutations
+  private _settingsObserver = new MutationObserver(() => this._syncSettings())
+  private _frames = new Set<number>()
+  private _connection = 0
+  private _layoutStyle = { "--dna-navbar-height": "0px", "--dna-anim-speed": "1" }
   /** Isolated Mutations-tab copy when cross-phase mutations are off. */
   private _mutationsWorkingCopy = DEFAULT_DNA_SEQUENCE
+  private _mutationStartSequence = DEFAULT_DNA_SEQUENCE
 
   /** Toolkit chip order — shuffled once when the widget instance is created. */
   private _baukastenOrder = createBaukastenOrder()
 
   connectedCallback() {
     super.connectedCallback()
-    this.showInfoCards = readShowInfoCards(this)
-    this.showSequenceTab = readShowSequenceTab(this)
-    this.crossPhaseMutations = readCrossPhaseMutations(this)
-    this.markCodons = readMarkCodons(this)
-    this.markStopCodons = readMarkStopCodons(this)
-    this.canonicalPhaseOrder = readCanonicalPhaseOrder(this)
-    for (const name of LEGACY_MUTATION_TARGET_DNA_ATTRIBUTES) {
-      this.removeAttribute(name)
-    }
-    const goalMode = readMutationGoalModeAttr(this)
-    if (goalMode) this.mutationGoalMode = goalMode
-    const targetProtein = readMutationTargetProtein(this)
-    if (targetProtein !== undefined) this._setMutationTargetProtein(targetProtein)
-    const dna = readPersistedDnaSequence(this)
-    if (dna !== undefined) this.dnaSequence = dna
-    this._lessonDnaSnapshot = this.dnaSequence
-    this._mutationsWorkingCopy = this.dnaSequence
-    const mrnaMode = readMrnaInputModeAttr(this)
-    if (mrnaMode) this.mrnaInputMode = mrnaMode
-    const batchVerify = readMrnaBatchVerifyModeAttr(this)
-    if (batchVerify) this.mrnaBatchVerifyMode = batchVerify
-    const phaseMode = readPhaseSetModeAttr(this)
-    if (phaseMode) this.phaseSetMode = phaseMode
-    this._hydratePhaseFlagsFromDom()
-    this.addEventListener("selectstart", this._onSelectStart, true)
+    this.currentPhase = this.visiblePhases[0]
+    this._navbar.activeTab = "phasen"
+    this._syncLesson(true)
+    this.afterRender(() => this.resetCanvasView(this.defaultZoomForPhase(this.currentPhase)))
+    this._settingsObserver.observe(this, {attributes: true})
+    this._syncSettings()
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
-    this.removeEventListener("selectstart", this._onSelectStart, true)
-    this._stopTimer()
-    this._cancelHelicaseExit()
-    this._cancelPolymeraseExit()
+    this._connection++
+    this._settingsObserver.disconnect()
     this._layoutObserver?.disconnect()
     this._layoutObserver = null
     this._observedNavbar = null
-    if (this._codonDrawerCloseTimer) {
-      clearTimeout(this._codonDrawerCloseTimer)
-      this._codonDrawerCloseTimer = null
+    this._resetAnimation()
+    this._hintOpen = false
+    this._dropErrorMessage = ""
+    this._errorAlertOnDismiss = null
+    this._mutations.dismiss()
+    this._cancelFrames()
+  }
+
+  nextFrame(callback: () => void) {
+    if (!this.isConnected) return
+    const frame = requestAnimationFrame(() => {
+      this._frames.delete(frame)
+      if (this.isConnected) callback()
+    })
+    this._frames.add(frame)
+  }
+
+  private _cancelFrames() {
+    for (const frame of this._frames) cancelAnimationFrame(frame)
+    this._frames.clear()
+  }
+
+  afterRender(callback: () => void) {
+    const connection = this._connection
+    void this.updateComplete.then(() => {
+      if (this.isConnected && connection === this._connection) callback()
+    })
+  }
+
+  protected override dataChanged() {
+    this._syncLesson()
+    this._refreshDrawer()
+  }
+
+  protected override dataPending() {
+    this._syncLesson(true)
+    this._refreshDrawer()
+  }
+
+  protected override dataError() {
+    this._refreshDrawer()
+  }
+
+  private get _canEditLesson() {
+    const block = findLessonBlock(this)
+    return this.editable && this.dataReady && (!block || readLessonBlock(block) !== null)
+  }
+
+  private _writeLesson(patch: Partial<Lesson>) {
+    if (!this._canEditLesson) return
+    const block = findLessonBlock(this)
+    const previous = readLesson(this, block)
+    const next = {...previous, ...patch}
+    if (block && next.dnaSequence === previous.dnaSequence &&
+        next.mutationTargetProtein === previous.mutationTargetProtein) return
+    const text = serializeLesson(next, block ? readLessonBlock(block) ?? undefined : undefined)
+    if (block) {
+      this.setData(LESSON_DATA_TYPE, text)
+    } else {
+      // Do not let setData repurpose an unrelated script if there is no lesson block.
+      const data = this.ownerDocument.createElement("script")
+      data.type = LESSON_DATA_TYPE
+      data.slot = "data"
+      data.textContent = text
+      this.append(data)
     }
+    this._syncLesson()
+    this._refreshDrawer()
   }
 
-  attributeChangedCallback(name: string, old: string | null, value: string | null) {
-    super.attributeChangedCallback(name, old, value)
-    if (name === "contenteditable") this.requestUpdate()
+  private _syncLesson(reset = false) {
+    const block = findLessonBlock(this)
+    if (block && !this.dataReady && !reset) return
+    const lesson = readLesson(this, this.dataReady ? block : null)
+    const changedSequence = lesson.dnaSequence !== this._lesson.dnaSequence
+    const changedTarget = lesson.mutationTargetProtein !== this._lesson.mutationTargetProtein
+    this._lesson = lesson
+    if (reset || changedSequence) this._useDnaSequence(lesson.dnaSequence)
+    if (changedTarget) {
+      this._mutationFeedback = null
+      this._phaseCompletion.revoke("Mutations")
+    }
+    if (reset || changedSequence || changedTarget) this.requestUpdate()
   }
 
-  protected firstUpdated(changed: PropertyValues<this>) {
-    super.firstUpdated(changed)
-    this._syncAnimSpeedCss()
+  private _syncSettings() {
+    this._syncLesson()
+    const speed = this.animationSpeed
+    if (speed !== this._animationSpeed) {
+      this._animationSpeed = speed
+      this._layoutStyle["--dna-anim-speed"] = String(speed)
+      if (this._timer) this._startTimer()
+    }
+    const crossPhase = this.crossPhaseMutations
+    if (crossPhase !== this._crossPhaseMutations) {
+      if (crossPhase) this._applyDnaSequenceEdit(this._mutationsWorkingCopy)
+      else this._mutationsWorkingCopy = this.dnaSequence
+      this._crossPhaseMutations = crossPhase
+    }
+    if (!this.showInfoCards) this._hintOpen = false
     this._ensureCurrentPhaseEnabled()
-    this._ensureLayoutObserver()
-    this._syncCanvasRowHeight()
+    this.requestUpdate()
+    this._refreshDrawer()
   }
 
-  protected willUpdate(changed: PropertyValues<this>) {
-    this._transcription.syncInputModeFromDom(changed.has("mrnaInputMode"))
-    this._transcription.syncBatchVerifyModeFromDom(changed.has("mrnaBatchVerifyMode"))
-    if (
-      this.hasUpdated &&
-      changed.has("phaseSetMode") &&
-      normalizePhaseSetMode(this.phaseSetMode) === "custom" &&
-      changed.get("phaseSetMode") !== "custom"
-    ) {
-      this._setAllPhaseFlags(true)
-    }
-    if (
-      normalizePhaseSetMode(this.phaseSetMode) === "custom" &&
-      !PHASE_ENABLE_KEYS.some((key) => this[key])
-    ) {
-      const lastOn = PHASE_ENABLE_KEYS.find((key) => changed.get(key) === true)
-      this._setPhaseFlag(lastOn ?? "enableReplication", true)
-    }
-    if (
-      changed.has("phaseSetMode") ||
-      PHASE_ENABLE_KEYS.some((key) => changed.has(key))
-    ) {
-      this._ensureCurrentPhaseEnabled()
-    }
-    this._syncAnimSpeedCss()
+  private _refreshDrawer() {
+    if (this.isConnected) this.dispatchEvent(new Event("optionschange", {bubbles: true}))
+  }
+
+  private _setBooleanOption(write: (widget: Element, value: boolean) => void, value: boolean) {
+    if (this.editable && typeof value === "boolean") write(this, value)
+  }
+
+  private _readPhaseFlag(key: (typeof PHASE_ENABLE_KEYS)[number]) {
+    return readPhaseEnableFlag(this, key) ?? ALL_PHASES_ENABLED[key]
+  }
+
+  private _setPhaseFlag(key: (typeof PHASE_ENABLE_KEYS)[number], value: boolean) {
+    if (!this.editable || typeof value !== "boolean") return
+    if (!value && !PHASE_ENABLE_KEYS.some(other => other !== key && this._readPhaseFlag(other))) return
+    writePhaseEnableFlag(this, key, value)
+  }
+
+  protected willUpdate() {
+    this._transcription.syncModes()
   }
 
   protected updated(changed: PropertyValues<this>) {
     super.updated(changed)
-    if (changed.has("showSequenceTab")) {
-      writeShowSequenceTab(this, this.showSequenceTab)
-    }
-    if (changed.has("mrnaInputMode")) {
-      this._transcription.syncInputModeFromDom(true)
-    }
-    if (changed.has("mrnaBatchVerifyMode")) {
-      this._transcription.syncBatchVerifyModeFromDom(true)
-    }
-    if (changed.has("phaseSetMode")) {
-      writePhaseSetMode(this, normalizePhaseSetMode(this.phaseSetMode))
-    }
-    if (PHASE_ENABLE_KEYS.some((key) => changed.has(key))) {
-      for (const key of PHASE_ENABLE_KEYS) writePhaseEnableFlag(this, key, this[key])
-    }
-    if (
-      changed.has("phaseSetMode") ||
-      PHASE_ENABLE_KEYS.some((key) => changed.has(key))
-    ) {
-      this._ensureCurrentPhaseEnabled()
-    }
-    if (changed.has("animationSpeed")) {
-      const next = normalizeAnimationSpeed(this.animationSpeed)
-      if (next !== this.animationSpeed) this.animationSpeed = next
-      else {
-        this._syncAnimSpeedCss()
-        if (this._timer) this._startTimer()
-      }
-    }
-    if (changed.has("showInfoCards")) {
-      if (!this.showInfoCards) this._hintOpen = false
-      writeShowInfoCards(this, this.showInfoCards)
-    }
-    if (changed.has("crossPhaseMutations")) {
-      writeCrossPhaseMutations(this, this.crossPhaseMutations)
-    }
-    if (changed.has("markCodons")) {
-      writeMarkCodons(this, this.markCodons)
-    }
-    if (changed.has("markStopCodons")) {
-      writeMarkStopCodons(this, this.markStopCodons)
-    }
-    if (changed.has("canonicalPhaseOrder")) {
-      writeCanonicalPhaseOrder(this, this.canonicalPhaseOrder)
-    }
-    if (changed.has("mutationGoalMode")) {
-      const next = normalizeMutationGoalMode(this.mutationGoalMode)
-      if (next !== this.mutationGoalMode) this.mutationGoalMode = next
-      else writeMutationGoalMode(this, next)
-    }
-    if (changed.has("mutationTargetProtein")) {
-      writeMutationTargetProtein(this, this.mutationTargetProtein)
-    }
+    if (changed.has("editable")) this._refreshDrawer()
     this._syncHintExpansion()
     this._navbar.syncView(this.renderRoot)
     const codonCard = this.renderRoot.querySelector("dna-codon-card")
@@ -625,8 +547,9 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   private _syncCanvasRowHeight() {
     const navbar = this.renderRoot.querySelector("dna-simulation-navbar") as HTMLElement | null
     const next = `${navbar?.offsetHeight ?? 0}px`
-    if (this.style.getPropertyValue("--dna-navbar-height") === next) return
-    this.style.setProperty("--dna-navbar-height", next)
+    if (this._layoutStyle["--dna-navbar-height"] === next) return
+    this._layoutStyle["--dna-navbar-height"] = next
+    this.requestUpdate()
     this._workspace.refresh()
   }
 
@@ -794,7 +717,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
     this._helicaseAwaitingSplitSettle = true
     this.requestUpdate()
-    void this.updateComplete.then(() => this._observeHelicaseSplitSettle())
+    this.afterRender(() => this._observeHelicaseSplitSettle())
   }
 
   private _observeHelicaseSplitSettle() {
@@ -811,7 +734,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
     // If the split is already settled (no transform this step),
     // no transitionend will fire — detect that and proceed immediately.
-    requestAnimationFrame(() => {
+    this.nextFrame(() => {
       if (!this._helicaseAwaitingSplitSettle) return
       if (!this._forkSplitTransitionRunning(target)) {
         this._beginHelicaseExit()
@@ -865,7 +788,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     this._helicaseAwaitingSplitSettle = false
     this._helicaseExiting = true
     this.requestUpdate()
-    void this.updateComplete.then(() => this._observeHelicaseExit())
+    this.afterRender(() => this._observeHelicaseExit())
   }
 
   private _observeHelicaseExit() {
@@ -877,7 +800,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       return
     }
 
-    requestAnimationFrame(() => {
+    this.nextFrame(() => {
       if (!this._helicaseExiting) return
       const running = el.getAnimations().some(
         (a) => a instanceof CSSAnimation && a.animationName.includes("molecule-exit-up-right"),
@@ -916,7 +839,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
     this._polymeraseAwaitingSettle = true
     this.requestUpdate()
-    void this.updateComplete.then(() => this._observePolymeraseSettle())
+    this.afterRender(() => this._observePolymeraseSettle())
   }
 
   private _observePolymeraseSettle() {
@@ -928,7 +851,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       return
     }
 
-    requestAnimationFrame(() => {
+    this.nextFrame(() => {
       if (!this._polymeraseAwaitingSettle) return
       const moving = el.getAnimations().some(
         (a) => a instanceof CSSTransition && (a.transitionProperty === "left" || a.transitionProperty === "top"),
@@ -951,7 +874,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     this._polymeraseAwaitingSettle = false
     this._polymeraseExiting = true
     this.requestUpdate()
-    void this.updateComplete.then(() => this._observePolymeraseExit())
+    this.afterRender(() => this._observePolymeraseExit())
   }
 
   private _observePolymeraseExit() {
@@ -963,7 +886,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       return
     }
 
-    requestAnimationFrame(() => {
+    this.nextFrame(() => {
       if (!this._polymeraseExiting) return
       const running = el.getAnimations().some(
         (a) => a instanceof CSSAnimation && a.animationName.includes("molecule-exit-up-right"),
@@ -1009,7 +932,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   get baukastenMolecules(): BaukastenMolecule[] {
-    return baukastenForPhase(this.currentPhase, this._baukastenOrder)
+    return baukastenForPhase(this.msg, this.currentPhase, this._baukastenOrder)
   }
 
   get draggingMoleculeId(): string | null {
@@ -1033,7 +956,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
   get mutationStepItems() {
     return this._mutationSteps.map((step, stepIndex) => ({
-      label: formatMutationStepKindLabel(step),
+      label: formatMutationStepKindLabel(this.msg, step),
       stepIndex,
       kind: step.kind,
       from: step.from,
@@ -1073,11 +996,15 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   setDnaSequence(value: string) {
+    if (this.editable) this.lessonDnaSequence = value
+    else this._useDnaSequence(sanitizeDnaSequence(value))
+  }
+
+  private _useDnaSequence(next: string) {
     const previousSequence = this.dnaSequence
-    const next = sanitizeDnaSequence(value)
-    writeDnaSequence(this, next)
-    this._lessonDnaSnapshot = next
+    this._mutationStartSequence = next
     this._mutationsWorkingCopy = next
+    this._clearMutationSteps()
     if (next === previousSequence) {
       this.requestUpdate()
       return
@@ -1098,13 +1025,12 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     }
 
     this._workspace.resetView(this.defaultZoomForPhase(this.currentPhase))
-    this._clearMutationSteps()
     if (
       this.currentPhase === "Translation" &&
       this._translation.snappedRibosome &&
       this._translation.codonIndex !== prevCodon
     ) {
-      this.updateComplete.then(() => this._centerOnActiveCodon())
+      this.afterRender(() => this._centerOnActiveCodon())
     }
     this.requestUpdate()
   }
@@ -1114,6 +1040,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   setMrnaInput(value: string) {
+    this._transcription.syncModes()
     this._transcription.handleInput(value)
   }
 
@@ -1122,15 +1049,17 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   verifyMrnaInput() {
+    this._transcription.syncModes()
     this._transcription.verify()
   }
 
   appendMrnaBase(base: string) {
+    this._transcription.syncModes()
     this._transcription.appendBase(base)
   }
 
   startMoleculeDrag(nativeEvent: DragEvent, moleculeId: string) {
-    const molecule = moleculeById(moleculeId)
+    const molecule = moleculeById(this.msg, moleculeId)
     if (molecule) this._moleculeDrag.onDragStart(nativeEvent, molecule)
   }
 
@@ -1139,10 +1068,6 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   // ── ResetHost (drives lib/phases/reset-controller) ───────────────────────
-
-  get codonDrawerOpen(): boolean {
-    return this._codonWheelOpen
-  }
 
   requestResetSimulation() {
     this._reset.requestSimulation()
@@ -1153,7 +1078,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     if (!hasMutationProteinGoal(this.mutationTargetProtein)) return
     const result = evaluateMutationGoal({
       mode: "target-protein",
-      startDna: this._lessonDnaSnapshot,
+      startDna: this._mutationStartSequence,
       currentDna: this.mutationsSequence,
       targetProteinRaw: this.mutationTargetProtein,
     })
@@ -1174,7 +1099,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     if (this.currentPhase !== "Mutations") return
     if (stepIndex < 0 || stepIndex >= this._mutationSteps.length) return
     const kept = this._mutationSteps.slice(0, stepIndex + 1)
-    const next = replayMutationSteps(this._lessonDnaSnapshot, kept)
+    const next = replayMutationSteps(this._mutationStartSequence, kept)
     this._mutationSteps = kept
     this._mutationFeedback = null
     this._applyMutationSequenceEdit(next)
@@ -1207,24 +1132,25 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   private _setMutationTargetProtein(raw: unknown) {
-    const chain = mutationTargetChain(raw)
-    this.mutationTargetProtein = formatPolypeptide(chain)
-    writeMutationTargetProtein(this, this.mutationTargetProtein)
-    this.requestUpdate()
+    const target = parseTargetProtein(raw)
+    if (target.ok) this._writeLesson({mutationTargetProtein: formatPolypeptide(target.chain)})
   }
 
   private _mutationCheckMessage(result: MutationCheckResult): string {
     if (result.reason === "no-target") {
-      return msg("No target is set for this task.")
+      return this.msg("No target is set for this task.")
     }
     if (result.reason === "invalid-target") {
-      return msg("The target protein is not valid. Use three-letter names such as Met-Leu-Phe.")
+      return this.msg("The target protein is not valid. Use three-letter names such as Met-Leu-Phe.")
     }
-    return msg("That is not the target yet.")
+    return this.msg("That is not the target yet.")
   }
 
   clearAllSimulationState() {
     this._mutations.dismiss()
+    this._syncLesson()
+    this.dnaSequence = this._lesson.dnaSequence
+    this._mutationStartSequence = this.dnaSequence
     this._mutationsWorkingCopy = this.dnaSequence
     this._mutationFeedback = null
     this._clearMutationSteps()
@@ -1280,8 +1206,8 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     this._mutationFeedback = null
     this._clearMutationSteps()
     if (this.crossPhaseMutations) {
-      this._applyDnaSequenceEdit(this._lessonDnaSnapshot)
-      this._mutationsWorkingCopy = this._lessonDnaSnapshot
+      this._applyDnaSequenceEdit(this._mutationStartSequence)
+      this._mutationsWorkingCopy = this._mutationStartSequence
       return
     }
     this._mutationsWorkingCopy = this.dnaSequence
@@ -1300,7 +1226,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
   /** TranscriptionHost: wait for render, then ask the navbar to focus its mRNA field. */
   focusMrnaInput() {
-    void this.updateComplete.then(() => {
+    this.afterRender(() => {
       const navbar = this.renderRoot.querySelector("dna-simulation-navbar")
       if (navbar instanceof DnaSimulationNavbar) navbar.focusMrnaInput()
     })
@@ -1315,7 +1241,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   focusActiveCodon() {
-    this.updateComplete.then(() => this._centerOnActiveCodon())
+    this.afterRender(() => this._centerOnActiveCodon())
   }
 
   onStopCodonReached() {
@@ -1327,7 +1253,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   focusPolypeptide() {
-    this.updateComplete.then(() => this._centerOnPolypeptide())
+    this.afterRender(() => this._centerOnPolypeptide())
   }
 
   onTranslationComplete() {
@@ -1335,15 +1261,15 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       const enabled = this.visiblePhases
       const i = enabled.indexOf("Translation")
       const next = i >= 0 ? enabled[i + 1] ?? null : enabled[0] ?? null
-      const runoff = msg("The sequence ended without a stop codon.")
+      const runoff = this.msg("The sequence ended without a stop codon.")
       if (!next) {
-        this._phaseCompletion.notify("Translation", "", msg(str`${runoff} Lesson complete`))
+        this._phaseCompletion.notify("Translation", "", this.msg(str`${runoff} Lesson complete`))
         return
       }
       this._phaseCompletion.notify(
         "Translation",
         next,
-        msg(str`${runoff} Continue to ${localizedPhaseLabel(next)}?`),
+        this.msg(str`${runoff} Continue to ${localizedPhaseLabel(this.msg, next)}?`),
       )
       return
     }
@@ -1352,10 +1278,6 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
   scaleAnimMs(ms: number): number {
     return scaledDurationMs(ms, this.animationSpeed)
-  }
-
-  private _syncAnimSpeedCss() {
-    this.style.setProperty("--dna-anim-speed", String(normalizeAnimationSpeed(this.animationSpeed)))
   }
 
   private _notifyPhaseComplete(phase: string) {
@@ -1367,6 +1289,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
   private _phaseCompleteMessage(phase: string, next: string | null): string {
     return localizedPhaseCompleteMessage(
+      this.msg,
       phase,
       next,
       phase === "Mutations" ? this._mutationSteps.length : undefined,
@@ -1391,271 +1314,8 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     }
   }
 
-  private _onSelectStart = (event: Event) => {
-    const path = event.composedPath()
-    for (const node of path) {
-      if (!node || typeof node !== "object") continue
-      const tag = String((node as {tagName?: string}).tagName ?? "").toLowerCase()
-      if (tag === "input" || tag === "textarea" || tag === "sl-input" || tag === "sl-textarea") return
-    }
-    event.preventDefault()
-  }
-
-  private _parseSelect(event: Event): string {
-    const target = (event.currentTarget ?? event.target) as {value?: unknown} | null
-    const value = target?.value
-    if (Array.isArray(value)) return String(value[0] ?? "")
-    return String(value ?? "")
-  }
-
-  private _parseSwitch(event: Event): boolean {
-    const target = (event.currentTarget ?? event.target) as {checked?: boolean} | null
-    return Boolean(target?.checked)
-  }
-
-  private _parseRange(event: Event): number {
-    const target = (event.currentTarget ?? event.target) as {value?: string | number} | null
-    const raw = target?.value
-    if (raw === undefined || raw === "") return this.animationSpeed
-    if (typeof raw === "number") return raw
-    return Number(String(raw).trim().replace(",", "."))
-  }
-
-  private getTeacherOptionsContext() {
-    return {
-      phaseSetMode: this.phaseSetMode,
-      enableReplication: this.enableReplication,
-      enableTranscription: this.enableTranscription,
-      enableTranslation: this.enableTranslation,
-      enableMutations: this.enableMutations,
-      canonicalPhaseOrder: this.canonicalPhaseOrder,
-      mrnaInputMode: this.mrnaInputMode,
-      mrnaBatchVerifyMode: this.mrnaBatchVerifyMode,
-      mutationGoalMode: this.mutationGoalMode,
-      crossPhaseMutations: this.crossPhaseMutations,
-      showInfoCards: this.showInfoCards,
-      showSequenceTab: this.showSequenceTab,
-      markCodons: this.markCodons,
-      markStopCodons: this.markStopCodons,
-      animationSpeed: this.animationSpeed,
-      onPhaseSetMode: (event: Event) => {
-        this._setPhaseSetMode(normalizePhaseSetMode(this._parseSelect(event)))
-      },
-      onPhaseFlag: (key: (typeof PHASE_ENABLE_KEYS)[number], event: Event) => {
-        this._setPhaseFlag(key, this._parseSwitch(event))
-      },
-      onCanonicalPhaseOrder: (event: Event) => {
-        this._setCanonicalPhaseOrder(this._parseSwitch(event))
-      },
-      onMrnaInputMode: (event: Event) => {
-        const value = normalizeMrnaInputMode(this._parseSelect(event))
-        this.mrnaInputMode = value
-        writeMrnaInputMode(this, value)
-        this._transcription.syncInputModeFromDom(true)
-      },
-      onMrnaBatchVerifyMode: (event: Event) => {
-        const value = normalizeMrnaBatchVerifyMode(this._parseSelect(event))
-        this.mrnaBatchVerifyMode = value
-        writeMrnaBatchVerifyMode(this, value)
-        this._transcription.syncBatchVerifyModeFromDom(true)
-      },
-      onMutationGoalMode: (event: Event) => {
-        this.mutationGoalMode = normalizeMutationGoalMode(this._parseSelect(event))
-        writeMutationGoalMode(this, this.mutationGoalMode)
-      },
-      onCrossPhaseMutations: (event: Event) => {
-        this._setCrossPhaseMutations(this._parseSwitch(event))
-      },
-      onShowInfoCards: (event: Event) => {
-        this._setShowInfoCards(this._parseSwitch(event))
-      },
-      onShowSequenceTab: (event: Event) => {
-        this._setShowSequenceTab(this._parseSwitch(event))
-      },
-      onMarkCodons: (event: Event) => {
-        this._setMarkCodons(this._parseSwitch(event))
-      },
-      onMarkStopCodons: (event: Event) => {
-        this._setMarkStopCodons(this._parseSwitch(event))
-      },
-      onAnimationSpeed: (event: Event) => {
-        const parsed = this._parseRange(event)
-        if (!Number.isFinite(parsed)) {
-          this.requestUpdate()
-          return
-        }
-        this.animationSpeed = normalizeAnimationSpeed(parsed)
-        this.requestUpdate()
-      },
-    }
-  }
-
-  private _setPhaseSetMode(mode: PhaseSetMode) {
-    const next = normalizePhaseSetMode(mode)
-    const enteringCustom =
-      next === "custom" && normalizePhaseSetMode(this.phaseSetMode) !== "custom"
-    this.phaseSetMode = next
-    writePhaseSetMode(this, next)
-    if (enteringCustom) this._setAllPhaseFlags(true)
-    else {
-      this._ensureCurrentPhaseEnabled()
-      this._syncPhaseChrome()
-    }
-  }
-
-  private _setShowInfoCards(on: boolean) {
-    if (this.showInfoCards === on) {
-      writeShowInfoCards(this, on)
-      if (!on) this._hintOpen = false
-      this.requestUpdate()
-      return
-    }
-    this.showInfoCards = on
-    if (!on) this._hintOpen = false
-    writeShowInfoCards(this, on)
-    this.requestUpdate()
-  }
-
-  private _setShowSequenceTab(on: boolean) {
-    if (this.showSequenceTab === on) {
-      writeShowSequenceTab(this, on)
-      this.requestUpdate()
-      return
-    }
-    this.showSequenceTab = on
-    writeShowSequenceTab(this, on)
-    this.requestUpdate()
-  }
-
-  private _setCrossPhaseMutations(on: boolean) {
-    if (this.crossPhaseMutations === on) {
-      writeCrossPhaseMutations(this, on)
-      this.requestUpdate()
-      return
-    }
-    if (on) {
-      if (this._mutationsWorkingCopy !== this.dnaSequence) {
-        this._applyDnaSequenceEdit(this._mutationsWorkingCopy)
-      }
-    } else {
-      this._mutationsWorkingCopy = this.dnaSequence
-    }
-    this.crossPhaseMutations = on
-    writeCrossPhaseMutations(this, on)
-    this.requestUpdate()
-  }
-
-  private _setMarkCodons(on: boolean) {
-    if (this.markCodons === on) {
-      writeMarkCodons(this, on)
-      this.requestUpdate()
-      return
-    }
-    this.markCodons = on
-    writeMarkCodons(this, on)
-    this.requestUpdate()
-  }
-
-  private _setMarkStopCodons(on: boolean) {
-    if (this.markStopCodons === on) {
-      writeMarkStopCodons(this, on)
-      this.requestUpdate()
-      return
-    }
-    this.markStopCodons = on
-    writeMarkStopCodons(this, on)
-    this.requestUpdate()
-  }
-
-  private _setCanonicalPhaseOrder(on: boolean) {
-    if (this.canonicalPhaseOrder === on) {
-      writeCanonicalPhaseOrder(this, on)
-      this.requestUpdate()
-      return
-    }
-    this.canonicalPhaseOrder = on
-    writeCanonicalPhaseOrder(this, on)
-    this.requestUpdate()
-  }
-
   private _isTeacherEditing(): boolean {
-    const editable = this.contentEditable
-    return (
-      this.hasAttribute("contenteditable") ||
-      editable === "true" ||
-      editable === ""
-    )
-  }
-
-  private _setAllPhaseFlags(on: boolean) {
-    const flags = on ? ALL_PHASES_ENABLED : {
-      enableReplication: false,
-      enableTranscription: false,
-      enableTranslation: false,
-      enableMutations: false,
-    }
-    this.enableReplication = flags.enableReplication
-    this.enableTranscription = flags.enableTranscription
-    this.enableTranslation = flags.enableTranslation
-    this.enableMutations = flags.enableMutations
-    for (const key of PHASE_ENABLE_KEYS) this._mirrorEnableAttribute(key, flags[key])
-    this._ensureCurrentPhaseEnabled()
-    this._syncPhaseChrome()
-  }
-
-  private _setPhaseFlag(key: (typeof PHASE_ENABLE_KEYS)[number], on: boolean) {
-    if (!on) {
-      const othersOn = PHASE_ENABLE_KEYS.some((k) => k !== key && this[k])
-      if (!othersOn) {
-        this._writeEnableFlag(key, true)
-        this._mirrorEnableAttribute(key, true)
-        this._syncPhaseChrome()
-        return
-      }
-    }
-    this._writeEnableFlag(key, on)
-    this._mirrorEnableAttribute(key, on)
-    this._ensureCurrentPhaseEnabled()
-    this._syncPhaseChrome()
-  }
-
-  /** Phase buttons live on the navbar; always push them even if Lit skips a Boolean. */
-  private _syncPhaseChrome() {
-    this.requestUpdate()
-    if (this.hasUpdated) this._navbar.syncView(this.renderRoot)
-  }
-
-  private _writeEnableFlag(key: (typeof PHASE_ENABLE_KEYS)[number], on: boolean) {
-    switch (key) {
-      case "enableReplication":
-        this.enableReplication = on
-        break
-      case "enableTranscription":
-        this.enableTranscription = on
-        break
-      case "enableTranslation":
-        this.enableTranslation = on
-        break
-      case "enableMutations":
-        this.enableMutations = on
-        break
-    }
-  }
-
-  private _mirrorEnableAttribute(key: (typeof PHASE_ENABLE_KEYS)[number], on: boolean) {
-    writePhaseEnableFlag(this, key, on)
-  }
-
-  private _hydratePhaseFlagsFromDom() {
-    for (const key of PHASE_ENABLE_KEYS) {
-      const value = readPhaseEnableFlag(this, key)
-      if (value !== undefined) this[key] = value
-    }
-    if (normalizePhaseSetMode(this.phaseSetMode) !== "custom") return
-    if (!PHASE_ENABLE_KEYS.some((key) => this[key])) {
-      this._writeEnableFlag("enableReplication", true)
-    }
-    for (const key of PHASE_ENABLE_KEYS) this._mirrorEnableAttribute(key, this[key])
+    return this.editable
   }
 
   private _ensureCurrentPhaseEnabled() {
@@ -1664,13 +1324,13 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     if (enabled.includes(this.currentPhase as SimulationPhase)) return
     const fallback = enabled[0]
     this._navbar.activeTab = "phasen"
-    this.setPhase(fallback)
+    this._enterPhase(fallback)
     if (this.hasUpdated) this._navbar.syncView(this.renderRoot)
   }
 
   showWrongAminoAcidAlert() {
     this.showErrorAlert(
-      msg("That amino acid does not match the current codon. Check the codon wheel and try again."),
+      this.msg("That amino acid does not match the current codon. Check the codon wheel and try again."),
     )
   }
 
@@ -1701,6 +1361,10 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       return
     }
 
+    this._enterPhase(phase)
+  }
+
+  private _enterPhase(phase: string) {
     this._stopTimer()
     if (this.currentPhase === "Replication") this._cancelHelicaseExit()
     if (this.currentPhase === "Transcription") this._cancelPolymeraseExit()
@@ -1756,7 +1420,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       popup.shiftBoundary = area
     }
     // After flyout open/close the panel size changes — refresh Floating UI.
-    requestAnimationFrame(() => popup.reposition())
+    this.nextFrame(() => popup.reposition())
   }
 
   private _onMutationPopupReposition = (e: Event) => {
@@ -1767,7 +1431,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     this._mutations.setMenuSideFromPlacement(placement)
     // Layout flipped (submenu now opens the other way) — remeasure once.
     if (prevSide !== this._mutations.menuSide && popup instanceof SlPopup) {
-      requestAnimationFrame(() => popup.reposition())
+      this.nextFrame(() => popup.reposition())
     }
   }
 
@@ -1832,8 +1496,8 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
               aria-expanded="${flyout === "substitution"}"
               @click=${() => this._mutations.toggleFlyout("substitution")}>
               ${flyoutLeft
-                ? html`<span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span><span>${msg("Substitution")}</span>`
-                : html`<span>${msg("Substitution")}</span><span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span>`}
+                ? html`<span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span><span>${this.msg("Substitution")}</span>`
+                : html`<span>${this.msg("Substitution")}</span><span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span>`}
             </button>
             <button
               type="button"
@@ -1843,15 +1507,15 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
               aria-expanded="${flyout === "insertion"}"
               @click=${() => this._mutations.toggleFlyout("insertion")}>
               ${flyoutLeft
-                ? html`<span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span><span>${msg("Insertion")}</span>`
-                : html`<span>${msg("Insertion")}</span><span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span>`}
+                ? html`<span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span><span>${this.msg("Insertion")}</span>`
+                : html`<span>${this.msg("Insertion")}</span><span class="mutation-menu-chevron" aria-hidden="true">${chevron}</span>`}
             </button>
             <button
               type="button"
               class="mutation-menu-item"
               role="menuitem"
               @click=${() => this._onMutationAction({type: "delete"})}>
-              <span>${msg("Deletion")}</span>
+              <span>${this.msg("Deletion")}</span>
             </button>
           </div>
 
@@ -1883,7 +1547,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
                         class="mutation-menu-option"
                         role="menuitem"
                         @click=${() => this._onMutationAction({type: "insert", base})}>
-                        <span>${msg("Insert")}</span>
+                        <span>${this.msg("Insert")}</span>
                         <img class="mutation-menu-base" src="${MUTATION_DNA_ICON[base]}" alt="${base}" draggable="false"/>
                       </button>
                     `,
@@ -1901,7 +1565,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   }
 
   appendBase(base: string) {
-    this.setDnaSequence(this.dnaSequence + base)
+    this.setDnaSequence(this.sequenceTabDna + base)
   }
 
   /**
@@ -1973,7 +1637,6 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   private _applyDnaSequenceEdit(next: string) {
     if (next === this.dnaSequence) return
     this.dnaSequence = next
-    writeDnaSequence(this, next)
     this._mutationsWorkingCopy = next
     this._mutations.clampSelection(next.length)
     this._clampAnimationStep()
@@ -2024,7 +1687,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     if (!this._canRemoveSnappedEnzyme() || e.button !== 0) return
 
     const enzymeId = this._snappedEnzymeId()
-    const molecule = enzymeId ? moleculeById(enzymeId) : undefined
+    const molecule = enzymeId ? moleculeById(this.msg, enzymeId) : undefined
     if (!molecule) return
 
     if (this.currentPhase === "Replication") {
@@ -2115,7 +1778,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     }
 
     this._moleculeDrag.showDropError(
-      dropErrorMessage(this.currentPhase, droppedId, expected),
+      dropErrorMessage(this.msg, this.currentPhase, droppedId, expected),
       droppedId,
     )
     this.requestUpdate()
@@ -2165,7 +1828,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     this._setCodonWheelOpen(!this._codonWheelOpen)
   }
 
-  /** Matches the .codon-drawer width transition in dna-simulation.styles.ts. */
+  /** Matches the .codon-drawer transition in dna-simulation.styles.ts. */
   private static readonly DRAWER_TRANSITION_MS = 320
   private static readonly CODON_DRAWER_WIDTH_PX = 400
 
@@ -2191,9 +1854,11 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       this.requestUpdate()
       // Pan immediately toward the post-drawer layout so centering runs with the
       // drawer slide instead of waiting for the width transition to finish.
-      this.updateComplete.then(() => {
+      this.afterRender(() => {
         if (this._translation.snappedRibosome) {
-          this._centerOnActiveCodon(WebwriterDnaSimulation.CODON_DRAWER_WIDTH_PX)
+          const canvas = this.renderRoot.querySelector(".canvas-row")
+          const sideBySide = canvas && getComputedStyle(canvas).flexDirection === "row"
+          this._centerOnActiveCodon(sideBySide ? WebwriterDnaSimulation.CODON_DRAWER_WIDTH_PX : 0)
         } else {
           this._workspace.refresh()
         }
@@ -2214,6 +1879,13 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       this.requestUpdate()
       this._workspace.refresh()
     }, WebwriterDnaSimulation.DRAWER_TRANSITION_MS)
+  }
+
+  private _onCodonDrawerTransition = (event: TransitionEvent) => {
+    if (event.target !== event.currentTarget || event.propertyName !== "height") return
+    if (this._codonWheelOpen && this.currentPhase === "Translation" && this._translation.snappedRibosome) {
+      this._centerOnActiveCodon()
+    }
   }
 
   /** Keep the ribosome's current codon in the middle of the visible canvas. */
@@ -2251,6 +1923,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       ${this._phaseCompletion.toast
         ? html`
           <dna-phase-complete-toast
+            .msg=${this.msg}
             .message=${this._phaseCompletion.toast.message}
             .duration=${PHASE_COMPLETE_TOAST_MS}
             .showContinue=${Boolean(this._phaseCompletion.toast.nextPhase)}
@@ -2262,6 +1935,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       ${hint && this.showInfoCards
         ? html`
           <dna-canvas-info-button
+            .msg=${this.msg}
             ?active=${this._hintOpen}
             @dna-canvas-info-toggle=${this._onHintToggle}>
           </dna-canvas-info-button>
@@ -2281,8 +1955,8 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       <button
         type="button"
         class="phase-reset-btn ${showCodonToggle ? "has-codon-toggle" : ""}"
-        aria-label="${msg("Start over")}"
-        title="${msg("Start over")}"
+        aria-label="${this.msg("Start over")}"
+        title="${this.msg("Start over")}"
         @click=${() => this._reset.requestPhase()}>
         <sl-icon src="${arrowCounterclockwiseIcon}"></sl-icon>
       </button>
@@ -2293,47 +1967,47 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
   private _getPhaseHintText(): string | null {
     if (this.currentPhase === "Replication") {
       if (!this._animationEnabled || this._snappedHelicase) return null
-      return msg("Place the correct molecule at the fork to start.")
+      return this.msg("Place the correct molecule at the fork to start.")
     }
 
     if (this.currentPhase === "Transcription") {
       if (!this._transcriptionEnabled) return null
       if (!this._transcription.snappedPolymerase) {
-        return msg("Place RNA polymerase at the fork to start.")
+        return this.msg("Place RNA polymerase at the fork to start.")
       }
       if (this._transcription.awaitingRnaBase) {
         if (this._transcription.activeInputMode === "stepwise") {
-          return msg("Enter mRNA above, one base at a time.")
+          return this.msg("Enter mRNA above, one base at a time.")
         }
         return this._transcription.activeBatchVerifyMode === "sequential"
-          ? msg("Enter the full mRNA above and tap Verify. Bases are checked one by one.")
-          : msg("Enter the full mRNA above and tap Verify.")
+          ? this.msg("Enter the full mRNA above and tap Verify. Bases are checked one by one.")
+          : this.msg("Enter the full mRNA above and tap Verify.")
       }
     }
 
     if (this.currentPhase === "Translation") {
       if (this.dnaSequence.length < 3) {
-        return msg("Add at least 3 bases to the template.")
+        return this.msg("Add at least 3 bases to the template.")
       }
       if (!this._translation.snappedRibosome) {
-        return msg("Place the ribosome on the first codon.")
+        return this.msg("Place the ribosome on the first codon.")
       }
       if (this._translation.complete) {
         const chain = this._translation.polypeptide.join("-") || "—"
         if (this._translation.endedWithoutStop) {
-          return msg(str`Done without stop codon. Protein: ${chain}`)
+          return this.msg(str`Done without stop codon. Protein: ${chain}`)
         }
-        return msg(str`Done. Protein: ${chain}`)
+        return this.msg(str`Done. Protein: ${chain}`)
       }
       if (this._translation.awaitingMoreSequence) {
-        return msg("Add more bases to continue.")
+        return this.msg("Add more bases to continue.")
       }
       const expected = this._translation.expectedAminoAcid
       const codon = this._translation.currentCodon ?? "?"
       if (expected) {
-        return msg(str`Drag the amino acid for ${codon} onto the ribosome.`)
+        return this.msg(str`Drag the amino acid for ${codon} onto the ribosome.`)
       }
-      return msg("Open the codon wheel and drag the matching amino acid onto the ribosome.")
+      return this.msg("Open the codon wheel and drag the matching amino acid onto the ribosome.")
     }
 
     if (this.currentPhase === "Mutations") {
@@ -2341,14 +2015,14 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
       if (this.mutationShowGoal) {
         const protein = formatPolypeptide(this.mutationTargetChain)
         if (this._isTeacherEditing() && !protein) {
-          assignment = msg("Choose a target protein in the list.")
+          assignment = this.msg("Choose a target protein in the list.")
         } else if (protein) {
-          assignment = msg(str`Change the DNA to produce ${protein}. Then tap Verify.`)
+          assignment = this.msg(str`Change the DNA to produce ${protein}. Then tap Verify.`)
         } else {
-          assignment = msg("Change the DNA to match the target. Then tap Verify.")
+          assignment = this.msg("Change the DNA to match the target. Then tap Verify.")
         }
       } else {
-        assignment = msg("Tap a base to substitute, insert, or delete.")
+        assignment = this.msg("Tap a base to substitute, insert, or delete.")
       }
       return assignment
     }
@@ -2443,7 +2117,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
 
     const mrnaBaseAnimEnabled = this._transcription.baseAnimEnabled
 
-    return renderStrand({
+    return renderStrand(this.msg, {
       dnaSequence: this.currentPhase === "Mutations" ? this.mutationsSequence : this.dnaSequence,
       currentPhase: this.currentPhase,
       animationStep: this.animationStep,
@@ -2536,8 +2210,9 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
     const resetConfirmAction = this._reset.confirmActionLabel
 
     return html`
-      <div class="sim-shell">
+      <div class="sim-shell" style=${styleMap(this._layoutStyle)}>
         <dna-simulation-navbar
+          .msg=${this.msg}
           contenteditable="false"
           .showSequenceTab=${this.sequenceTabVisible}
           .phases=${this.visiblePhases}
@@ -2558,8 +2233,8 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
                     type="button"
                     class="codon-drawer-toggle ${codonOpen ? "is-open" : ""}"
                     aria-expanded="${codonOpen}"
-                    aria-label="${codonOpen ? msg("Close codon reference") : msg("Open codon reference")}"
-                    title="${msg("Codon reference")}"
+                    aria-label="${codonOpen ? this.msg("Close codon reference") : this.msg("Open codon reference")}"
+                    title="${this.msg("Codon reference")}"
                     @click=${this._toggleCodonWheel}>
                     <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                       <line x1="2.5" y1="4" x2="13.5" y2="4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -2572,40 +2247,40 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
             </div>
           </div>
 
-          <div class="codon-drawer ${codonOpen ? "is-open" : ""}">
+          <div class="codon-drawer ${codonOpen ? "is-open" : ""}" @transitionend=${this._onCodonDrawerTransition}>
             <div class="codon-drawer-body">
               <div class="codon-drawer-header ${codonListOnly ? "codon-drawer-header--list" : ""} ${codonListOnly && this.mutationTeacherEditing ? "codon-drawer-header--tip" : ""}">
                 ${codonListOnly
                   ? html`
                     <span class="drawer-title ${this.mutationTeacherEditing ? "is-teacher-tip" : ""}">
                       ${this.mutationTeacherEditing
-                        ? msg("Click an amino acid to add it to the goal.")
-                        : msg("Amino acids")}
+                        ? this.msg("Click an amino acid to add it to the goal.")
+                        : this.msg("Amino acids")}
                     </span>
                   `
                   : html`
-                    <nav class="drawer-tabs" aria-label="${msg("Codon reference view")}">
+                    <nav class="drawer-tabs" aria-label="${this.msg("Codon reference view")}">
                       <button
                         type="button"
                         class="drawer-tab ${codonTab === "wheel" ? "active" : ""}"
                         aria-pressed="${codonTab === "wheel"}"
                         @click=${() => this._setCodonTab("wheel")}>
-                        ${msg("Wheel")}
+                        ${this.msg("Wheel")}
                       </button>
                       <button
                         type="button"
                         class="drawer-tab ${codonTab === "list" ? "active" : ""}"
                         aria-pressed="${codonTab === "list"}"
                         @click=${() => this._setCodonTab("list")}>
-                        ${msg("List")}
+                        ${this.msg("List")}
                       </button>
                     </nav>
                   `}
                 <button
                   type="button"
                   class="codon-drawer-close"
-                  aria-label="${msg("Close codon reference")}"
-                  title="${msg("Close codon reference")}"
+                  aria-label="${this.msg("Close codon reference")}"
+                  title="${this.msg("Close codon reference")}"
                   @click=${() => this._setCodonWheelOpen(false)}>
                   <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                     <line x1="4" y1="4" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -2617,6 +2292,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
                 ${codonVisible
                   ? html`
                     <dna-codon-card
+                      .msg=${this.msg}
                       .tab=${codonTab}
                       .allowDrag=${this.currentPhase === "Translation"}
                       .pickable=${this.mutationTeacherEditing}
@@ -2638,16 +2314,13 @@ export class WebwriterDnaSimulation extends LitElementWw implements NavbarHost, 
         @sl-after-hide=${() => this._reset.closeConfirm()}>
         ${resetConfirmMessage}
         <sl-button slot="footer" variant="default" size="small" @click=${() => this._reset.closeConfirm()}>
-          ${msg("Cancel")}
+          ${this.msg("Cancel")}
         </sl-button>
         <sl-button slot="footer" variant="danger" size="small" @click=${() => this._reset.confirm()}>
           ${resetConfirmAction}
         </sl-button>
       </sl-dialog>
 
-      <div part="options" class="teacher-options-shell author-only">
-        ${renderTeacherOptions(buildTeacherOptionsInput(this.getTeacherOptionsContext()))}
-      </div>
     `
   }
 }

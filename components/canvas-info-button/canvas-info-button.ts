@@ -1,12 +1,14 @@
 import {html, LitElement} from "lit"
 import {property} from "lit/decorators.js"
-import {localized, msg} from "@lit/localize"
+import type {MsgFn} from "@lit/localize"
 
+import {sourceMsg} from "../../localization/localizer.js"
 import {canvasInfoButtonStyles} from "./canvas-info-button.styles.js"
 
 /** Top-right info toggle only. The info card is a sibling dna-canvas-alert in the overlay. */
-@localized()
 export class DnaCanvasInfoButton extends LitElement {
+  @property({attribute: false}) msg: MsgFn = sourceMsg
+
   static styles = canvasInfoButtonStyles
 
   @property({type: Boolean, reflect: true}) active = false
@@ -23,9 +25,9 @@ export class DnaCanvasInfoButton extends LitElement {
       <button
         type="button"
         class="${this.active ? "is-active" : ""}"
-        aria-label="${msg("Show hint")}"
+        aria-label="${this.msg("Show hint")}"
         aria-expanded="${this.active}"
-        title="${msg("Show hint")}"
+        title="${this.msg("Show hint")}"
         @click=${this._onClick}>
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
           <circle cx="8" cy="8" r="6.75" fill="none" stroke="currentColor" stroke-width="1.5"/>

@@ -1,4 +1,4 @@
-import {msg} from "@lit/localize"
+import type {MsgFn} from "@lit/localize"
 
 /** Drop target size on the canvas (matches Baukasten icon footprint). */
 export const MOLECULE_DROP_SIZE = 40
@@ -100,6 +100,7 @@ export function expectedMoleculeId(
 }
 
 export function dropErrorMessage(
+  msg: MsgFn,
   phase: string,
   droppedId: string,
   expectedId: string | null,

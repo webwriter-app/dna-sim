@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.1" srcLang="en" trgLang="de">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.1" srcLang="en-US" trgLang="de-DE">
 <file id="." original=".">
 <unit id="description"><segment><source>Interactive DNA replication, transcription, and translation simulation for biology education.</source><target>Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.</target></segment></unit>
 </file>
-<file id="./widgets/webwriter-dna-simulation.*" original="./widgets/webwriter-dna-simulation.*">
+<file id="./widgets/webwriter-dna-simulation" original="./widgets/webwriter-dna-simulation">
+<unit id="label"><segment><source>DNA Simulation</source><target>DNA-Simulation</target></segment></unit>
+</file>
+<file id="./snippets/dna-simulation" original="./snippets/dna-simulation">
 <unit id="label"><segment><source>DNA Simulation</source><target>DNA-Simulation</target></segment></unit>
 </file>
 </xliff>

@@ -1,8 +1,8 @@
-import {html, LitElement} from "lit"
+import {html} from "lit"
 import {property} from "lit/decorators.js"
 import {live} from "lit/directives/live.js"
-import {localized, msg, str} from "@lit/localize"
-import {ScopedElementsMixin} from "@open-wc/scoped-elements/lit-element.js"
+import {str, type MsgFn} from "@lit/localize"
+import {LitElementWw} from "@webwriter/lit"
 import SlButton from "@shoelace-style/shoelace/dist/components/button/button.component.js"
 import SlDivider from "@shoelace-style/shoelace/dist/components/divider/divider.component.js"
 import SlDropdown from "@shoelace-style/shoelace/dist/components/dropdown/dropdown.component.js"
@@ -10,6 +10,7 @@ import SlInput from "@shoelace-style/shoelace/dist/components/input/input.compon
 import SlMenu from "@shoelace-style/shoelace/dist/components/menu/menu.component.js"
 import SlMenuItem from "@shoelace-style/shoelace/dist/components/menu-item/menu-item.component.js"
 
+import {sourceMsg} from "../../localization/localizer.js"
 import {shoelaceLight} from "../../lib/shoelace-theme.js"
 import {simulationNavbarStyles} from "./simulation-navbar.styles.js"
 import {renderAminoAcidBadge} from "../../lib/molecules/amino-acid.js"
@@ -83,15 +84,17 @@ export type NavbarAction =
   | {action: "mutation-target-remove"; index: number}
   | {action: "open-codon-drawer"}
 
-@localized()
-export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
+export class DnaSimulationNavbar extends LitElementWw {
+  @property({attribute: false}) msg: MsgFn = sourceMsg
+
   static styles = [shoelaceLight, simulationNavbarStyles]
 
   static scopedElements = {
     "sl-button": SlButton,
     "sl-divider": SlDivider,
     "sl-dropdown": SlDropdown,
-    "sl-input": SlInput,
+    // Shoelace types autocorrect as a string, while lib.dom uses a boolean.
+    "sl-input": SlInput as unknown as CustomElementConstructor,
     "sl-menu": SlMenu,
     "sl-menu-item": SlMenuItem,
   }
@@ -174,20 +177,20 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
 
   private _renderPrimaryNav() {
     const tabs: {id: NavTab; label: string}[] = [
-      {id: "phasen", label: msg("Phases")},
+      {id: "phasen", label: this.msg("Phases")},
       ...(this.showSequenceTab
-        ? [{id: "sequenz" as const, label: msg("Sequence")}]
+        ? [{id: "sequenz" as const, label: this.msg("Sequence")}]
         : []),
       ...(this.showToolkitTab
-        ? [{id: "baukasten" as const, label: msg("Toolkit")}]
+        ? [{id: "baukasten" as const, label: this.msg("Toolkit")}]
         : []),
       ...(this.showProteinTab
-        ? [{id: "protein" as const, label: msg("Protein")}]
+        ? [{id: "protein" as const, label: this.msg("Protein")}]
         : []),
     ]
 
     return html`
-      <nav class="primary-nav" aria-label="${msg("Main navigation")}">
+      <nav class="primary-nav" aria-label="${this.msg("Main navigation")}">
         ${tabs.map(({id, label}) => html`
           <button
             type="button"
@@ -204,7 +207,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
   private _renderPhaseBar() {
     return html`
       <div class="phase-bar">
-        <span class="child-nav-label">${msg("mRNA (5′ → 3′)")}</span>
+        <span class="child-nav-label">${this.msg("mRNA (5′ → 3′)")}</span>
         <!-- Only disabled during batch sequential verify playback. Stepwise mode is "busy" for the
              brief per-base accept/reject animation too, but disabling there would blur the field on
              every keystroke and break continuous typing. -->
@@ -214,7 +217,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
           clearable
           ?disabled=${this.mrnaInputBusy && this.showMrnaVerify}
           .value=${live(this.mrnaInputValue)}
-          placeholder="${msg("A, U, C, G")}"
+          placeholder="${this.msg("A, U, C, G")}"
           @sl-input=${(e: Event) =>
             this._emit({action: "mrna-input", value: (e.target as SlInput).value as string})}
           @sl-clear=${() => this._emit({action: "mrna-clear"})}
@@ -235,14 +238,14 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
               variant="primary"
               ?disabled=${!this.canVerifyMrna}
               @click=${() => this._emit({action: "mrna-verify"})}>
-              ${msg("Verify")}
+              ${this.msg("Verify")}
             </sl-button>
           `
           : null}
         <span class="child-nav-meta">${
           this.mrnaRemaining === 1
-            ? msg(str`${this.mrnaRemaining} base remaining`)
-            : msg(str`${this.mrnaRemaining} bases remaining`)
+            ? this.msg(str`${this.mrnaRemaining} base remaining`)
+            : this.msg(str`${this.mrnaRemaining} bases remaining`)
         }</span>
       </div>
     `
@@ -256,12 +259,12 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
 
   private _nowEmptyMessage() {
     if (this.mutationNowEmptyReason === "short") {
-      return msg("Need at least one full codon")
+      return this.msg("Need at least one full codon")
     }
     if (this.mutationNowEmptyReason === "stop") {
-      return msg("First codon is a stop")
+      return this.msg("First codon is a stop")
     }
-    return msg("No polypeptide yet")
+    return this.msg("No polypeptide yet")
   }
 
   private _renderAminoChain(
@@ -283,7 +286,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
                   <button
                     type="button"
                     class="mutation-aa-remove"
-                    aria-label="${msg(str`Remove ${amino}`)}"
+                    aria-label="${this.msg(str`Remove ${amino}`)}"
                     @click=${() => this._emit({action: "mutation-target-remove", index: i})}>
                     <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                       <line x1="4" y1="4" x2="12" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
@@ -333,7 +336,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
         <div class="mutation-protein-cluster">
           ${this.mutationShowNow
             ? html`
-              <span class="child-nav-label">${msg("Now")}</span>
+              <span class="child-nav-label">${this.msg("Now")}</span>
               ${this._renderAminoChain(this.mutationCurrentChain, {
                 removable: false,
                 empty: this._nowEmptyMessage(),
@@ -342,7 +345,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
             : null}
           ${this.mutationShowGoal
             ? html`
-              <span class="child-nav-label">${msg("Goal")}</span>
+              <span class="child-nav-label">${this.msg("Goal")}</span>
               ${this.mutationTargetChain.length
                 ? this._renderAminoChain(this.mutationTargetChain, {
                     removable: this.mutationTeacherEditing,
@@ -354,17 +357,17 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
                       size="small"
                       class="mutation-open-list-btn"
                       @click=${() => this._emit({action: "open-codon-drawer"})}>
-                      ${msg("Set goal")}
+                      ${this.msg("Set goal")}
                     </sl-button>
                   `
-                  : html`<span class="mutation-step-empty">${msg("No target selected")}</span>`}
+                  : html`<span class="mutation-step-empty">${this.msg("No target selected")}</span>`}
             `
             : null}
         </div>
         <div class="phase-actions">
           <sl-dropdown class="mutation-steps-dropdown" hoist placement="bottom-end" distance="6">
             <sl-button slot="trigger" size="small" caret>
-              ${stepCount ? msg(str`Steps (${stepCount})`) : msg("Steps")}
+              ${stepCount ? this.msg(str`Steps (${stepCount})`) : this.msg("Steps")}
             </sl-button>
             <sl-menu class="mutation-steps-menu" @sl-select=${this._onMutationStepSelect}>
               ${stepCount
@@ -379,7 +382,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
                       </sl-menu-item>
                     `,
                   )
-                : html`<sl-menu-item disabled value="">${msg("No mutations yet")}</sl-menu-item>`}
+                : html`<sl-menu-item disabled value="">${this.msg("No mutations yet")}</sl-menu-item>`}
             </sl-menu>
           </sl-dropdown>
           ${this.showMutationVerify
@@ -389,7 +392,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
                 size="small"
                 variant="primary"
                 @click=${() => this._emit({action: "mutation-verify"})}>
-                ${msg("Verify")}
+                ${this.msg("Verify")}
               </sl-button>
             `
             : null}
@@ -436,9 +439,9 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
                   size="small"
                   variant="${this.currentPhase === phase ? "primary" : "default"}"
                   ?disabled=${locked}
-                  title=${locked ? msg("Complete the previous phase first") : localizedPhaseLabel(phase)}
+                  title=${locked ? this.msg("Complete the previous phase first") : localizedPhaseLabel(this.msg, phase)}
                   @click=${() => this._emit({action: "phase-change", phase})}>
-                  ${localizedPhaseLabel(phase)}
+                  ${localizedPhaseLabel(this.msg, phase)}
                 </sl-button>
               `
               })}
@@ -449,7 +452,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
                 size="small"
                 variant="default"
                 @click=${() => this._emit({action: "reset-simulation"})}>
-                ${msg("Reset all")}
+                ${this.msg("Reset all")}
               </sl-button>
             </div>
           </div>
@@ -458,12 +461,12 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
       case "sequenz":
         return html`
           <div class="child-nav">
-            <span class="child-nav-label">${msg("Template strand (3′ → 5′)")}</span>
+            <span class="child-nav-label">${this.msg("Template strand (3′ → 5′)")}</span>
             <sl-input
               class="sequence-input"
               size="small"
               .value=${live(this.dnaSequence)}
-              placeholder="${msg("A, C, T or G")}"
+              placeholder="${this.msg("A, C, T or G")}"
               @sl-input=${(e: Event) =>
                 this._emit({action: "sequence-input", value: (e.target as SlInput).value as string})}
               clearable>
@@ -479,7 +482,7 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
                 ? this.sequenceWarnings.map(
                     (warning) => html`<span class="child-nav-meta-line">${warning}</span>`,
                   )
-                : html`<span class="child-nav-meta-line">${msg(str`Phase: ${localizedPhaseLabel(this.currentPhase)}`)}</span>`}
+                : html`<span class="child-nav-meta-line">${this.msg(str`Phase: ${localizedPhaseLabel(this.msg, this.currentPhase)}`)}</span>`}
             </div>
           </div>
         `
@@ -487,11 +490,11 @@ export class DnaSimulationNavbar extends ScopedElementsMixin(LitElement) {
       case "baukasten":
         return html`
           <div class="child-nav child-nav--baukasten">
-            <span class="child-nav-label">${msg("Biomolecule toolkit")}</span>
+            <span class="child-nav-label">${this.msg("Biomolecule toolkit")}</span>
             <div class="baukasten-toolbar">
               ${this._renderBaukastenToolbar()}
             </div>
-            <span class="child-nav-meta">${msg(str`Phase: ${localizedPhaseLabel(this.currentPhase)}`)}</span>
+            <span class="child-nav-meta">${this.msg(str`Phase: ${localizedPhaseLabel(this.msg, this.currentPhase)}`)}</span>
           </div>
         `
 

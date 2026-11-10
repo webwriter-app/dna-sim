@@ -1,3 +1,5 @@
+import type {MsgFn} from "@lit/localize"
+
 import helicaseSvg from "../../assets/helicase.svg"
 import rnaPolymeraseSvg from "../../assets/rna-polymerase.svg"
 import ribosomeSvg from "../../assets/ribosome.svg"
@@ -36,8 +38,8 @@ const MOLECULE_CATALOG: Record<string, MoleculeCatalogEntry> = {
   "initiation-factor": {id: "initiation-factor", icon: moleculeCapsuleSvg},
 }
 
-function withLocalizedName(entry: MoleculeCatalogEntry): BaukastenMolecule {
-  return {id: entry.id, icon: entry.icon, name: localizedMoleculeName(entry.id)}
+function withLocalizedName(msg: MsgFn, entry: MoleculeCatalogEntry): BaukastenMolecule {
+  return {id: entry.id, icon: entry.icon, name: localizedMoleculeName(msg, entry.id)}
 }
 
 /** Molecule ids shown in each phase toolkit (canonical order before shuffle). */
@@ -86,6 +88,7 @@ export function createBaukastenOrder(): Readonly<Record<string, readonly string[
 
 /** Molecules for a phase, using a pre-shuffled order from `createBaukastenOrder()`. */
 export function baukastenForPhase(
+  msg: MsgFn,
   phase: string,
   order?: Readonly<Record<string, readonly string[]>>,
 ): BaukastenMolecule[] {
@@ -93,7 +96,7 @@ export function baukastenForPhase(
   return ids
     .map((id) => MOLECULE_CATALOG[id])
     .filter((m): m is MoleculeCatalogEntry => Boolean(m))
-    .map(withLocalizedName)
+    .map(entry => withLocalizedName(msg, entry))
 }
 
 export const MOLECULE_DRAG_TYPE = "application/x-dna-molecule"
@@ -101,9 +104,9 @@ export const MOLECULE_DRAG_SOURCE = "application/x-dna-molecule-source"
 
 export type MoleculeDragSource = "baukasten" | "slot"
 
-export function moleculeById(id: string): BaukastenMolecule | undefined {
+export function moleculeById(msg: MsgFn, id: string): BaukastenMolecule | undefined {
   const entry = MOLECULE_CATALOG[id]
-  return entry ? withLocalizedName(entry) : undefined
+  return entry ? withLocalizedName(msg, entry) : undefined
 }
 
 export function moleculeIcon(id: string): string {

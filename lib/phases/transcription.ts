@@ -1,4 +1,4 @@
-import {msg} from "@lit/localize"
+import type {MsgFn} from "@lit/localize"
 
 /** How students enter mRNA during transcription. */
 export type MrnaInputMode = "batch" | "stepwise"
@@ -96,29 +96,19 @@ export function readMrnaBatchVerifyModeAttr(el: Element): MrnaBatchVerifyMode | 
   return null
 }
 
-export function writeMrnaInputMode(el: Element, mode: MrnaInputMode): void {
-  const value = normalizeMrnaInputMode(mode)
-  el.setAttribute(MRNA_INPUT_MODE_ATTRIBUTE, value)
-}
-
-export function writeMrnaBatchVerifyMode(el: Element, mode: MrnaBatchVerifyMode): void {
-  const value = normalizeMrnaBatchVerifyMode(mode)
-  el.setAttribute(MRNA_BATCH_VERIFY_MODE_ATTRIBUTE, value)
-}
-
-export function mrnaEmptyMessage(): string {
+export function mrnaEmptyMessage(msg: MsgFn): string {
   return msg("Please enter an mRNA sequence using A, U, C, and G.")
 }
 
-export function mrnaIncompleteMessage(): string {
+export function mrnaIncompleteMessage(msg: MsgFn): string {
   return msg("Please enter the complete sequence first.")
 }
 
-export function mrnaIncorrectMessage(): string {
+export function mrnaIncorrectMessage(msg: MsgFn): string {
   return msg("The sequence is not correct. Please try again.")
 }
 
-export function mrnaWrongBaseMessage(): string {
+export function mrnaWrongBaseMessage(msg: MsgFn): string {
   return msg("This base does not fit here. Please try again.")
 }
 
@@ -181,16 +171,17 @@ export function verifyMrnaInput(
   return {ok: true, matchLength}
 }
 
-export function mrnaInputErrorMessage(result: Extract<MrnaVerifyResult, {ok: false}>): string {
+export function mrnaInputErrorMessage(msg: MsgFn, result: Extract<MrnaVerifyResult, {ok: false}>): string {
   if (!result.got) {
-    return mrnaEmptyMessage()
+    return mrnaEmptyMessage(msg)
   }
-  return mrnaIncorrectMessage()
+  return mrnaIncorrectMessage(msg)
 }
 
 export function mrnaIncompleteMessageForDraft(
+  msg: MsgFn,
   _typedLength: number,
   _requiredLength: number,
 ): string {
-  return mrnaIncompleteMessage()
+  return mrnaIncompleteMessage(msg)
 }

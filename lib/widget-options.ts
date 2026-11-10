@@ -60,10 +60,6 @@ export function readPhaseSetModeAttr(el: Element): PhaseSetMode | undefined {
   return normalizePhaseSetMode(el.getAttribute(name))
 }
 
-export function writePhaseSetMode(el: Element, mode: PhaseSetMode): void {
-  el.setAttribute(PHASE_SET_MODE_ATTRIBUTE, normalizePhaseSetMode(mode))
-}
-
 export function phaseEnableHideAttribute(
   key: (typeof PHASE_ENABLE_KEYS)[number],
 ): string {
@@ -101,8 +97,7 @@ export function writePhaseEnableFlag(
     if (name !== phaseEnableAttribute(key)) el.removeAttribute(name)
   }
   el.removeAttribute(`hide${key.toLowerCase()}`)
-  el.toggleAttribute(phaseEnableAttribute(key), on)
-  el.toggleAttribute(phaseEnableHideAttribute(key), !on)
+  writeToggle(el, phaseEnableAttribute(key), phaseEnableHideAttribute(key), on)
 }
 
 export function resolvePhaseEnableFlags(
@@ -131,17 +126,10 @@ export function booleanToAttribute(value: boolean): "true" | "false" {
   return value ? "true" : "false"
 }
 
-export const PERSISTED_BOOLEAN_CONVERTER = {
-  fromAttribute: (value: string | null) => booleanFromAttribute(value),
-  toAttribute: (value: boolean) => booleanToAttribute(value),
-}
-
-/** WebWriter option descriptor: reflect `"true"` / `"false"`, never presence. */
-export const PERSISTED_BOOLEAN_OPTION = {
-  type: Boolean,
-  attribute: true,
-  reflect: true,
-  converter: PERSISTED_BOOLEAN_CONVERTER,
+function writeToggle(el: Element, attribute: string, hideAttribute: string, on: boolean) {
+  if (on) el.setAttribute(attribute, "")
+  else el.removeAttribute(attribute)
+  el.toggleAttribute(hideAttribute, !on)
 }
 
 export const SHOW_INFO_CARDS_ATTRIBUTE = "showinfocards"
@@ -160,8 +148,11 @@ export function readShowInfoCards(el: Element): boolean {
 }
 
 export function writeShowInfoCards(el: Element, on: boolean): void {
-  el.toggleAttribute(SHOW_INFO_CARDS_ATTRIBUTE, on)
-  el.toggleAttribute(HIDE_INFO_CARDS_ATTRIBUTE, !on)
+  for (const name of persistedBooleanAttributeNames("showInfoCards")) {
+    if (name !== SHOW_INFO_CARDS_ATTRIBUTE) el.removeAttribute(name)
+  }
+  el.removeAttribute("hideinfocards")
+  writeToggle(el, SHOW_INFO_CARDS_ATTRIBUTE, HIDE_INFO_CARDS_ATTRIBUTE, on)
 }
 
 export const SHOW_SEQUENCE_TAB_ATTRIBUTE = "showsequencetab"
@@ -184,8 +175,7 @@ export function writeShowSequenceTab(el: Element, on: boolean): void {
     if (name !== SHOW_SEQUENCE_TAB_ATTRIBUTE) el.removeAttribute(name)
   }
   el.removeAttribute("hidesequencetab")
-  el.toggleAttribute(SHOW_SEQUENCE_TAB_ATTRIBUTE, on)
-  el.toggleAttribute(HIDE_SEQUENCE_TAB_ATTRIBUTE, !on)
+  writeToggle(el, SHOW_SEQUENCE_TAB_ATTRIBUTE, HIDE_SEQUENCE_TAB_ATTRIBUTE, on)
 }
 
 export function persistedBooleanAttributeNames(key: string): string[] {
@@ -290,8 +280,7 @@ export function writeCrossPhaseMutations(el: Element, on: boolean): void {
     if (name !== CROSS_PHASE_MUTATIONS_ATTRIBUTE) el.removeAttribute(name)
   }
   el.removeAttribute("hidecrossphasemutations")
-  el.toggleAttribute(CROSS_PHASE_MUTATIONS_ATTRIBUTE, on)
-  el.toggleAttribute(HIDE_CROSS_PHASE_MUTATIONS_ATTRIBUTE, !on)
+  writeToggle(el, CROSS_PHASE_MUTATIONS_ATTRIBUTE, HIDE_CROSS_PHASE_MUTATIONS_ATTRIBUTE, on)
 }
 
 export const MARK_CODONS_ATTRIBUTE = "markcodons"
@@ -314,8 +303,7 @@ export function writeMarkCodons(el: Element, on: boolean): void {
     if (name !== MARK_CODONS_ATTRIBUTE) el.removeAttribute(name)
   }
   el.removeAttribute("hidemarkcodons")
-  el.toggleAttribute(MARK_CODONS_ATTRIBUTE, on)
-  el.toggleAttribute(HIDE_MARK_CODONS_ATTRIBUTE, !on)
+  writeToggle(el, MARK_CODONS_ATTRIBUTE, HIDE_MARK_CODONS_ATTRIBUTE, on)
 }
 
 export const MARK_STOP_CODONS_ATTRIBUTE = "markstopcodons"
@@ -338,8 +326,7 @@ export function writeMarkStopCodons(el: Element, on: boolean): void {
     if (name !== MARK_STOP_CODONS_ATTRIBUTE) el.removeAttribute(name)
   }
   el.removeAttribute("hidemarkstopcodons")
-  el.toggleAttribute(MARK_STOP_CODONS_ATTRIBUTE, on)
-  el.toggleAttribute(HIDE_MARK_STOP_CODONS_ATTRIBUTE, !on)
+  writeToggle(el, MARK_STOP_CODONS_ATTRIBUTE, HIDE_MARK_STOP_CODONS_ATTRIBUTE, on)
 }
 
 export const CANONICAL_PHASE_ORDER_ATTRIBUTE = "canonicalphaseorder"
@@ -362,19 +349,11 @@ export function writeCanonicalPhaseOrder(el: Element, on: boolean): void {
     if (name !== CANONICAL_PHASE_ORDER_ATTRIBUTE) el.removeAttribute(name)
   }
   el.removeAttribute("hidecanonicalphaseorder")
-  el.toggleAttribute(CANONICAL_PHASE_ORDER_ATTRIBUTE, on)
-  el.toggleAttribute(HIDE_CANONICAL_PHASE_ORDER_ATTRIBUTE, !on)
+  writeToggle(el, CANONICAL_PHASE_ORDER_ATTRIBUTE, HIDE_CANONICAL_PHASE_ORDER_ATTRIBUTE, on)
 }
 
 export const MUTATION_GOAL_MODE_ATTRIBUTE = "mutationgoalmode"
 export const MUTATION_TARGET_PROTEIN_ATTRIBUTE = "mutation-target-protein"
-/** Legacy Ziel-DNA attrs — stripped on connect so they cannot linger in WW HTML. */
-export const LEGACY_MUTATION_TARGET_DNA_ATTRIBUTES = [
-  "mutation-target-dna",
-  "mutationTargetDna",
-  "mutationtargetdna",
-] as const
-
 const MUTATION_GOAL_MODE_ATTR_NAMES = [
   MUTATION_GOAL_MODE_ATTRIBUTE,
   "mutationGoalMode",
@@ -393,21 +372,10 @@ export function readMutationGoalModeAttr(el: Element): MutationGoalMode | undefi
   return normalizeMutationGoalMode(el.getAttribute(name))
 }
 
-export function writeMutationGoalMode(el: Element, mode: MutationGoalMode): void {
-  el.setAttribute(MUTATION_GOAL_MODE_ATTRIBUTE, normalizeMutationGoalMode(mode))
-}
-
 export function readMutationTargetProtein(el: Element): string | undefined {
   const name = MUTATION_TARGET_PROTEIN_ATTR_NAMES.find((n) => el.hasAttribute(n))
   if (!name) return undefined
   return formatPolypeptide(mutationTargetChain(el.getAttribute(name)))
-}
-
-export function writeMutationTargetProtein(el: Element, raw: string): void {
-  el.setAttribute(
-    MUTATION_TARGET_PROTEIN_ATTRIBUTE,
-    formatPolypeptide(mutationTargetChain(raw)),
-  )
 }
 
 export const DEFAULT_DNA_SEQUENCE = "TACGAAATT"
@@ -425,21 +393,11 @@ export const DNA_SEQUENCE_ATTR_NAMES = [
   "dnaSequence",
 ] as const
 
-export const DNA_SEQUENCE_CONVERTER = {
-  fromAttribute: (value: string | null) =>
-    value === null ? DEFAULT_DNA_SEQUENCE : sanitizeDnaSequence(value),
-  toAttribute: (value: string) => sanitizeDnaSequence(value),
-}
-
 /** `undefined` if no DNA attribute is present. */
 export function readPersistedDnaSequence(el: Element): string | undefined {
   const name = DNA_SEQUENCE_ATTR_NAMES.find((n) => el.hasAttribute(n))
   if (!name) return undefined
   return sanitizeDnaSequence(el.getAttribute(name))
-}
-
-export function writeDnaSequence(el: Element, seq: string): void {
-  el.setAttribute(DNA_SEQUENCE_ATTRIBUTE, sanitizeDnaSequence(seq))
 }
 
 export function normalizeAnimationSpeed(raw: unknown): number {
