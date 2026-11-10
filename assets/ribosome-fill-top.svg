@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Small (top) subunit of ribosome-fill. Same viewBox/path as ribosome-fill.svg.
+     Bottom edge is a downward curve (not a straight cut) so it overlaps
+     ribosome-fill-bottom.svg; everything above the old y=2.6 waist is unchanged. -->
+<svg
+   width="14.890749mm"
+   height="8.8112679mm"
+   viewBox="0 0 14.890749 8.8112679"
+   version="1.1"
+   id="svg-ribosome-fill-top"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Curved waist: sides near y=2.2, center bulges down to y=3.55. -->
+    <clipPath id="clip-top" clipPathUnits="userSpaceOnUse">
+      <path d="M 0,0
+               H 14.890749
+               V 2.2
+               C 14.890749,2.2 11.8,3.55 7.4453745,3.55
+               C 3.09,3.55 0,2.2 0,2.2
+               Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip-top)">
+    <g transform="translate(-105.58567,-132.8457)">
+      <path
+         id="ellipse-top"
+         d="m 113.19567,133.10192 c -2.25848,-0.0208 -6.71143,-0.10459 -6.05875,2.32754 -1.5464,0.97069 -1.28268,2.11365 -1.28247,3.31429 0,2.04576 2.82721,2.66322 7.21097,2.66322 4.38376,0 7.14591,-0.61746 7.14591,-2.66322 4e-5,-1.16487 0.22138,-2.30165 -1.10728,-3.25435 0.51887,-2.4658 -3.40374,-2.36445 -5.90838,-2.38748 z"
+         style="fill:#b89450;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"/>
+    </g>
+  </g>
+</svg>

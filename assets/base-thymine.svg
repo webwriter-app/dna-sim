@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <title>Thymine (T)</title>
+  <circle cx="30" cy="30" r="26"
+          fill="#c10077" stroke="#8f005a" stroke-width="1.5"/>
+  <text x="30" y="30"
+        dominant-baseline="central" text-anchor="middle"
+        fill="white" font-size="19" font-weight="bold" font-family="sans-serif">T</text>
+</svg>

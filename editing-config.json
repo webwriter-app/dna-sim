@@ -1,0 +1,19 @@
+{
+  ".": {
+    "description": {
+      "_": "Interactive DNA replication, transcription, and translation simulation for biology education.",
+      "en": "Interactive DNA replication, transcription, and translation simulation for biology education.",
+      "de": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht."
+    }
+  },
+  "./widgets/webwriter-dna-simulation.*": {
+    "label": {
+      "_": "DNA Simulation",
+      "en": "DNA Simulation",
+      "de": "DNA-Simulation"
+    },
+    "parts": {
+      "options": {}
+    }
+  }
+}

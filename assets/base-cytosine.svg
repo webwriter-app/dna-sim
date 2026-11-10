@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <title>Cytosine (C)</title>
+  <!-- Regular pentagon: top(30,4) upper-right(54,21) lower-right(45,51) lower-left(15,51) upper-left(6,21) -->
+  <path d="M30,4 L54,21 L45,51 L15,51 L6,21 Z"
+        fill="#b4d7f5" stroke="#6ba3c8" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="30" y="31"
+        dominant-baseline="central" text-anchor="middle"
+        fill="#1e3a5f" font-size="19" font-weight="bold" font-family="sans-serif">C</text>
+</svg>

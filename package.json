@@ -1,0 +1,41 @@
+{
+  "name": "@webwriter/dna-simulation",
+  "version": "1.0.0",
+  "description": "Interactive DNA replication, transcription, and translation simulation for biology education.",
+  "keywords": [
+    "webwriter-widget",
+    "widget-simulational",
+    "widget-practical",
+    "widget-lang-en",
+    "widget-lang-de",
+    "Biology",
+    "DNA",
+    "Gene Expression"
+  ],
+  "license": "MIT",
+  "author": "Jeremy Poroye",
+  "scripts": {
+    "prepublishOnly": "npx @webwriter/build",
+    "dev": "npx @webwriter/build dev",
+    "localize": "lit-localize extract && npx @webwriter/build localize && lit-localize build"
+  },
+  "dependencies": {
+    "@lit/localize": "^0.12.2",
+    "@shoelace-style/shoelace": "^2.20.1",
+    "@webwriter/lit": "^2",
+    "lit": "^3"
+  },
+  "devDependencies": {
+    "@lit/localize-tools": "^0.8",
+    "@webwriter/build": "^1.12.0"
+  },
+  "exports": {
+    "./widgets/webwriter-dna-simulation.*": {
+      "source": "./widgets/webwriter-dna-simulation.ts",
+      "default": "./dist/widgets/webwriter-dna-simulation.*"
+    },
+    "./icon": "./icon.svg",
+    "./editing-config.json": "./editing-config.json"
+  },
+  "editingConfig": {}
+}

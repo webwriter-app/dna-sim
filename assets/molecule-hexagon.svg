@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <title>Molecule hexagon</title>
+  <path
+    d="M20 5 L33 12.5 L33 27.5 L20 35 L7 27.5 L7 12.5 Z"
+    fill="#e11d48"
+    stroke="#be123c"
+    stroke-width="1.5"
+    stroke-linejoin="round"/>
+</svg>

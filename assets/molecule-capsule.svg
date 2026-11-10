@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <title>Molecule capsule</title>
+  <rect
+    x="6"
+    y="13"
+    width="28"
+    height="14"
+    rx="7"
+    fill="#64748b"
+    stroke="#475569"
+    stroke-width="1.5"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <title>Guanine (G)</title>
+  <!-- Regular hexagon: top(30,4) upper-right(52,17) lower-right(52,43) bottom(30,56) lower-left(8,43) upper-left(8,17) -->
+  <path d="M30,4 L52,17 L52,43 L30,56 L8,43 L8,17 Z"
+        fill="#f1e21a" stroke="#c9ae00" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="30" y="30"
+        dominant-baseline="central" text-anchor="middle"
+        fill="#2a1c00" font-size="19" font-weight="bold" font-family="sans-serif">G</text>
+</svg>

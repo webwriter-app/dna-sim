@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <title>Adenine (A)</title>
+  <path d="M30,3 L57,30 L30,57 L3,30 Z"
+        fill="#239d46" stroke="#1a7434" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="30" y="30"
+        dominant-baseline="central" text-anchor="middle"
+        fill="white" font-size="19" font-weight="bold" font-family="sans-serif">A</text>
+</svg>

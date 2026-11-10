@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <title>Uracil (U)</title>
+  <path d="M30,5 L48,12 L55,30 L48,48 L30,55 L12,48 L5,30 L12,12 Z"
+        fill="#e07428" stroke="#a85018" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="30" y="30"
+        dominant-baseline="central" text-anchor="middle"
+        fill="white" font-size="19" font-weight="bold" font-family="sans-serif">U</text>
+</svg>
