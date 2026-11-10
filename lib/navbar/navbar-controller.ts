@@ -1,4 +1,4 @@
-import {msg, str} from "@lit/localize"
+import {str, type MsgFn} from "@lit/localize"
 
 import {localizedPhaseLabel} from "../localize-text.js"
 import {
@@ -23,8 +23,10 @@ export interface NavbarMrnaInput {
  * this directly (`implements NavbarHost`).
  */
 export interface NavbarHost {
+  readonly msg: MsgFn
   readonly currentPhase: string
   readonly dnaSequence: string
+  readonly sequenceTabDna: string
   readonly mrnaInput: NavbarMrnaInput
   readonly showPhaseBar: boolean
   readonly visiblePhases: readonly string[]
@@ -66,6 +68,7 @@ function buildModel(
   activeTab: NavTab,
   host: NavbarHost,
 ): NavbarModel {
+  const {msg} = host
   const filledLength = host.mrnaInput.value.length
   const molecules = host.baukastenMolecules
 
@@ -75,7 +78,7 @@ function buildModel(
     phases: host.visiblePhases,
     lockedPhases: host.lockedPhases,
     showSequenceTab: host.sequenceTabVisible,
-    dnaSequence: host.dnaSequence,
+    dnaSequence: host.sequenceTabDna,
     sequenceWarnings: host.sequenceTabWarnings,
     showPhaseBar: host.showPhaseBar,
     mrnaInputValue: host.mrnaInput.value,
@@ -106,7 +109,7 @@ function buildModel(
     })),
     baukastenEmptyMessage: molecules.length
       ? null
-      : msg(str`No molecules are available for "${localizedPhaseLabel(host.currentPhase)}" yet.`),
+      : msg(str`No molecules are available for "${localizedPhaseLabel(msg, host.currentPhase)}" yet.`),
   }
 }
 

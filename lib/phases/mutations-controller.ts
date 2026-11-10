@@ -6,7 +6,7 @@ import {COMP_DNA_BASE, sanitizeDnaBase} from "./mutations.js"
 export type MutationFlyout = "substitution" | "insertion"
 
 /** What the mutations controller needs from the widget. */
-export interface MutationsHost {
+export interface MutationsHost extends HTMLElement {
   requestUpdate(): void
   /** Sequence shown and edited in the Mutations tab (lesson DNA or a session copy). */
   readonly mutationsSequence: string
@@ -32,15 +32,15 @@ export class MutationsController implements ReactiveController {
   }
 
   hostConnected() {
-    window.addEventListener("keydown", this._onKeyDown)
+    this._host.addEventListener("keydown", this._onKeyDown)
   }
 
   hostDisconnected() {
-    window.removeEventListener("keydown", this._onKeyDown)
+    this._host.removeEventListener("keydown", this._onKeyDown)
   }
 
   private _onKeyDown = (e: KeyboardEvent) => {
-    if (e.key !== "Escape") return
+    if (e.defaultPrevented || e.key !== "Escape") return
     if (this._host.currentPhase !== "Mutations") return
     if (!this.menuOpen && this.selectedIndex === null) return
     e.preventDefault()

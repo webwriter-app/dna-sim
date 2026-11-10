@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-<file target-language="de" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<file target-language="de-DE" source-language="en-US" original="lit-localize-inputs" datatype="plaintext">
 <body>
 <trans-unit id="s09786baf79ba0d31">
   <source>Helicase</source>
@@ -79,7 +79,7 @@
   <target>Hauptnavigation</target>
 </trans-unit>
 <trans-unit id="s109fde6bd09eef65">
-  <source>No molecules are available for "<x id="0" equiv-text="${localizedPhaseLabel(host.currentPhase)}"/>" yet.</source>
+  <source>No molecules are available for "<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}"/>" yet.</source>
   <target>Für „<x id="0" equiv-text="${host.currentPhase}"/>“ sind noch keine Moleküle hinterlegt.</target>
 </trans-unit>
 <trans-unit id="s617aeac3c10c22ee">
@@ -95,7 +95,7 @@
   <target>Template-Strang (3′ → 5′)</target>
 </trans-unit>
 <trans-unit id="sd2dcdd0542a8fea4">
-  <source>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.currentPhase)}"/></source>
+  <source>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}"/></source>
   <target>Phase: <x id="0" equiv-text="${this.currentPhase}"/></target>
 </trans-unit>
 <trans-unit id="s168212e0837cec87">
@@ -223,7 +223,7 @@
   <target>Von vorn</target>
 </trans-unit>
 <trans-unit id="s0b376cb27a56b5b3">
-  <source>Are you sure you want to reset the <x id="0" equiv-text="${localizedPhaseLabel(this._host.currentPhase)}"/> phase?</source>
+  <source>Are you sure you want to reset the <x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}"/> phase?</source>
   <target>Phase <x id="0" equiv-text="${this._host.currentPhase}"/> wirklich zurücksetzen?</target>
 </trans-unit>
 <trans-unit id="sd33f0c822db5d41f">
@@ -287,7 +287,7 @@
   <target><x id="0" equiv-text="${runoff}"/> Lektion abgeschlossen</target>
 </trans-unit>
 <trans-unit id="s7542b1dfcc5fafee">
-  <source><x id="0" equiv-text="${runoff}"/> Continue to <x id="1" equiv-text="${localizedPhaseLabel(next)}"/>?</source>
+  <source><x id="0" equiv-text="${runoff}"/> Continue to <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}"/>?</source>
   <target><x id="0" equiv-text="${runoff}"/> Weiter zu <x id="1" equiv-text="${next}"/>?</target>
 </trans-unit>
 <trans-unit id="s8c0f547a5d30ec41">
@@ -311,7 +311,7 @@
   <target>Lektion abgeschlossen</target>
 </trans-unit>
 <trans-unit id="s6924e77ccacbf07d">
-  <source><x id="0" equiv-text="${localizedPhaseLabel(phase)}"/> complete — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
+  <source><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}"/> complete — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
   <target><x id="0" equiv-text="${phase}"/> abgeschlossen — weiter zu <x id="1" equiv-text="${next}"/>?</target>
 </trans-unit>
 <trans-unit id="s2edec333da31d910">
@@ -526,10 +526,6 @@
   <source>Task</source>
   <target>Aufgabe</target>
 </trans-unit>
-<trans-unit id="sdf27169454cb4e45">
-  <source>Free mutation with no goal. Protein goal: pick amino acids in the list, then Verify.</source>
-  <target>Freies Mutieren ohne Ziel. Proteinziel: Aminosäuren in der Liste wählen, dann Prüfen.</target>
-</trans-unit>
 <trans-unit id="s02a70051c874eafe">
   <source>Free mutation</source>
   <target>Freies Mutieren</target>
@@ -701,6 +697,31 @@
 <trans-unit id="s10a996dc5d35fea0">
   <source>Del <x id="0" equiv-text="${pos}"/></source>
   <target>Del <x id="0" equiv-text="${pos}"/></target>
+</trans-unit>
+
+<trans-unit id="s799ce683231bcb81">
+  <source>Lesson</source>
+  <target>Aufgabe</target>
+</trans-unit>
+<trans-unit id="s61e7de489db05817">
+  <source>DNA sequence</source>
+  <target>DNA-Sequenz</target>
+</trans-unit>
+<trans-unit id="s73a6524fbab29d6f">
+  <source>Target protein</source>
+  <target>Zielprotein</target>
+</trans-unit>
+<trans-unit id="se492a93ea15c6ce4">
+  <source>Allow students to pan and zoom</source>
+  <target>Verschieben und Zoomen für Lernende erlauben</target>
+</trans-unit>
+<trans-unit id="sba73d05da08111b5">
+  <source>Restore default sequence and target</source>
+  <target>Standardsequenz und Ziel wiederherstellen</target>
+</trans-unit>
+<trans-unit id="s6abc78aa8fca1e4d">
+  <source>Restore the default DNA sequence and clear the protein target?</source>
+  <target>Standard-DNA-Sequenz wiederherstellen und das Zielprotein löschen?</target>
 </trans-unit>
 </body>
 </file>

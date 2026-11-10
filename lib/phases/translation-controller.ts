@@ -12,6 +12,7 @@ import {
 
 /** What the translation controller needs from the widget. */
 export interface TranslationHost {
+  nextFrame(callback: () => void): void
   readonly dnaSequence: string
   readonly currentPhase: string
   requestUpdate(): void
@@ -642,13 +643,13 @@ export class TranslationController implements ReactiveController {
     this._host.requestUpdate()
 
     // Wait until the halves have painted above the fill before removing it.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
+    this._host.nextFrame(() => {
+      this._host.nextFrame(() => {
         if (this.ribosomeHalvesPhase !== "ready") return
         this.ribosomeFillVisible = false
         this._host.requestUpdate()
 
-        requestAnimationFrame(() => {
+        this._host.nextFrame(() => {
           if (this.ribosomeHalvesPhase !== "ready") return
           this.ribosomeHalvesPhase = "split"
           this._host.requestUpdate()

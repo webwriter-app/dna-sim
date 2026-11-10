@@ -1,3 +1,4 @@
+import type {MsgFn} from "@lit/localize"
 import type {ReactiveController, ReactiveControllerHost} from "lit"
 
 import {
@@ -9,10 +10,6 @@ import {
   mrnaIncompleteMessageForDraft,
   mrnaIncorrectMessage,
   mrnaWrongBaseMessage,
-  normalizeMrnaBatchVerifyMode,
-  normalizeMrnaInputMode,
-  readMrnaBatchVerifyModeAttr,
-  readMrnaInputModeAttr,
   sanitizeMrnaInput,
   verifyMrnaInput,
   type MrnaBatchVerifyMode,
@@ -30,9 +27,9 @@ export interface TranscriptionHost {
   readonly dnaSequence: string
   readonly currentPhase: string
   readonly hasUpdated: boolean
-  mrnaInputMode: MrnaInputMode
-  mrnaBatchVerifyMode: MrnaBatchVerifyMode
-  getAttribute(name: string): string | null
+  readonly mrnaInputMode: MrnaInputMode
+  readonly mrnaBatchVerifyMode: MrnaBatchVerifyMode
+  readonly msg: MsgFn
   requestUpdate(): void
   showErrorAlert(message: string): void
   playSlotSnapFade(): void
@@ -66,32 +63,15 @@ export class TranscriptionController implements ReactiveController {
   private _animDone: (() => void) | null = null
   /** When false, reject flash runs without the mid-animation alert (caller shows it after). */
   private _rejectAlertDuring = true
-  private _modeObserver: MutationObserver | null = null
 
   constructor(private readonly _host: ReactiveControllerHost & TranscriptionHost) {
     _host.addController(this)
   }
 
-  hostConnected() {
-    this.syncInputModeFromDom(false)
-    this.syncBatchVerifyModeFromDom(false)
-    this._modeObserver = new MutationObserver(() => {
-      let changed = false
-      if (this.syncInputModeFromDom(false)) changed = true
-      if (this.syncBatchVerifyModeFromDom(false)) changed = true
-      if (changed) this._host.requestUpdate()
-    })
-    this._modeObserver.observe(this._host as unknown as Node, {attributes: true})
-  }
-
   hostDisconnected() {
-    this._modeObserver?.disconnect()
-    this._modeObserver = null
     this._clearStepAnim()
     this._cancelBatchVerify()
   }
-
-  // ── Mode (side-panel option) sync ────────────────────────────────────────
 
   get activeInputMode(): MrnaInputMode {
     return this._appliedInputMode
@@ -101,59 +81,16 @@ export class TranscriptionController implements ReactiveController {
     return this._appliedBatchVerifyMode
   }
 
-  private _resolveInputMode(preferProperty: boolean): MrnaInputMode {
-    if (preferProperty) {
-      return normalizeMrnaInputMode(this._host.mrnaInputMode)
+  syncModes() {
+    const {mrnaInputMode, mrnaBatchVerifyMode} = this._host
+    if (mrnaInputMode !== this._appliedInputMode) {
+      this._appliedInputMode = mrnaInputMode
+      if (this._host.hasUpdated) this._resetInput()
     }
-    return readMrnaInputModeAttr(this._host as unknown as Element) ?? normalizeMrnaInputMode(this._host.mrnaInputMode)
-  }
-
-  /** Sync side-panel changes (attribute or property) into live logic. Returns true if the mode changed. */
-  syncInputModeFromDom(preferProperty = false): boolean {
-    const nextMode = this._resolveInputMode(preferProperty)
-    if (nextMode === this._appliedInputMode) {
-      if (this._host.mrnaInputMode !== nextMode) {
-        this._host.mrnaInputMode = nextMode
-      }
-      return false
+    if (mrnaBatchVerifyMode !== this._appliedBatchVerifyMode) {
+      this._appliedBatchVerifyMode = mrnaBatchVerifyMode
+      if (this.batchVerifyRunning) this._cancelBatchVerify()
     }
-
-    const modeChangedAfterMount = this._host.hasUpdated
-    this._appliedInputMode = nextMode
-    this._host.mrnaInputMode = nextMode
-
-    if (modeChangedAfterMount) {
-      this._resetInput()
-    }
-    return true
-  }
-
-  private _resolveBatchVerifyMode(preferProperty: boolean): MrnaBatchVerifyMode {
-    if (preferProperty) {
-      return normalizeMrnaBatchVerifyMode(this._host.mrnaBatchVerifyMode)
-    }
-    return (
-      readMrnaBatchVerifyModeAttr(this._host as unknown as Element) ??
-      normalizeMrnaBatchVerifyMode(this._host.mrnaBatchVerifyMode)
-    )
-  }
-
-  /** Sync side-panel batch verify mode into live logic. Returns true if the mode changed. */
-  syncBatchVerifyModeFromDom(preferProperty = false): boolean {
-    const nextMode = this._resolveBatchVerifyMode(preferProperty)
-    if (nextMode === this._appliedBatchVerifyMode) {
-      if (this._host.mrnaBatchVerifyMode !== nextMode) {
-        this._host.mrnaBatchVerifyMode = nextMode
-      }
-      return false
-    }
-
-    this._appliedBatchVerifyMode = nextMode
-    this._host.mrnaBatchVerifyMode = nextMode
-    if (this.batchVerifyRunning) {
-      this._cancelBatchVerify()
-    }
-    return true
   }
 
   private _resetInput() {
@@ -285,7 +222,7 @@ export class TranscriptionController implements ReactiveController {
       if (this.mrnaRejectAnim?.phase === "enter") {
         this.mrnaRejectAnim = {...this.mrnaRejectAnim, phase: "error"}
         if (this._rejectAlertDuring) {
-          this._host.showErrorAlert(mrnaWrongBaseMessage())
+          this._host.showErrorAlert(mrnaWrongBaseMessage(this._host.msg))
         }
         this._host.requestUpdate()
         return
@@ -387,7 +324,7 @@ export class TranscriptionController implements ReactiveController {
           this._host.requestUpdate()
         })
       } else {
-        this._host.showErrorAlert(mrnaWrongBaseMessage())
+        this._host.showErrorAlert(mrnaWrongBaseMessage(this._host.msg))
       }
       return false
     }
@@ -499,11 +436,11 @@ export class TranscriptionController implements ReactiveController {
   private _verifyBatchInstant() {
     const targetLen = this._host.dnaSequence.length
     if (!this.mrnaDraft.length) {
-      this._host.showErrorAlert(mrnaEmptyMessage())
+      this._host.showErrorAlert(mrnaEmptyMessage(this._host.msg))
       return
     }
     if (this.mrnaDraft.length < targetLen) {
-      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this.mrnaDraft.length, targetLen))
+      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this._host.msg, this.mrnaDraft.length, targetLen))
       return
     }
 
@@ -520,14 +457,14 @@ export class TranscriptionController implements ReactiveController {
         wrongBase,
         () => {
           this._finishBatchVerifyFailure()
-          this._host.showErrorAlert(mrnaIncorrectMessage())
+          this._host.showErrorAlert(mrnaIncorrectMessage(this._host.msg))
         },
         {alertDuring: false},
       )
       return
     }
     if (result.matchLength < targetLen) {
-      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this.mrnaDraft.length, targetLen))
+      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this._host.msg, this.mrnaDraft.length, targetLen))
       return
     }
 
@@ -543,11 +480,11 @@ export class TranscriptionController implements ReactiveController {
 
     const targetLen = this._host.dnaSequence.length
     if (!this.mrnaDraft.length) {
-      this._host.showErrorAlert(mrnaEmptyMessage())
+      this._host.showErrorAlert(mrnaEmptyMessage(this._host.msg))
       return
     }
     if (this.mrnaDraft.length < targetLen) {
-      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this.mrnaDraft.length, targetLen))
+      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this._host.msg, this.mrnaDraft.length, targetLen))
       return
     }
 

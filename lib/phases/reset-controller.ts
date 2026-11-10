@@ -1,5 +1,5 @@
 import type {ReactiveController, ReactiveControllerHost} from "lit"
-import {msg, str} from "@lit/localize"
+import {str, type MsgFn} from "@lit/localize"
 
 import {localizedPhaseLabel} from "../localize-text.js"
 
@@ -11,12 +11,10 @@ export type ResetConfirmKind = "simulation" | "phase"
  * sequencing (including recenter-after-drawer-close for a full wipe).
  */
 export interface ResetHost {
+  readonly msg: MsgFn
   requestUpdate(): void
-  readonly updateComplete: Promise<unknown>
+  afterRender(callback: () => void): void
   readonly currentPhase: string
-  readonly renderRoot: ParentNode
-  /** Whether the Translation codon drawer is open (affects full-reset recenter). */
-  readonly codonDrawerOpen: boolean
 
   clearAllSimulationState(): void
   enterFirstVisiblePhaseAfterFullReset(): void
@@ -42,25 +40,25 @@ export class ResetController implements ReactiveController {
     _host.addController(this)
   }
 
-  hostDisconnected() {}
+  hostDisconnected() { this.confirmKind = null }
 
   get confirmOpen(): boolean {
     return this.confirmKind !== null
   }
 
   get confirmLabel(): string {
-    return this.confirmKind === "phase" ? msg("Start over") : msg("Reset all")
+    return this.confirmKind === "phase" ? this._host.msg("Start over") : this._host.msg("Reset all")
   }
 
   get confirmMessage(): string {
     if (this.confirmKind === "phase") {
-      return msg(str`Are you sure you want to reset the ${localizedPhaseLabel(this._host.currentPhase)} phase?`)
+      return this._host.msg(str`Are you sure you want to reset the ${localizedPhaseLabel(this._host.msg, this._host.currentPhase)} phase?`)
     }
-    return msg("Are you sure you want to reset all of your progress?")
+    return this._host.msg("Are you sure you want to reset all of your progress?")
   }
 
   get confirmActionLabel(): string {
-    return this.confirmKind === "phase" ? msg("Start over") : msg("Reset all")
+    return this.confirmKind === "phase" ? this._host.msg("Start over") : this._host.msg("Reset all")
   }
 
   requestSimulation() {
@@ -89,42 +87,11 @@ export class ResetController implements ReactiveController {
 
   /** Wipe every phase and return to the first visible phase, then recenter like a double-click. */
   resetSimulation() {
-    const drawerWasOpen = this._host.codonDrawerOpen
     this._host.clearAllSimulationState()
     this._host.enterFirstVisiblePhaseAfterFullReset()
     this._host.requestUpdate()
-
-    const recenter = () => {
+    this._host.afterRender(() => {
       this._host.resetCanvasView(this._host.defaultZoomForPhase(this._host.currentPhase))
-    }
-
-    void this._host.updateComplete.then(() => {
-      requestAnimationFrame(() => {
-        if (!drawerWasOpen) {
-          recenter()
-          return
-        }
-
-        const drawer = this._host.renderRoot.querySelector(".codon-drawer")
-        if (!(drawer instanceof HTMLElement)) {
-          recenter()
-          return
-        }
-
-        const onEnd = (e: TransitionEvent) => {
-          if (e.target !== drawer || e.propertyName !== "width") return
-          drawer.removeEventListener("transitionend", onEnd)
-          recenter()
-        }
-        drawer.addEventListener("transitionend", onEnd)
-
-        requestAnimationFrame(() => {
-          if (getComputedStyle(drawer).width === "0px") {
-            drawer.removeEventListener("transitionend", onEnd)
-            recenter()
-          }
-        })
-      })
     })
   }
 

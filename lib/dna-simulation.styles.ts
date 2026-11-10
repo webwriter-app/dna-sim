@@ -56,16 +56,16 @@ export const widgetStyles = css`
     box-sizing: border-box;
   }
 
-  /* Simulation viewport stays 520px. Teacher options sit in-flow below
-     this shell when WebWriter does not extract part=options (narrow). */
+  /* Fit the simulation to the available page width and viewport height. */
   .sim-shell {
     position: relative;
     flex: 0 0 auto;
     width: 100%;
-    height: 520px;
+    height: clamp(400px, 65vh, 520px);
     min-height: 400px;
     min-width: 0;
     overflow: hidden;
+    container-type: inline-size;
   }
 
   dna-simulation-navbar {
@@ -130,7 +130,7 @@ export const widgetStyles = css`
   /* Header on top, content fills the rest — same height as the canvas. */
   .codon-drawer-body {
     box-sizing: border-box;
-    width: 400px;
+    width: min(400px, 100cqw);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -144,6 +144,31 @@ export const widgetStyles = css`
   .codon-drawer.is-open .codon-drawer-body {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  /* Stack the reference below the canvas so both remain usable during a drag. */
+  @container (max-width: 700px) {
+    .canvas-row {
+      flex-direction: column;
+    }
+
+    .codon-drawer {
+      width: 100%;
+      height: 0;
+      border-left: 0;
+      border-top: 1px solid transparent;
+      transition: height 0.3s ease, border-top-color 0.3s ease;
+    }
+
+    .codon-drawer.is-open {
+      width: 100%;
+      height: clamp(180px, 34vh, 230px);
+      border-top-color: #e2e8f0;
+    }
+
+    .codon-drawer-body {
+      width: 100%;
+    }
   }
 
   .codon-drawer-header {
@@ -595,6 +620,33 @@ export const widgetStyles = css`
        vertical world height far beyond the visible canvas. */
     padding: 120px 320px;
     width: max-content;
+  }
+
+  @media print {
+    :host {
+      height: auto;
+      min-height: 0;
+      overflow: visible;
+      break-inside: avoid;
+    }
+
+    .sim-shell {
+      height: 520px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .canvas-row {
+      top: 0;
+    }
+
+    dna-simulation-navbar,
+    .canvas-overlays,
+    .codon-drawer,
+    .reset-confirm-dialog,
+    .zoom-indicator {
+      display: none !important;
+    }
   }
 
   .zoom-indicator {

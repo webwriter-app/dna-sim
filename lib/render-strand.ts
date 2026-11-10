@@ -1,6 +1,6 @@
 import {html, type TemplateResult} from "lit"
 import {keyed} from "lit/directives/keyed.js"
-import {msg} from "@lit/localize"
+import type {MsgFn} from "@lit/localize"
 
 import {localizedMoleculeName} from "./localize-text.js"
 
@@ -319,6 +319,7 @@ function stopCodonClass(mark: boolean | undefined, codon: string | null): string
 }
 
 function renderPolypeptideCompare(
+  msg: MsgFn,
   compare: {before: string[]; after: string[]},
 ): TemplateResult {
   const row = (label: string, chain: string[]) => html`
@@ -429,6 +430,7 @@ function enzymeStep(vm: StrandViewModel): number {
 }
 
 function renderEnzymeSlot(
+  msg: MsgFn,
   vm: StrandViewModel,
   strandH: number,
 ): TemplateResult | null {
@@ -531,6 +533,7 @@ function renderRibosomeInside(
 
 /** Outline + interactive layer of the snapped ribosome — sits above the mRNA row, carrying the grab handle and dropzone. */
 function renderRibosomeBorder(
+  msg: MsgFn,
   vm: StrandViewModel,
   strandH: number,
 ): TemplateResult | null {
@@ -660,6 +663,7 @@ function committedPolypeptideLength(vm: StrandViewModel): number {
 
 /** Growing chain hangs off the newest docked tRNA; older residues fan out on a 0–180° arc. */
 function renderPolypeptideChain(
+  msg: MsgFn,
   vm: StrandViewModel,
   strandH: number,
 ): TemplateResult | null {
@@ -737,7 +741,7 @@ function shouldShowTrnaAminoTag(trna: IncomingTrnaUI): boolean {
 function renderTrnaMolecule(
   trna: IncomingTrnaUI,
   strandH: number,
-): TemplateResult {
+) {
   const rect = codonSlotRect(trna.codonIndex, strandH)
   const codonRowY = RIBOSOME_PAD + BASE_SIZE / 2
   const left = rect.left + rect.width / 2 - TRNA_WIDTH / 2
@@ -834,6 +838,7 @@ function renderTrnaBonds(
 }
 
 function renderSnappedMolecule(
+  msg: MsgFn,
   vm: StrandViewModel,
   strandH: number,
 ): TemplateResult | null {
@@ -860,14 +865,14 @@ function renderSnappedMolecule(
         src="${snapped.icon}"
         width="${rect.size}"
         height="${rect.size}"
-        alt="${localizedMoleculeName(snapped.id)}"
+        alt="${localizedMoleculeName(msg, snapped.id)}"
         draggable="false"
         @pointerdown="${snapped.removable ? h?.onSnappedPointerDown : undefined}"/>
     </div>
   `
 }
 
-function renderTranslationStrand(vm: StrandViewModel): TemplateResult {
+function renderTranslationStrand(msg: MsgFn, vm: StrandViewModel): TemplateResult {
   const mrna = vm.translation?.mrnaSequence ?? ""
   if (!mrna) {
     return html`<div class="strand-empty">${msg("Enter a sequence to start")}</div>`
@@ -910,14 +915,14 @@ function renderTranslationStrand(vm: StrandViewModel): TemplateResult {
         </div>
 
         <div class="strand-pairs-wrap" style="height:${strandH}px; width:${pairsW}px">
-          ${renderEnzymeSlot(vm, strandH)}
+          ${renderEnzymeSlot(msg, vm, strandH)}
           ${renderRibosomeInside(vm, strandH)}
           ${renderTrnaBonds(vm, strandH)}
           ${renderTranslationConnectors(mrna)}
           <div class="strand-pairs">${pairs}</div>
           ${renderTranslationTrnas(vm, strandH)}
-          ${renderPolypeptideChain(vm, strandH)}
-          ${renderRibosomeBorder(vm, strandH)}
+          ${renderPolypeptideChain(msg, vm, strandH)}
+          ${renderRibosomeBorder(msg, vm, strandH)}
         </div>
 
         <div class="strand-polarity" style="height:${strandH}px">
@@ -929,11 +934,11 @@ function renderTranslationStrand(vm: StrandViewModel): TemplateResult {
 }
 
 /** Renders the DNA strand markup for the pan/zoom canvas. */
-export function renderStrand(vm: StrandViewModel): TemplateResult {
+export function renderStrand(msg: MsgFn, vm: StrandViewModel): TemplateResult {
   const {dnaSequence, currentPhase, animationStep, transcription} = vm
 
   if (showTranslationMrna(currentPhase)) {
-    return renderTranslationStrand(vm)
+    return renderTranslationStrand(msg, vm)
   }
 
   if (!dnaSequence) {
@@ -1091,8 +1096,8 @@ export function renderStrand(vm: StrandViewModel): TemplateResult {
             : mrnaRow && txStep >= 2
               ? renderStrandConnectors("bottom", dnaSequence, currentPhase, animationStep, txStep)
               : null}
-          ${renderEnzymeSlot(vm, strandH)}
-          ${renderSnappedMolecule(vm, strandH)}
+          ${renderEnzymeSlot(msg, vm, strandH)}
+          ${renderSnappedMolecule(msg, vm, strandH)}
           <div class="strand-pairs ${mutationsActive ? "is-mutations" : ""}">${pairs}</div>
         </div>
 
@@ -1102,7 +1107,7 @@ export function renderStrand(vm: StrandViewModel): TemplateResult {
         </div>
       </div>
       ${mutationsActive && vm.polypeptideCompare
-        ? renderPolypeptideCompare(vm.polypeptideCompare)
+        ? renderPolypeptideCompare(msg, vm.polypeptideCompare)
         : null}
     </div>
   `

@@ -128,6 +128,16 @@ export class ViewportController {
     }
   }
 
+  /** Clear pointer state when the owning widget disconnects mid-gesture. */
+  cancelInteraction() {
+    const wasPanning = this.isPanning
+    this._drag = null
+    this._pointers.clear()
+    this._pinch = null
+    this.isPanning = false
+    if (wasPanning) this.cb.onChange()
+  }
+
   /** Center content within the viewport at the current zoom level. */
   center(
     viewportW: number,
