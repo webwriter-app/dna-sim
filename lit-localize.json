@@ -101,7 +101,8 @@
     "hy",
     "hyw",
     "az-Latn",
-    "tpi"
+    "tpi",
+    "de"
   ],
   "tsConfig": "./tsconfig.json",
   "output": {

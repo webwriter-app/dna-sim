@@ -17,7 +17,9 @@
     "widget-lang-de-CH",
     "Biology",
     "DNA",
-    "Gene Expression"
+    "Gene Expression",
+    "widget-lang-en",
+    "widget-lang-de"
   ],
   "license": "MIT",
   "author": "Jeremy Poroye",

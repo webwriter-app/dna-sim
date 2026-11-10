@@ -9,7 +9,23 @@
       "en-IN": "Interactive DNA replication, transcription, and translation simulation for biology education.",
       "de-DE": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
       "de-AT": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
-      "de-CH": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht."
+      "de-CH": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
+      "en": "Interactive DNA replication, transcription, and translation simulation for biology education.",
+      "fr": "Simulation interactive de la réplication de l’ADN, de la transcription et de la traduction pour l’enseignement de la biologie.",
+      "de": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
+      "es": "Simulación interactiva de la replicación del ADN, la transcripción y la traducción para la enseñanza de la biología."
+    },
+    "label": {
+      "_": "Dna Sim",
+      "en": "Dna Sim",
+      "en-US": "Dna Sim",
+      "en-GB": "Dna Sim",
+      "en-CA": "Dna Sim",
+      "en-AU": "Dna Sim",
+      "en-IN": "Dna Sim",
+      "fr": "Simulation de l’ADN",
+      "de": "DNA-Simulation",
+      "es": "Simulación de ADN"
     }
   },
   "./widgets/webwriter-dna-simulation": {
@@ -22,7 +38,11 @@
       "en-IN": "DNA Simulation",
       "de-DE": "DNA-Simulation",
       "de-AT": "DNA-Simulation",
-      "de-CH": "DNA-Simulation"
+      "de-CH": "DNA-Simulation",
+      "en": "DNA Simulation",
+      "fr": "Simulation de l’ADN",
+      "de": "DNA-Simulation",
+      "es": "Simulación de ADN"
     },
     "uninsertable": true
   },
@@ -36,7 +56,11 @@
       "en-IN": "DNA Simulation",
       "de-DE": "DNA-Simulation",
       "de-AT": "DNA-Simulation",
-      "de-CH": "DNA-Simulation"
+      "de-CH": "DNA-Simulation",
+      "en": "DNA Simulation",
+      "fr": "Simulation de l’ADN",
+      "de": "DNA-Simulation",
+      "es": "Simulación de ADN"
     }
   }
 }
