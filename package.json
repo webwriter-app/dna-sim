@@ -2,7 +2,7 @@
   "name": "@webwriter/dna-sim",
   "version": "1.0.1",
   "repository": "https://github.com/webwriter-app/dna-sim",
-  "description": "Interactive DNA replication, transcription, and translation simulation for biology education.",
+  "description": "Simulate DNA replication, transcription, and translation in phases, including animations.",
   "keywords": [
     "webwriter-widget",
     "widget-simulational",

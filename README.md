@@ -1,9 +1,7 @@
 # DNA Simulation (`@webwriter/dna-sim@1.0.1`)
 [License: MIT](LICENSE) | Version: 1.0.1
 
-Interactive DNA replication, transcription, and translation simulation for biology education.
-
-In WebWriter, insert the DNA Simulation snippet and open the widget drawer to set the lesson DNA sequence, protein target, and visible phases.
+Simulate DNA replication, transcription, and translation in phases, including animations.
 
 ## Snippets
 [Snippets](https://webwriter.app/docs/snippets/snippets/) are examples and templates using the package's widgets.
