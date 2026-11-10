@@ -1,0 +1,1792 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "widgets/webwriter-dna-simulation.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "WebwriterDnaSimulation",
+          "members": [
+            {
+              "kind": "field",
+              "name": "dataType",
+              "static": true,
+              "readonly": true,
+              "default": "LESSON_DATA_TYPE"
+            },
+            {
+              "kind": "field",
+              "name": "localize",
+              "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "msg",
+              "type": {
+                "text": "MsgFn"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "scopedElements",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{ \"dna-canvas-alert\": DnaCanvasAlert, \"dna-canvas-info-button\": DnaCanvasInfoButton, \"dna-phase-complete-toast\": DnaPhaseCompleteToast, \"dna-simulation-navbar\": DnaSimulationNavbar, \"dna-codon-card\": DnaCodonCard, \"sl-icon\": SlIcon, \"sl-button\": SlButton, \"sl-dialog\": SlDialog, \"sl-popup\": SlPopup, }"
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "optionGroups",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "actions",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "restoreLessonDefaults"
+            },
+            {
+              "kind": "field",
+              "name": "currentPhase",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"Replication\""
+            },
+            {
+              "kind": "field",
+              "name": "dnaSequence",
+              "default": "DEFAULT_DNA_SEQUENCE"
+            },
+            {
+              "kind": "field",
+              "name": "zoomLevel",
+              "type": {
+                "text": "number"
+              },
+              "default": "100"
+            },
+            {
+              "kind": "field",
+              "name": "lessonDnaSequence"
+            },
+            {
+              "kind": "field",
+              "name": "lessonTargetProtein"
+            },
+            {
+              "kind": "field",
+              "name": "animationSpeed",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "phaseSetMode",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mrnaInputMode",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mrnaBatchVerifyMode",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationGoalMode",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationTargetProtein",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "showInfoCards"
+            },
+            {
+              "kind": "field",
+              "name": "showSequenceTab"
+            },
+            {
+              "kind": "field",
+              "name": "crossPhaseMutations"
+            },
+            {
+              "kind": "field",
+              "name": "markCodons"
+            },
+            {
+              "kind": "field",
+              "name": "markStopCodons"
+            },
+            {
+              "kind": "field",
+              "name": "canonicalPhaseOrder"
+            },
+            {
+              "kind": "field",
+              "name": "allowStudentPan"
+            },
+            {
+              "kind": "field",
+              "name": "enableReplication"
+            },
+            {
+              "kind": "field",
+              "name": "enableTranscription"
+            },
+            {
+              "kind": "field",
+              "name": "enableTranslation"
+            },
+            {
+              "kind": "field",
+              "name": "enableMutations"
+            },
+            {
+              "kind": "field",
+              "name": "sequenceTabVisible",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "sequenceTabDna",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "sequenceTabWarnings",
+              "type": {
+                "text": "readonly string[]"
+              },
+              "description": "Sequence-tab hints for authors only — never shown in student view.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationsSequence",
+              "type": {
+                "text": "string"
+              },
+              "description": "Sequence the Mutations tab displays and edits.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_phaseFlags",
+              "type": {
+                "text": "PhaseEnableFlags"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "visiblePhases",
+              "type": {
+                "text": "readonly SimulationPhase[]"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "lockedPhases",
+              "type": {
+                "text": "readonly SimulationPhase[]"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "animationStep",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "_dropErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "_mutationFeedback",
+              "type": {
+                "text": "MutationCheckResult | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_mutationSteps",
+              "type": {
+                "text": "MutationStep[]"
+              },
+              "privacy": "private",
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "_snappedHelicase",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_helicaseExiting",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_polymeraseExiting",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_polymeraseAwaitingSettle",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_helicaseAwaitingSplitSettle",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false",
+              "description": "Waiting for the fork base-pair split transition before playing exit."
+            },
+            {
+              "kind": "field",
+              "name": "_hintOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_codonWheelOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_codonDrawerClosing",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false",
+              "description": "True while the drawer is playing its slide-out/fade-out exit — kept\nexpanded (and its content mounted) until the animation finishes."
+            },
+            {
+              "kind": "field",
+              "name": "_codonTab",
+              "type": {
+                "text": "CodonDrawerTab"
+              },
+              "privacy": "private",
+              "default": "\"wheel\""
+            },
+            {
+              "kind": "field",
+              "name": "_lastHintText",
+              "type": {
+                "text": "string | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_errorAlertOnDismiss",
+              "type": {
+                "text": "(() => void) | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_codonDrawerCloseTimer",
+              "type": {
+                "text": "ReturnType<typeof setTimeout> | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_timer",
+              "type": {
+                "text": "ReturnType<typeof setInterval> | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_layoutObserver",
+              "type": {
+                "text": "ResizeObserver | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_observedNavbar",
+              "type": {
+                "text": "Element | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_workspace",
+              "privacy": "private",
+              "default": "new WorkspaceController(this, { getZoomLevel: () => this.zoomLevel, setZoomLevel: (z) => { this.zoomLevel = z }, getPanEnabled: () => this.allowStudentPan || this.editable, onViewportClick: (e) => this._onMutationsViewportClick(e), onUserPanZoom: () => this._mutations.dismiss(), })"
+            },
+            {
+              "kind": "field",
+              "name": "_navbar",
+              "privacy": "private",
+              "default": "new NavbarController(this)"
+            },
+            {
+              "kind": "field",
+              "name": "_transcription",
+              "privacy": "private",
+              "default": "new TranscriptionController(this)"
+            },
+            {
+              "kind": "field",
+              "name": "_translation",
+              "privacy": "private",
+              "default": "new TranslationController(this)"
+            },
+            {
+              "kind": "field",
+              "name": "_mutations",
+              "privacy": "private",
+              "default": "new MutationsController(this)"
+            },
+            {
+              "kind": "field",
+              "name": "_moleculeDrag",
+              "privacy": "private",
+              "default": "new MoleculeDragController(this)"
+            },
+            {
+              "kind": "field",
+              "name": "_phaseCompletion",
+              "privacy": "private",
+              "default": "new PhaseCompletionController(this)"
+            },
+            {
+              "kind": "field",
+              "name": "_reset",
+              "privacy": "private",
+              "default": "new ResetController(this)"
+            },
+            {
+              "kind": "field",
+              "name": "_lesson",
+              "privacy": "private",
+              "default": "DEFAULT_LESSON"
+            },
+            {
+              "kind": "field",
+              "name": "_animationSpeed",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_crossPhaseMutations",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_settingsObserver",
+              "privacy": "private",
+              "default": "new MutationObserver(() => this._syncSettings())"
+            },
+            {
+              "kind": "field",
+              "name": "_frames",
+              "privacy": "private",
+              "default": "new Set<number>()"
+            },
+            {
+              "kind": "field",
+              "name": "_connection",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "_layoutStyle",
+              "type": {
+                "text": "object"
+              },
+              "privacy": "private",
+              "default": "{ \"--dna-navbar-height\": \"0px\", \"--dna-anim-speed\": \"1\" }"
+            },
+            {
+              "kind": "field",
+              "name": "_mutationsWorkingCopy",
+              "privacy": "private",
+              "default": "DEFAULT_DNA_SEQUENCE",
+              "description": "Isolated Mutations-tab copy when cross-phase mutations are off."
+            },
+            {
+              "kind": "field",
+              "name": "_mutationStartSequence",
+              "privacy": "private",
+              "default": "DEFAULT_DNA_SEQUENCE"
+            },
+            {
+              "kind": "field",
+              "name": "_baukastenOrder",
+              "privacy": "private",
+              "description": "Toolkit chip order — shuffled once when the widget instance is created."
+            },
+            {
+              "kind": "method",
+              "name": "nextFrame",
+              "parameters": [
+                {
+                  "name": "callback",
+                  "type": {
+                    "text": "() => void"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_cancelFrames",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "afterRender",
+              "parameters": [
+                {
+                  "name": "callback",
+                  "type": {
+                    "text": "() => void"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "dataChanged",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "dataPending",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "dataError",
+              "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "_canEditLesson",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "_writeLesson",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "patch",
+                  "type": {
+                    "text": "Partial<Lesson>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_syncLesson",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "reset",
+                  "default": "false"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_syncSettings",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_refreshDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_setBooleanOption",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "write",
+                  "type": {
+                    "text": "(widget: Element, value: boolean) => void"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_readPhaseFlag",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "key",
+                  "type": {
+                    "text": "(typeof PHASE_ENABLE_KEYS)[number]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_setPhaseFlag",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "key",
+                  "type": {
+                    "text": "(typeof PHASE_ENABLE_KEYS)[number]"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_checkDerivedPhaseCompletion",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_syncCanvasRowHeight",
+              "privacy": "private",
+              "description": "Pin canvas under the navbar: set --dna-navbar-height from the real\nnavbar box (tabs + child nav + optional extra bar).\nCanvas uses top/bottom absolute pinning, so it cannot outgrow `.sim-shell`."
+            },
+            {
+              "kind": "method",
+              "name": "_ensureLayoutObserver",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_syncHintExpansion",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_hintAlert",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "DnaCanvasAlert | null"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_onHintToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onInfoAlertDismiss",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_showErrorAlert",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "onDismiss",
+                  "optional": true,
+                  "type": {
+                    "text": "() => void"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_onErrorAlertDismiss",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onPhaseCompleteContinue",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onPhaseCompleteDismiss",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_snapHelicaseAtFork",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_animationEnabled",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_transcriptionEnabled",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_maxAnimationStep",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "_clampAnimationStep",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startTimer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopTimer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_resetAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_clearSnappedHelicase",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_cancelHelicaseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_cancelPolymeraseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_maybeScheduleHelicaseExit",
+              "privacy": "private",
+              "description": "After the last base pair splits, wait for its transform transition, then\nplay the helicase exit and show the replication-complete toast."
+            },
+            {
+              "kind": "method",
+              "name": "_observeHelicaseSplitSettle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_helicaseExitPreconditionsMet",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_forkSplitTransitionTarget",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "HTMLElement | null"
+                }
+              },
+              "description": "Top subunit of the fork pair that just finished splitting."
+            },
+            {
+              "kind": "method",
+              "name": "_forkSplitTransitionRunning",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "el",
+                  "type": {
+                    "text": "Element"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_onReplicationSplitTransitionEnd",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_beginHelicaseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_observeHelicaseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onSnappedMoleculeAnimationEnd",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_finishHelicaseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_maybeStartPolymeraseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_observePolymeraseSettle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_beginPolymeraseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_observePolymeraseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_finishPolymeraseExit",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onSnappedMoleculeTransitionEnd",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "mrnaInput",
+              "type": {
+                "text": "NavbarMrnaInput"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "showPhaseBar",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "baukastenMolecules",
+              "type": {
+                "text": "BaukastenMolecule[]"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "draggingMoleculeId",
+              "type": {
+                "text": "string | null"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_showCodonReference",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "showMutationVerify",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationShowGoal",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationStepItems",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationTargetChain",
+              "type": {
+                "text": "string[]"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationShowNow",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationCurrentChain",
+              "type": {
+                "text": "string[]"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationNowEmptyReason",
+              "type": {
+                "text": "\"short\" | \"stop\" | \"empty\""
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "mutationTeacherEditing",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "showToolkitTab",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "showProteinTab",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "setDnaSequence",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_useDnaSequence",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "next",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "appendDnaBase",
+              "parameters": [
+                {
+                  "name": "base",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setMrnaInput",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "clearMrnaInput"
+            },
+            {
+              "kind": "method",
+              "name": "verifyMrnaInput"
+            },
+            {
+              "kind": "method",
+              "name": "appendMrnaBase",
+              "parameters": [
+                {
+                  "name": "base",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "startMoleculeDrag",
+              "parameters": [
+                {
+                  "name": "nativeEvent",
+                  "type": {
+                    "text": "DragEvent"
+                  }
+                },
+                {
+                  "name": "moleculeId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "endMoleculeDrag"
+            },
+            {
+              "kind": "method",
+              "name": "requestResetSimulation"
+            },
+            {
+              "kind": "method",
+              "name": "verifyMutationGoal"
+            },
+            {
+              "kind": "method",
+              "name": "openCodonDrawer"
+            },
+            {
+              "kind": "method",
+              "name": "rewindMutationStep",
+              "parameters": [
+                {
+                  "name": "stepIndex",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "addMutationTargetAmino",
+              "parameters": [
+                {
+                  "name": "amino",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "removeMutationTargetAmino",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_clearMutationSteps",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_pushMutationStep",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "step",
+                  "type": {
+                    "text": "MutationStep"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_setMutationTargetProtein",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "raw",
+                  "type": {
+                    "text": "unknown"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_mutationCheckMessage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "result",
+                  "type": {
+                    "text": "MutationCheckResult"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "clearAllSimulationState"
+            },
+            {
+              "kind": "method",
+              "name": "enterFirstVisiblePhaseAfterFullReset"
+            },
+            {
+              "kind": "method",
+              "name": "resetCanvasView",
+              "parameters": [
+                {
+                  "name": "zoom",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "defaultZoomForPhase",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "phase",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Public so ResetController can pick the phase default zoom."
+            },
+            {
+              "kind": "method",
+              "name": "resetReplicationPhase"
+            },
+            {
+              "kind": "method",
+              "name": "resetTranscriptionPhase"
+            },
+            {
+              "kind": "method",
+              "name": "resetTranslationPhase"
+            },
+            {
+              "kind": "method",
+              "name": "resetMutationsPhase"
+            },
+            {
+              "kind": "method",
+              "name": "clearPhaseCompletionNotified",
+              "parameters": [
+                {
+                  "name": "phase",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "showErrorAlert",
+              "parameters": [
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "focusMrnaInput",
+              "description": "TranscriptionHost: wait for render, then ask the navbar to focus its mRNA field."
+            },
+            {
+              "kind": "method",
+              "name": "playSlotSnapFade"
+            },
+            {
+              "kind": "method",
+              "name": "onTranscriptionCompleteReady"
+            },
+            {
+              "kind": "method",
+              "name": "focusActiveCodon"
+            },
+            {
+              "kind": "method",
+              "name": "onStopCodonReached"
+            },
+            {
+              "kind": "method",
+              "name": "onRibosomeFillComplete"
+            },
+            {
+              "kind": "method",
+              "name": "focusPolypeptide"
+            },
+            {
+              "kind": "method",
+              "name": "onTranslationComplete"
+            },
+            {
+              "kind": "method",
+              "name": "scaleAnimMs",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "ms",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_notifyPhaseComplete",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "phase",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_phaseCompleteMessage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "phase",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "next",
+                  "type": {
+                    "text": "string | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_invalidateTranscriptionAndTranslationCompletion",
+              "privacy": "private",
+              "description": "Cross-phase DNA edits must not keep Transcription/Translation marked as complete."
+            },
+            {
+              "kind": "method",
+              "name": "_isTeacherEditing",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_ensureCurrentPhaseEnabled",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "showWrongAminoAcidAlert"
+            },
+            {
+              "kind": "method",
+              "name": "stopTimer"
+            },
+            {
+              "kind": "method",
+              "name": "setErrorAlertDismiss",
+              "parameters": [
+                {
+                  "name": "onDismiss",
+                  "type": {
+                    "text": "() => void"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setPhase",
+              "parameters": [
+                {
+                  "name": "phase",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_enterPhase",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "phase",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_onMutationBaseClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onMutationsViewportClick",
+              "privacy": "private",
+              "description": "Clear Mutations selection/menu when clicking empty canvas (base clicks stopPropagation)."
+            },
+            {
+              "kind": "method",
+              "name": "_mutationMenuAnchor",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "HTMLElement | null"
+                }
+              },
+              "description": "DOM node for the selected base — used as the sl-popup anchor."
+            },
+            {
+              "kind": "method",
+              "name": "_repositionMutationMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onMutationPopupReposition",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onMutationAction",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderMutationMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "appendBase",
+              "parameters": [
+                {
+                  "name": "base",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "substituteBase",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "base",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Replace the DNA template base at `index` (Mutations phase).\nNo-ops if the index/base is invalid or unchanged."
+            },
+            {
+              "kind": "method",
+              "name": "insertBase",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "base",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Insert a DNA template base before `index` (0 … length inclusive).\nNo-ops if the index/base is invalid."
+            },
+            {
+              "kind": "method",
+              "name": "deleteBase",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "description": "Delete the DNA template base at `index`.\nNo-ops if the index is out of range."
+            },
+            {
+              "kind": "method",
+              "name": "_applyMutationSequenceEdit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "next",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Mutation edits: shared `dnaSequence` or an isolated session copy."
+            },
+            {
+              "kind": "method",
+              "name": "_applyDnaSequenceEdit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "next",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Shared path for lesson-DNA edits: clamp anim and drop stale tx/tl completion."
+            },
+            {
+              "kind": "method",
+              "name": "_snappedEnzymeId",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_enzymeSlotOccupied",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_canRemoveSnappedEnzyme",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_onSnappedPointerDown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_expectedEnzymeId",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string | null"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_onSlotDrop",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onCodonCardAction",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_hitsLargeSubunit",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "clientX",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "clientY",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_toggleCodonWheel",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "DRAWER_TRANSITION_MS",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "static": true,
+              "readonly": true,
+              "default": "320",
+              "description": "Matches the .codon-drawer transition in dna-simulation.styles.ts."
+            },
+            {
+              "kind": "field",
+              "name": "CODON_DRAWER_WIDTH_PX",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "static": true,
+              "readonly": true,
+              "default": "400"
+            },
+            {
+              "kind": "method",
+              "name": "_openCodonDrawerForRibosome",
+              "privacy": "private",
+              "description": "Open the codon drawer after snapping the ribosome, forcing a recenter even if it was already open."
+            },
+            {
+              "kind": "method",
+              "name": "_setCodonWheelOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "open",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_onCodonDrawerTransition",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_centerOnActiveCodon",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "widthInset",
+                  "default": "0"
+                }
+              ],
+              "description": "Keep the ribosome's current codon in the middle of the visible canvas."
+            },
+            {
+              "kind": "method",
+              "name": "_centerOnPolypeptide",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "widthInset",
+                  "default": "0"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_setCodonTab",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "tab",
+                  "type": {
+                    "text": "CodonDrawerTab"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderCanvasOverlays",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getPhaseHintText",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_renderPointerDragGhost",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderDiscardGhost",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderStrandContent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "optionschange",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElementWw",
+            "package": "@webwriter/lit"
+          },
+          "tagName": "webwriter-dna-simulation",
+          "customElement": true,
+          "modulePath": "widgets/webwriter-dna-simulation.ts",
+          "definitionPath": "widgets/webwriter-dna-simulation.ts"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WebwriterDnaSimulation",
+          "declaration": {
+            "name": "WebwriterDnaSimulation",
+            "module": "widgets/webwriter-dna-simulation.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "webwriter-dna-simulation",
+          "declaration": {
+            "name": "WebwriterDnaSimulation",
+            "module": "widgets/webwriter-dna-simulation.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

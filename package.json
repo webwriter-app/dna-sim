@@ -1,6 +1,6 @@
 {
   "name": "@webwriter/dna-sim",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "https://github.com/webwriter-app/dna-sim",
   "description": "Interactive DNA replication, transcription, and translation simulation for biology education.",
   "keywords": [
@@ -52,9 +52,11 @@
     },
     "./icon": "./icon.svg",
     "./editing-config.json": "./editing-config.json",
-    "./snippets/dna-simulation.html": "./snippets/dna-simulation.html"
+    "./snippets/dna-simulation.html": "./snippets/dna-simulation.html",
+    "./custom-elements.json": "./custom-elements.json"
   },
   "editingConfig": {
     "./snippets/dna-simulation": {}
-  }
+  },
+  "customElements": "custom-elements.json"
 }
