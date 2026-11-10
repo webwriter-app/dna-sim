@@ -1,5 +1,5 @@
 {
-  "name": "@webwriter/dna-simulation",
+  "name": "@webwriter/dna-sim",
   "version": "1.0.0",
   "repository": "https://github.com/webwriter-app/dna-sim",
   "description": "Interactive DNA replication, transcription, and translation simulation for biology education.",
