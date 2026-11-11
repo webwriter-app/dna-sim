@@ -19,7 +19,16 @@
     "DNA",
     "Gene Expression",
     "widget-lang-en",
-    "widget-lang-de"
+    "widget-lang-de",
+    "widget-lang-yue-Hans",
+    "widget-lang-yue-Hant",
+    "widget-lang-kmr",
+    "widget-lang-kmr-Latn",
+    "widget-lang-kmr-Arab",
+    "widget-lang-ckb",
+    "widget-lang-ckb-Arab",
+    "widget-lang-af-ZA",
+    "widget-lang-af-NA"
   ],
   "license": "MIT",
   "author": "Jeremy Poroye",
