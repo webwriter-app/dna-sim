@@ -228,6 +228,34 @@ try {
     }
   })
 
+  await run("Regional and script locales reach the drawer and simulation", async () => {
+    const {ready} = window.__dnaTest
+    document.body.replaceChildren()
+    const cases = [
+      ["fr-CA", "fr", "Réplication"],
+      ["pt", "pt-PT", "Replicação"],
+      ["pt-BR", "pt-BR", "Replicação"],
+      ["zh-TW", "zh-Hant", "複製"],
+    ]
+    for (const [language, catalog, label] of cases) {
+      const widget = document.createElement("webwriter-dna-simulation")
+      widget.lang = language
+      document.body.append(widget)
+      for (let frame = 0; frame < 60 && widget.localize.getLocale() !== catalog; frame++) {
+        await new Promise(requestAnimationFrame)
+      }
+      await ready(widget)
+      const navbar = widget.shadowRoot.querySelector("dna-simulation-navbar")
+      await navbar.updateComplete
+      const phases = navbar.shadowRoot.querySelector(".phase-buttons")
+      if (widget.localize.getLocale() !== catalog ||
+          widget.options.enableReplication.label._ !== label || !phases.textContent.includes(label)) {
+        return {ok:false, message:`Missing ${language} translation (resolved ${widget.localize.getLocale()})`}
+      }
+    }
+    return {ok:true}
+  })
+
   await run("Replication, Transcription, Translation, and Mutations render on phase changes", async () => {
     const {mount, ready} = window.__dnaTest
     const el = await mount()
