@@ -9,7 +9,41 @@
       "en-IN": "Interactive DNA replication, transcription, and translation simulation for biology education.",
       "de-DE": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
       "de-AT": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
-      "de-CH": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht."
+      "de-CH": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
+      "en": "Interactive DNA replication, transcription, and translation simulation for biology education.",
+      "fr": "Simulation interactive de la réplication de l’ADN, de la transcription et de la traduction pour l’enseignement de la biologie.",
+      "de": "Interaktive Simulation zur DNA-Replikation, Transkription und Translation für den Biologieunterricht.",
+      "es": "Simulación interactiva de la replicación del ADN, la transcripción y la traducción para la enseñanza de la biología.",
+      "yue-Hans": "用互动模拟学习 DNA 复制、转录同转译。",
+      "yue-Hant": "用互動模擬學習 DNA 複製、轉錄同轉譯。",
+      "kmr": "Simulasyona înteraktîf a dubarekirina DNA, veguhastina RNA û wergerandina proteînê ji bo perwerdehiya biyolojiyê.",
+      "kmr-Latn": "Simulasyona înteraktîf a dubarekirina DNA, veguhastina RNA û wergerandina proteînê ji bo perwerdehiya biyolojiyê.",
+      "kmr-Arab": "سمولاسیۆنا ئینتەراکتیف ئا دوبارەکرنا DNA, ڤەگوهاستنا RNA ئوو وەرگەراندنا پرۆتەینێ ژ بۆ پەروەردەهیا بیۆلۆژیێ.",
+      "ckb": "هاوشێوەسازیی کارلێککارانەی دووبارەکردنەوە، نووسینەوە و وەرگێڕانی DNA بۆ فێرکاریی زیندەزانی.",
+      "ckb-Arab": "هاوشێوەسازیی کارلێککارانەی دووبارەکردنەوە، نووسینەوە و وەرگێڕانی DNA بۆ فێرکاریی زیندەزانی.",
+      "af-ZA": "Interaktiewe simulasie van DNS-replikasie, transkripsie en translasie vir biologieonderrig.",
+      "af-NA": "Interaktiewe simulasie van DNS-replikasie, transkripsie en translasie vir biologieonderrig."
+    },
+    "label": {
+      "_": "Dna Sim",
+      "en": "Dna Sim",
+      "en-US": "Dna Sim",
+      "en-GB": "Dna Sim",
+      "en-CA": "Dna Sim",
+      "en-AU": "Dna Sim",
+      "en-IN": "Dna Sim",
+      "fr": "Simulation de l’ADN",
+      "de": "DNA-Simulation",
+      "es": "Simulación de ADN",
+      "yue-Hans": "DNA 模拟",
+      "yue-Hant": "DNA 模擬",
+      "kmr": "Simulasyona DNA",
+      "kmr-Latn": "Simulasyona DNA",
+      "kmr-Arab": "سمولاسیۆنا DNA",
+      "ckb": "هاوشێوەسازیی DNA",
+      "ckb-Arab": "هاوشێوەسازیی DNA",
+      "af-ZA": "DNS-simulasie",
+      "af-NA": "DNS-simulasie"
     }
   },
   "./widgets/webwriter-dna-simulation": {
@@ -22,7 +56,20 @@
       "en-IN": "DNA Simulation",
       "de-DE": "DNA-Simulation",
       "de-AT": "DNA-Simulation",
-      "de-CH": "DNA-Simulation"
+      "de-CH": "DNA-Simulation",
+      "en": "DNA Simulation",
+      "fr": "Simulation de l’ADN",
+      "de": "DNA-Simulation",
+      "es": "Simulación de ADN",
+      "yue-Hans": "DNA 模拟",
+      "yue-Hant": "DNA 模擬",
+      "kmr": "Simulasyona DNA",
+      "kmr-Latn": "Simulasyona DNA",
+      "kmr-Arab": "سمولاسیۆنا DNA",
+      "ckb": "هاوشێوەسازیی DNA",
+      "ckb-Arab": "هاوشێوەسازیی DNA",
+      "af-ZA": "DNS-simulasie",
+      "af-NA": "DNS-simulasie"
     },
     "uninsertable": true
   },
@@ -36,7 +83,20 @@
       "en-IN": "DNA Simulation",
       "de-DE": "DNA-Simulation",
       "de-AT": "DNA-Simulation",
-      "de-CH": "DNA-Simulation"
+      "de-CH": "DNA-Simulation",
+      "en": "DNA Simulation",
+      "fr": "Simulation de l’ADN",
+      "de": "DNA-Simulation",
+      "es": "Simulación de ADN",
+      "yue-Hans": "DNA 模拟",
+      "yue-Hant": "DNA 模擬",
+      "kmr": "Simulasyona DNA",
+      "kmr-Latn": "Simulasyona DNA",
+      "kmr-Arab": "سمولاسیۆنا DNA",
+      "ckb": "هاوشێوەسازیی DNA",
+      "ckb-Arab": "هاوشێوەسازیی DNA",
+      "af-ZA": "DNS-simulasie",
+      "af-NA": "DNS-simulasie"
     }
   }
 }
