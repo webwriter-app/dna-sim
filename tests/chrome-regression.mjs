@@ -195,15 +195,17 @@ try {
   })
 
   await run("en-US and de-DE language changes stay local to each widget", async () => {
-    const {mount, ready} = window.__dnaTest
+    const {ready} = window.__dnaTest
     document.body.replaceChildren()
     const english = document.createElement("webwriter-dna-simulation")
     const german = document.createElement("webwriter-dna-simulation")
     english.setAttribute("contenteditable", "false")
     german.setAttribute("contenteditable", "false")
     english.lang = "en-US"
-    german.lang = "de-DE"
-    document.body.append(english, german)
+    const germanSection = document.createElement("section")
+    germanSection.lang = "de-DE"
+    germanSection.append(german)
+    document.body.append(english, germanSection)
     await ready(english); await ready(german)
     const englishNav = english.shadowRoot.querySelector("dna-simulation-navbar")
     const germanNav = german.shadowRoot.querySelector("dna-simulation-navbar")
@@ -211,7 +213,47 @@ try {
     const labels = [english.msg("Replication"), german.msg("Replication")]
     const visible = [englishNav.shadowRoot.querySelector(".phase-buttons")?.textContent, germanNav.shadowRoot.querySelector(".phase-buttons")?.textContent]
     const drawer = [english.options.enableReplication.label._, german.options.enableReplication.label._]
-    return {ok: labels[0] === "Replication" && labels[1] === "Replikation" && visible[0]?.includes("Replication") && visible[1]?.includes("Replikation") && drawer[0] === "Replication" && drawer[1] === "Replikation" && english.localize.getLocale() === "en-US" && german.localize.getLocale() === "de-DE", message:`language mismatch (locale=${english.localize.getLocale()}/${german.localize.getLocale()}, visible=${visible.join(" | ")}, drawer=${drawer.join(" | ")})`}
+    const independentlyLocalized = labels[0] === "Replication" && labels[1] === "Replikation" &&
+      visible[0]?.includes("Replication") && visible[1]?.includes("Replikation") &&
+      drawer[0] === "Replication" && drawer[1] === "Replikation"
+    germanSection.lang = "en-GB"
+    for (let i = 0; i < 60 && german.options.enableReplication.label._ !== "Replication"; i++) {
+      await new Promise(requestAnimationFrame)
+    }
+    const inheritedChange = german.options.enableReplication.label._ === "Replication" &&
+      english.options.enableReplication.label._ === "Replication" && !german.hasAttribute("lang")
+    return {
+      ok: independentlyLocalized && inheritedChange,
+      message: `language mismatch (locale=${english.localize.getLocale()}/${german.localize.getLocale()}, visible=${visible.join(" | ")}, drawer=${drawer.join(" | ")})`,
+    }
+  })
+
+  await run("Regional and script locales reach the drawer and simulation", async () => {
+    const {ready} = window.__dnaTest
+    document.body.replaceChildren()
+    const cases = [
+      ["fr-CA", "fr", "Réplication"],
+      ["pt", "pt-PT", "Replicação"],
+      ["pt-BR", "pt-BR", "Replicação"],
+      ["zh-TW", "zh-Hant", "複製"],
+    ]
+    for (const [language, catalog, label] of cases) {
+      const widget = document.createElement("webwriter-dna-simulation")
+      widget.lang = language
+      document.body.append(widget)
+      for (let frame = 0; frame < 60 && widget.localize.getLocale() !== catalog; frame++) {
+        await new Promise(requestAnimationFrame)
+      }
+      await ready(widget)
+      const navbar = widget.shadowRoot.querySelector("dna-simulation-navbar")
+      await navbar.updateComplete
+      const phases = navbar.shadowRoot.querySelector(".phase-buttons")
+      if (widget.localize.getLocale() !== catalog ||
+          widget.options.enableReplication.label._ !== label || !phases.textContent.includes(label)) {
+        return {ok:false, message:`Missing ${language} translation (resolved ${widget.localize.getLocale()})`}
+      }
+    }
+    return {ok:true}
   })
 
   await run("Replication, Transcription, Translation, and Mutations render on phase changes", async () => {

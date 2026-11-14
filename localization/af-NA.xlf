@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+<file target-language="af-NA" source-language="en-US" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="s9c9fde4a33c0708d">
+  <source>Show hint</source>
+<target>Wys wenk</target></trans-unit>
+<trans-unit id="s38bf29b2e75f47b0">
+  <source>Add to goal</source>
+<target>Voeg by doel</target></trans-unit>
+<trans-unit id="s24893a6832f0f492">
+  <source>Amino acid codon wheel</source>
+<target>Aminosuurkodonwiel</target></trans-unit>
+<trans-unit id="s287f3acc3eb9b472">
+  <source>Search amino acid…</source>
+<target>Soek aminosuur…</target></trans-unit>
+<trans-unit id="s1c653e33ca520372">
+  <source>No matching amino acid.</source>
+<target>Geen passende aminosuur nie.</target></trans-unit>
+<trans-unit id="s8eee4997d5077c4f">
+  <source>Next phase</source>
+<target>Volgende fase</target></trans-unit>
+<trans-unit id="se4ad372eccea1ed1">
+  <source>Phases</source>
+<target>Fases</target></trans-unit>
+<trans-unit id="s5eb9c175b78abf88">
+  <source>Sequence</source>
+<target>Volgorde</target></trans-unit>
+<trans-unit id="s6188be7afe533b79">
+  <source>Toolkit</source>
+<target>Gereedskapstel</target></trans-unit>
+<trans-unit id="s94666bc4392af2e0">
+  <source>Protein</source>
+<target>Proteïen</target></trans-unit>
+<trans-unit id="s11b1dd90482cc58a">
+  <source>Main navigation</source>
+<target>Hoofnavigasie</target></trans-unit>
+<trans-unit id="s617aeac3c10c22ee">
+  <source>mRNA (5′ → 3′)</source>
+<target>mRNA (5′ → 3′)</target></trans-unit>
+<trans-unit id="s17cb7d1e1cee3159">
+  <source>A, U, C, G</source>
+<target>A, U, C, G</target></trans-unit>
+<trans-unit id="sc2b6c18334a4a2c4">
+  <source>Verify</source>
+<target>Kontroleer</target></trans-unit>
+<trans-unit id="s2ca6fbd7c03f172a">
+  <source><x id="0" equiv-text="${this.mrnaRemaining}"/> base remaining</source>
+<target><x id="0" equiv-text="${this.mrnaRemaining}"/> basis oor</target></trans-unit>
+<trans-unit id="s8b29ff46839889f3">
+  <source><x id="0" equiv-text="${this.mrnaRemaining}"/> bases remaining</source>
+<target><x id="0" equiv-text="${this.mrnaRemaining}"/> basisse oor</target></trans-unit>
+<trans-unit id="s7761bcd8570b355f">
+  <source>Need at least one full codon</source>
+<target>Minstens een volledige kodon is nodig</target></trans-unit>
+<trans-unit id="s038f32d1e53560d3">
+  <source>First codon is a stop</source>
+<target>Die eerste kodon is ’n stopkodon</target></trans-unit>
+<trans-unit id="s1ccbca7e66155ca7">
+  <source>No polypeptide yet</source>
+<target>Nog geen polipeptied nie</target></trans-unit>
+<trans-unit id="s2fa05f91c1baa29b">
+  <source>Remove <x id="0" equiv-text="${amino}"/></source>
+<target>Verwyder <x id="0" equiv-text="${amino}"/></target></trans-unit>
+<trans-unit id="s3763f519c347a9f7">
+  <source>Now</source>
+<target>Nou</target></trans-unit>
+<trans-unit id="sc420f37e0d3ab496">
+  <source>Goal</source>
+<target>Doel</target></trans-unit>
+<trans-unit id="sac6b62745e086852">
+  <source>Set goal</source>
+<target>Stel doel</target></trans-unit>
+<trans-unit id="sb6e3562f6d55a7cc">
+  <source>No target selected</source>
+<target>Geen doelwit gekies nie</target></trans-unit>
+<trans-unit id="sa47e8096a837775d">
+  <source>Steps (<x id="0" equiv-text="${stepCount}"/>)</source>
+<target>Stappe (<x id="0" equiv-text="${stepCount}"/>)</target></trans-unit>
+<trans-unit id="sd2023813cc70bf74">
+  <source>Steps</source>
+<target>Stappe</target></trans-unit>
+<trans-unit id="s0340219ffc4332bc">
+  <source>No mutations yet</source>
+<target>Nog geen mutasies nie</target></trans-unit>
+<trans-unit id="s245e84a8b135e5cb">
+  <source>Complete the previous phase first</source>
+<target>Voltooi eers die vorige fase</target></trans-unit>
+<trans-unit id="s60d49bfe5a24a973">
+  <source>Reset all</source>
+<target>Stel alles terug</target></trans-unit>
+<trans-unit id="sfd69de53b512614c">
+  <source>Template strand (3′ → 5′)</source>
+<target>Templaatstring (3′ → 5′)</target></trans-unit>
+<trans-unit id="s9599807afc3aa65d">
+  <source>A, C, T or G</source>
+<target>A, C, T of G</target></trans-unit>
+<trans-unit id="sd2dcdd0542a8fea4">
+  <source>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}"/></source>
+<target>Fase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}"/></target></trans-unit>
+<trans-unit id="s168212e0837cec87">
+  <source>Biomolecule toolkit</source>
+<target>Biomolekulegereedskapstel</target></trans-unit>
+<trans-unit id="s61e7de489db05817">
+  <source>DNA sequence</source>
+<target>DNS-volgorde</target></trans-unit>
+<trans-unit id="s2a847aa5cd44c097">
+  <source>Visible phases</source>
+<target>Sigbare fases</target></trans-unit>
+<trans-unit id="s58d0cdc35411fd90">
+  <source>All phases</source>
+<target>Alle fases</target></trans-unit>
+<trans-unit id="s27e75f872acd9fcc">
+  <source>Choose phases</source>
+<target>Kies fases</target></trans-unit>
+<trans-unit id="sc9aed757cb0921f6">
+  <source>Which processes students see. Choose phases reveals the individual toggles.</source>
+<target>Watter prosesse leerders sien. Kies fases wys die afsonderlike skakelaars.</target></trans-unit>
+<trans-unit id="s1ce1057fec59e955">
+  <source>Finish phases in order</source>
+<target>Voltooi fases in volgorde</target></trans-unit>
+<trans-unit id="s75e1e6982e7fb3e4">
+  <source>Forward only after the previous visible phase is complete. Going back is always allowed.</source>
+<target>Gaan eers voort nadat die vorige sigbare fase voltooi is. Jy kan altyd teruggaan.</target></trans-unit>
+<trans-unit id="s6417c89d1b7f451f">
+  <source>mRNA input</source>
+<target>mRNA-invoer</target></trans-unit>
+<trans-unit id="s0810446cfacf5702">
+  <source>Base by base</source>
+<target>Basis vir basis</target></trans-unit>
+<trans-unit id="s927e02aedbb21001">
+  <source>Whole sequence</source>
+<target>Hele volgorde</target></trans-unit>
+<trans-unit id="s32812b8edc0f9cf6">
+  <source>Base by base checks each base immediately. Whole sequence waits until Verify.</source>
+<target>Basis vir basis kontroleer elke basis onmiddellik. Hele volgorde wag totdat jy Kontroleer kies.</target></trans-unit>
+<trans-unit id="s01a481ba6d085da0">
+  <source>Sequence check</source>
+<target>Volgordekontrole</target></trans-unit>
+<trans-unit id="s619c213c4b109eb2">
+  <source>Instant</source>
+<target>Onmiddellik</target></trans-unit>
+<trans-unit id="sac24f62c5aa1b7f3">
+  <source>With animation</source>
+<target>Met animasie</target></trans-unit>
+<trans-unit id="s593435e41145e82f">
+  <source>Instant: the correct prefix stays, the first wrong base flashes. With animation: base by base.</source>
+<target>Onmiddellik: die korrekte begin bly staan en die eerste verkeerde basis flits. Met animasie: basis vir basis.</target></trans-unit>
+<trans-unit id="s03ee3cfb0919c62c">
+  <source>Task</source>
+<target>Taak</target></trans-unit>
+<trans-unit id="s02a70051c874eafe">
+  <source>Free mutation</source>
+<target>Vrye mutasie</target></trans-unit>
+<trans-unit id="sc8bad1059d4f26d3">
+  <source>Protein goal</source>
+<target>Proteïendoel</target></trans-unit>
+<trans-unit id="s73a6524fbab29d6f">
+  <source>Target protein</source>
+<target>Teikenproteïen</target></trans-unit>
+<trans-unit id="sc65f1617b17fbf29">
+  <source>Mutations apply to all phases</source>
+<target>Mutasies geld vir alle fases</target></trans-unit>
+<trans-unit id="s61bd9d8bf6b0328e">
+  <source>On: DNA edits also apply to replication, transcription, and translation. Off: Mutations tab only.</source>
+<target>Aan: DNS-wysigings geld ook vir replikasie, transkripsie en translasie. Af: slegs die Mutasies-oortjie.</target></trans-unit>
+<trans-unit id="sb67b82120563c611">
+  <source>Hints</source>
+<target>Wenke</target></trans-unit>
+<trans-unit id="s4b4f57244195ad70">
+  <source>Short info cards on the canvas.</source>
+<target>Kort inligtingskaarte op die werkarea.</target></trans-unit>
+<trans-unit id="s66889c0d80c226c0">
+  <source>Sequence tab for students</source>
+<target>Volgorde-oortjie vir leerders</target></trans-unit>
+<trans-unit id="sd19142a0bc9cb803">
+  <source>Students see the Sequence tab. Teachers always see it.</source>
+<target>Leerders sien die Volgorde-oortjie. Onderwysers sien dit altyd.</target></trans-unit>
+<trans-unit id="s3316194718a01c72">
+  <source>Codon dividers</source>
+<target>Kodonskeiers</target></trans-unit>
+<trans-unit id="s10d01326a6a440ca">
+  <source>Lines between triplets in Mutations and Translation. Leftover bases are not grouped.</source>
+<target>Lyne tussen drielinge in Mutasies en Translasie. Oorblywende basisse word nie gegroepeer nie.</target></trans-unit>
+<trans-unit id="sbda51f19dde1c5ab">
+  <source>Highlight stop codons</source>
+<target>Merk stopkodons</target></trans-unit>
+<trans-unit id="s8f541de5ce0a6c98">
+  <source>Display only. Translation still stops when this is off.</source>
+<target>Slegs vir vertoon. Translasie stop steeds wanneer dit af is.</target></trans-unit>
+<trans-unit id="se492a93ea15c6ce4">
+  <source>Allow students to pan and zoom</source>
+<target>Laat leerders die aansig skuif en zoem</target></trans-unit>
+<trans-unit id="s75f8028fe9fdc992">
+  <source>Animation speed</source>
+<target>Animasiespoed</target></trans-unit>
+<trans-unit id="sb01a02540766bd7b">
+  <source>Speed of replication, transcription, and translation (0.5–2×).</source>
+<target>Spoed van replikasie, transkripsie en translasie (0.5–2×).</target></trans-unit>
+<trans-unit id="s10b847121e044069">
+  <source>Replication</source>
+<target>Replikasie</target></trans-unit>
+<trans-unit id="s8214d12128c7fa3f">
+  <source>Transcription</source>
+<target>Transkripsie</target></trans-unit>
+<trans-unit id="sbef9e1084e69480c">
+  <source>Translation</source>
+<target>Translasie</target></trans-unit>
+<trans-unit id="s5777bf3d61ed4d63">
+  <source>Mutations</source>
+<target>Mutasies</target></trans-unit>
+<trans-unit id="s09786baf79ba0d31">
+  <source>Helicase</source>
+<target>Helikase</target></trans-unit>
+<trans-unit id="s089316e8a1d10033">
+  <source>DNA Polymerase</source>
+<target>DNS-polimerase</target></trans-unit>
+<trans-unit id="se152d63bc79170d8">
+  <source>Primase</source>
+<target>Primase</target></trans-unit>
+<trans-unit id="s2a15c8ca8c9a2d8e">
+  <source>Ligase</source>
+<target>Ligase</target></trans-unit>
+<trans-unit id="se46865dbc5b25af4">
+  <source>Telomerase</source>
+<target>Telomerase</target></trans-unit>
+<trans-unit id="s5789f3e90d49dd41">
+  <source>RNA Polymerase</source>
+<target>RNA-polimerase</target></trans-unit>
+<trans-unit id="sa2dc00a7ad237d94">
+  <source>Activator</source>
+<target>Aktiveerder</target></trans-unit>
+<trans-unit id="sc40de2cffb1c2cde">
+  <source>Repressor</source>
+<target>Onderdrukker</target></trans-unit>
+<trans-unit id="sb930b395d3c2705e">
+  <source>Spliceosome</source>
+<target>Spliseosoom</target></trans-unit>
+<trans-unit id="s7e9c8ef671bc5cfb">
+  <source>Ribosome</source>
+<target>Ribosoom</target></trans-unit>
+<trans-unit id="sc756d9b7105ccf4d">
+  <source>Release Factor</source>
+<target>Vrystellingsfaktor</target></trans-unit>
+<trans-unit id="sa5d0762f345c17c0">
+  <source>Peptidyl Transferase</source>
+<target>Peptidieltransferase</target></trans-unit>
+<trans-unit id="s34de5e09f324aebe">
+  <source>Initiation Factor</source>
+<target>Inisiasiefaktor</target></trans-unit>
+<trans-unit id="sc1c543100106a311">
+  <source>Phenylalanine</source>
+<target>Fenielalanien</target></trans-unit>
+<trans-unit id="s565802a551a16af0">
+  <source>Leucine</source>
+<target>Leusien</target></trans-unit>
+<trans-unit id="sdddd1b134a8c1801">
+  <source>Isoleucine</source>
+<target>Isoleusien</target></trans-unit>
+<trans-unit id="s021b43e85a41a5ab">
+  <source>Methionine</source>
+<target>Metionien</target></trans-unit>
+<trans-unit id="sbfd91665dda3ab82">
+  <source>Valine</source>
+<target>Valien</target></trans-unit>
+<trans-unit id="s3394aa92066d72d1">
+  <source>Serine</source>
+<target>Serien</target></trans-unit>
+<trans-unit id="s714e9306d6fc5742">
+  <source>Proline</source>
+<target>Prolien</target></trans-unit>
+<trans-unit id="s72d29c02b0bd5009">
+  <source>Threonine</source>
+<target>Treonien</target></trans-unit>
+<trans-unit id="s5921bc054a7cc9cb">
+  <source>Alanine</source>
+<target>Alanien</target></trans-unit>
+<trans-unit id="sd7cbba428d17b394">
+  <source>Tyrosine</source>
+<target>Tirosien</target></trans-unit>
+<trans-unit id="sbd670435d4216f96">
+  <source>Histidine</source>
+<target>Histidien</target></trans-unit>
+<trans-unit id="s0ce47948e6075a11">
+  <source>Glutamine</source>
+<target>Glutamien</target></trans-unit>
+<trans-unit id="sd83d44e6c6331ca2">
+  <source>Asparagine</source>
+<target>Asparagien</target></trans-unit>
+<trans-unit id="s58671d5013d985d3">
+  <source>Lysine</source>
+<target>Lisien</target></trans-unit>
+<trans-unit id="s874c14972d61bd24">
+  <source>Aspartate</source>
+<target>Aspartaat</target></trans-unit>
+<trans-unit id="sc4b44d48bc52dae7">
+  <source>Glutamate</source>
+<target>Glutamaat</target></trans-unit>
+<trans-unit id="saddc3c690e0aec1d">
+  <source>Cysteine</source>
+<target>Sisteïen</target></trans-unit>
+<trans-unit id="s5ed188dc192a9dac">
+  <source>Tryptophan</source>
+<target>Triptofaan</target></trans-unit>
+<trans-unit id="s0d1f047ab3e6ee52">
+  <source>Arginine</source>
+<target>Arginien</target></trans-unit>
+<trans-unit id="s1b5446351d67c728">
+  <source>Glycine</source>
+<target>Glisien</target></trans-unit>
+<trans-unit id="sd9ad53251f2330a5">
+  <source>Stop</source>
+<target>Stop</target></trans-unit>
+<trans-unit id="s8e51036f04e2da66">
+  <source>Show DNA replication in the simulation.</source>
+<target>Wys DNS-replikasie in die simulasie.</target></trans-unit>
+<trans-unit id="sfd95250374de3ad2">
+  <source>Show DNA → mRNA in the simulation.</source>
+<target>Wys DNS → mRNA in die simulasie.</target></trans-unit>
+<trans-unit id="sbb202a68e18603be">
+  <source>Show mRNA → protein in the simulation.</source>
+<target>Wys mRNA → proteïen in die simulasie.</target></trans-unit>
+<trans-unit id="sf2329eb58502492f">
+  <source>Substitute, insert, or delete DNA bases.</source>
+<target>Vervang, voeg in of vee DNS-basisse in die simulasie uit.</target></trans-unit>
+<trans-unit id="s8c0f547a5d30ec41">
+  <source>Mutations complete in 1 step. Lesson complete</source>
+<target>Mutasies voltooi in 1 stap. Les voltooi</target></trans-unit>
+<trans-unit id="s0ab22ff5ee969925">
+  <source>Mutations complete in <x id="0" equiv-text="${n}"/> steps. Lesson complete</source>
+<target>Mutasies voltooi in <x id="0" equiv-text="${n}"/> stappe. Les voltooi</target></trans-unit>
+<trans-unit id="s3ac818c0f45f3971">
+  <source>Mutations complete in 1 step — continue to <x id="0" equiv-text="${nextLabel}"/>?</source>
+<target>Mutasies voltooi in 1 stap — gaan voort na <x id="0" equiv-text="${nextLabel}"/>?</target></trans-unit>
+<trans-unit id="sacce140196ab3015">
+  <source>Mutations complete in <x id="0" equiv-text="${n}"/> steps — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
+<target>Mutasies voltooi in <x id="0" equiv-text="${n}"/> stappe — gaan voort na <x id="1" equiv-text="${nextLabel}"/>?</target></trans-unit>
+<trans-unit id="sbbbe7c4091afb870">
+  <source>Lesson complete</source>
+<target>Les voltooi</target></trans-unit>
+<trans-unit id="s6924e77ccacbf07d">
+  <source><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}"/> complete — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
+<target><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}"/> voltooi — gaan voort na <x id="1" equiv-text="${nextLabel}"/>?</target></trans-unit>
+<trans-unit id="s41d21a050a929393">
+  <source>No molecule is needed at this position.</source>
+<target>Geen molekule is by hierdie posisie nodig nie.</target></trans-unit>
+<trans-unit id="sa2bb57bb0e9ec546">
+  <source>Wrong molecule for this phase.</source>
+<target>Verkeerde molekule vir hierdie fase.</target></trans-unit>
+<trans-unit id="s9c2a703fc0bcb17a">
+  <source>No molecule can be placed in this phase.</source>
+<target>Geen molekule kan in hierdie fase geplaas word nie.</target></trans-unit>
+<trans-unit id="scac71f78a1c25506">
+  <source>Replication is complete at this position.</source>
+<target>Replikasie is by hierdie posisie voltooi.</target></trans-unit>
+<trans-unit id="sd3259d2cc2743980">
+  <source>Wrong molecule for this position.</source>
+<target>Verkeerde molekule vir hierdie posisie.</target></trans-unit>
+<trans-unit id="s109fde6bd09eef65">
+  <source>No molecules are available for "<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}"/>" yet.</source>
+<target>Geen molekules is nog vir “<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}"/>” beskikbaar nie.</target></trans-unit>
+<trans-unit id="s2c91e81ad907fc23">
+  <source>Sub <x id="0" equiv-text="${pos}"/></source>
+<target>Vervang <x id="0" equiv-text="${pos}"/></target></trans-unit>
+<trans-unit id="sd2fe06f5c2d6ad31">
+  <source>Ins <x id="0" equiv-text="${pos}"/></source>
+<target>Voeg <x id="0" equiv-text="${pos}"/> in</target></trans-unit>
+<trans-unit id="s10a996dc5d35fea0">
+  <source>Del <x id="0" equiv-text="${pos}"/></source>
+<target>Vee <x id="0" equiv-text="${pos}"/> uit</target></trans-unit>
+<trans-unit id="s338cca2d2f313247">
+  <source>Start over</source>
+<target>Begin oor</target></trans-unit>
+<trans-unit id="s0b376cb27a56b5b3">
+  <source>Are you sure you want to reset the <x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}"/> phase?</source>
+<target>Wil jy die fase <x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}"/> terugstel?</target></trans-unit>
+<trans-unit id="sd33f0c822db5d41f">
+  <source>Are you sure you want to reset all of your progress?</source>
+<target>Wil jy al jou vordering terugstel?</target></trans-unit>
+<trans-unit id="s93791b69ba11e80e">
+  <source>Please enter an mRNA sequence using A, U, C, and G.</source>
+<target>Voer ’n mRNA-volgorde met A, U, C en G in.</target></trans-unit>
+<trans-unit id="s9ebd63b73d49b64e">
+  <source>Please enter the complete sequence first.</source>
+<target>Voer eers die volledige volgorde in.</target></trans-unit>
+<trans-unit id="sa0c7407a178d4a61">
+  <source>The sequence is not correct. Please try again.</source>
+<target>Die volgorde is verkeerd. Probeer weer.</target></trans-unit>
+<trans-unit id="sa4bcbb8c43aa27aa">
+  <source>This base does not fit here. Please try again.</source>
+<target>Hierdie basis pas nie hier nie. Probeer weer.</target></trans-unit>
+<trans-unit id="s697ee6c1ecbf8bf4">
+  <source>Protein before and after</source>
+<target>Proteïen voor en ná</target></trans-unit>
+<trans-unit id="s1788737137ec6d9e">
+  <source>Before</source>
+<target>Voor</target></trans-unit>
+<trans-unit id="sd7b3e01ac0e72549">
+  <source>After</source>
+<target>Ná</target></trans-unit>
+<trans-unit id="s57a6e8529754da27">
+  <source>Translation codon</source>
+<target>Translasiekodon</target></trans-unit>
+<trans-unit id="s0e5e929b674389e9">
+  <source>Transcription fork</source>
+<target>Transkripsievurk</target></trans-unit>
+<trans-unit id="sb893934e7d8cfc5f">
+  <source>Replication fork</source>
+<target>Replikasievurk</target></trans-unit>
+<trans-unit id="s23c9d410886429dc">
+  <source>Polypeptide</source>
+<target>Polipeptied</target></trans-unit>
+<trans-unit id="sad67374cd0335760">
+  <source>Enter a sequence to start</source>
+<target>Voer ’n volgorde in om te begin</target></trans-unit>
+<trans-unit id="s799ce683231bcb81">
+  <source>Lesson</source>
+<target>Les</target></trans-unit>
+<trans-unit id="s1125d159f7e64df5">
+  <source>Display</source>
+<target>Vertoon</target></trans-unit>
+<trans-unit id="sba73d05da08111b5">
+  <source>Restore default sequence and target</source>
+<target>Herstel verstekvolgorde en doelwit</target></trans-unit>
+<trans-unit id="s6abc78aa8fca1e4d">
+  <source>Restore the default DNA sequence and clear the protein target?</source>
+<target>Herstel die verstek-DNS-volgorde en maak die proteïendoelwit leeg?</target></trans-unit>
+<trans-unit id="s804979bf331d972c">
+  <source>Sequence length is not divisible by 3.</source>
+<target>Die volgordelengte is nie deur 3 deelbaar nie.</target></trans-unit>
+<trans-unit id="sab0af7e5faa140ae">
+  <source>No stop codon in the sequence.</source>
+<target>Geen stopkodon in die volgorde nie.</target></trans-unit>
+<trans-unit id="sb4c55a444948b16e">
+  <source>Sequence already matches the target protein.</source>
+<target>Die volgorde pas reeds by die teikenproteïen.</target></trans-unit>
+<trans-unit id="s2282b01cbcbf9c2b">
+  <source>No target is set for this task.</source>
+<target>Geen doelwit is vir hierdie taak gestel nie.</target></trans-unit>
+<trans-unit id="sa6e2aea999eece63">
+  <source>The target protein is not valid. Use three-letter names such as Met-Leu-Phe.</source>
+<target>Die teikenproteïen is ongeldig. Gebruik drielettername soos Met-Leu-Phe.</target></trans-unit>
+<trans-unit id="s95a5297e42475cf9">
+  <source>That is not the target yet.</source>
+<target>Dit is nog nie die doelwit nie.</target></trans-unit>
+<trans-unit id="s20af031bd95e56d5">
+  <source>The sequence ended without a stop codon.</source>
+<target>Die volgorde het sonder ’n stopkodon geëindig.</target></trans-unit>
+<trans-unit id="s85b83cbef03bb17a">
+  <source><x id="0" equiv-text="${runoff}"/> Lesson complete</source>
+<target><x id="0" equiv-text="${runoff}"/> Les voltooi</target></trans-unit>
+<trans-unit id="s7542b1dfcc5fafee">
+  <source><x id="0" equiv-text="${runoff}"/> Continue to <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}"/>?</source>
+<target><x id="0" equiv-text="${runoff}"/> Gaan voort na <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}"/>?</target></trans-unit>
+<trans-unit id="s2edec333da31d910">
+  <source>That amino acid does not match the current codon. Check the codon wheel and try again.</source>
+<target>Daardie aminosuur pas nie by die huidige kodon nie. Raadpleeg die kodonwiel en probeer weer.</target></trans-unit>
+<trans-unit id="s53812b8b97c36a50">
+  <source>Substitution</source>
+<target>Vervanging</target></trans-unit>
+<trans-unit id="s50489ffb1bde152e">
+  <source>Insertion</source>
+<target>Invoeging</target></trans-unit>
+<trans-unit id="s9d668a34af4128ff">
+  <source>Deletion</source>
+<target>Uitwissing</target></trans-unit>
+<trans-unit id="s5ada999b33ccc808">
+  <source>Insert</source>
+<target>Voeg in</target></trans-unit>
+<trans-unit id="s3ed7f5bc3a4ecbfc">
+  <source>Place the correct molecule at the fork to start.</source>
+<target>Sleep die korrekte molekule na die vurk in die simulasie om te begin.</target></trans-unit>
+<trans-unit id="sdca48c89098b4713">
+  <source>Place RNA polymerase at the fork to start.</source>
+<target>Sleep RNA-polimerase na die vurk in die simulasie om te begin.</target></trans-unit>
+<trans-unit id="sf6fe13ec38b3899c">
+  <source>Enter mRNA above, one base at a time.</source>
+<target>Voer mRNA hier bo in, een basis op ’n slag.</target></trans-unit>
+<trans-unit id="s556a97f8fac1163f">
+  <source>Enter the full mRNA above and tap Verify. Bases are checked one by one.</source>
+<target>Voer die volledige mRNA hier bo in en tik op Kontroleer. Basisse word een vir een gekontroleer.</target></trans-unit>
+<trans-unit id="sa67d37c5a5068ecf">
+  <source>Enter the full mRNA above and tap Verify.</source>
+<target>Voer die volledige mRNA hier bo in en tik op Kontroleer.</target></trans-unit>
+<trans-unit id="sf31894587b57d3d3">
+  <source>Add at least 3 bases to the template.</source>
+<target>Voeg minstens 3 basisse by die templaat in die simulasie.</target></trans-unit>
+<trans-unit id="s54802a0c13703508">
+  <source>Place the ribosome on the first codon.</source>
+<target>Plaas die ribosoom op die eerste kodon in die simulasie.</target></trans-unit>
+<trans-unit id="s2da686ea0118070f">
+  <source>Done without stop codon. Protein: <x id="0" equiv-text="${chain}"/></source>
+<target>Voltooi sonder stopkodon. Proteïen: <x id="0" equiv-text="${chain}"/></target></trans-unit>
+<trans-unit id="se0a503869fe73382">
+  <source>Done. Protein: <x id="0" equiv-text="${chain}"/></source>
+<target>Voltooi. Proteïen: <x id="0" equiv-text="${chain}"/></target></trans-unit>
+<trans-unit id="sffeb6238eaebaf45">
+  <source>Add more bases to continue.</source>
+<target>Voeg meer basisse in die simulasie by om voort te gaan.</target></trans-unit>
+<trans-unit id="s678a3faf3a9d9179">
+  <source>Drag the amino acid for <x id="0" equiv-text="${codon}"/> onto the ribosome.</source>
+<target>Sleep die aminosuur vir <x id="0" equiv-text="${codon}"/> na die ribosoom in die simulasie.</target></trans-unit>
+<trans-unit id="sf9b923b92eadb001">
+  <source>Open the codon wheel and drag the matching amino acid onto the ribosome.</source>
+<target>Maak die kodonwiel oop en sleep die passende aminosuur na die ribosoom.</target></trans-unit>
+<trans-unit id="sfc172b84bc43f33b">
+  <source>Choose a target protein in the list.</source>
+<target>Kies ’n teikenproteïen in die lys.</target></trans-unit>
+<trans-unit id="scebdc1744d29ef03">
+  <source>Change the DNA to produce <x id="0" equiv-text="${protein}"/>. Then tap Verify.</source>
+<target>Verander die DNS in die simulasie om <x id="0" equiv-text="${protein}"/> te kry. Tik dan op Kontroleer.</target></trans-unit>
+<trans-unit id="sba95fa977912fc92">
+  <source>Change the DNA to match the target. Then tap Verify.</source>
+<target>Verander die DNS in die simulasie om by die doelwit te pas. Tik dan op Kontroleer.</target></trans-unit>
+<trans-unit id="s85a8ea0f815496d6">
+  <source>Tap a base to substitute, insert, or delete.</source>
+<target>Tik op ’n basis om dit te vervang, in te voeg of uit te vee.</target></trans-unit>
+<trans-unit id="s2a0b8115d55a707d">
+  <source>Close codon reference</source>
+<target>Maak kodonverwysing toe</target></trans-unit>
+<trans-unit id="sc5bd0325ae8fcdef">
+  <source>Open codon reference</source>
+<target>Maak kodonverwysing oop</target></trans-unit>
+<trans-unit id="s17ff11b9db4f8ea1">
+  <source>Codon reference</source>
+<target>Kodonverwysing</target></trans-unit>
+<trans-unit id="sb601f2155ba0a663">
+  <source>Click an amino acid to add it to the goal.</source>
+<target>Klik op ’n aminosuur om dit by die doelwit te voeg.</target></trans-unit>
+<trans-unit id="sa714962540d54907">
+  <source>Amino acids</source>
+<target>Aminosure</target></trans-unit>
+<trans-unit id="s92db2a91389ecad6">
+  <source>Codon reference view</source>
+<target>Kodonverwysingaansig</target></trans-unit>
+<trans-unit id="sf3a969ef02d92b9c">
+  <source>Wheel</source>
+<target>Wiel</target></trans-unit>
+<trans-unit id="s3d249bb480032121">
+  <source>List</source>
+<target>Lys</target></trans-unit>
+<trans-unit id="s2ceb11be2290bb1b">
+  <source>Cancel</source>
+<target>Kanselleer</target></trans-unit>
+</body>
+</file>
+</xliff>

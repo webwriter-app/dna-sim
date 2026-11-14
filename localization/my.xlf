@@ -1,0 +1,548 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+<file target-language="my" source-language="en-US" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="s09786baf79ba0d31">
+  <source>Helicase</source>
+  <target>ဟယ်လီကေ့စ်</target></trans-unit>
+<trans-unit id="s5789f3e90d49dd41">
+  <source>RNA Polymerase</source>
+  <target>RNA ပေါ်လီမရေးစ်</target></trans-unit>
+<trans-unit id="s41d21a050a929393">
+  <source>No molecule is needed at this position.</source>
+  <target>ဤနေရာတွင် မော်လီကျူး မလိုအပ်ပါ။</target></trans-unit>
+<trans-unit id="sa2bb57bb0e9ec546">
+  <source>Wrong molecule for this phase.</source>
+  <target>ဤအဆင့်အတွက် မော်လီကျူး မှားနေသည်။</target></trans-unit>
+<trans-unit id="s9c2a703fc0bcb17a">
+  <source>No molecule can be placed in this phase.</source>
+  <target>ဤအဆင့်တွင် မော်လီကျူး ထား၍မရပါ။</target></trans-unit>
+<trans-unit id="scac71f78a1c25506">
+  <source>Replication is complete at this position.</source>
+  <target>ဤနေရာတွင် ပုံတူကူးခြင်း ပြီးစီးပါပြီ။</target></trans-unit>
+<trans-unit id="sd3259d2cc2743980">
+  <source>Wrong molecule for this position.</source>
+  <target>ဤနေရာအတွက် မော်လီကျူး မှားနေသည်။</target></trans-unit>
+<trans-unit id="s93791b69ba11e80e">
+  <source>Please enter an mRNA sequence using A, U, C, and G.</source>
+  <target>A၊ U၊ C နှင့် G ကို အသုံးပြု၍ mRNA အစဉ်ကို ထည့်ပါ။</target></trans-unit>
+<trans-unit id="s9ebd63b73d49b64e">
+  <source>Please enter the complete sequence first.</source>
+  <target>အစဉ်တစ်ခုလုံးကို ဦးစွာ ထည့်ပါ။</target></trans-unit>
+<trans-unit id="sa0c7407a178d4a61">
+  <source>The sequence is not correct. Please try again.</source>
+  <target>အစဉ် မမှန်ပါ။ ထပ်စမ်းကြည့်ပါ။</target></trans-unit>
+<trans-unit id="sa4bcbb8c43aa27aa">
+  <source>This base does not fit here. Please try again.</source>
+  <target>ဤဘေ့စ်နှင့် ဤနေရာ မကိုက်ညီပါ။ ထပ်စမ်းကြည့်ပါ။</target></trans-unit>
+<trans-unit id="s0e5e929b674389e9">
+  <source>Transcription fork</source>
+  <target>ကူးရေးခြင်း လမ်းခွဲ</target></trans-unit>
+<trans-unit id="sb893934e7d8cfc5f">
+  <source>Replication fork</source>
+  <target>ပုံတူကူးခြင်း လမ်းခွဲ</target></trans-unit>
+<trans-unit id="sad67374cd0335760">
+  <source>Enter a sequence to start</source>
+  <target>စတင်ရန် အစဉ်တစ်ခု ထည့်ပါ</target></trans-unit>
+<trans-unit id="s9c9fde4a33c0708d">
+  <source>Show hint</source>
+  <target>အရိပ်အမြွက် ပြပါ</target></trans-unit>
+<trans-unit id="se4ad372eccea1ed1">
+  <source>Phases</source>
+  <target>အဆင့်များ</target></trans-unit>
+<trans-unit id="s5eb9c175b78abf88">
+  <source>Sequence</source>
+  <target>အစဉ်</target></trans-unit>
+<trans-unit id="s6188be7afe533b79">
+  <source>Toolkit</source>
+  <target>ကိရိယာများ</target></trans-unit>
+<trans-unit id="s11b1dd90482cc58a">
+  <source>Main navigation</source>
+  <target>ပင်မ လမ်းညွှန်</target></trans-unit>
+<trans-unit id="s109fde6bd09eef65">
+  <source>No molecules are available for "<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}"/>" yet.</source>
+  <target>“<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}"/>” အတွက် အသုံးပြုနိုင်သည့် မော်လီကျူး မရှိသေးပါ။</target></trans-unit>
+<trans-unit id="s617aeac3c10c22ee">
+  <source>mRNA (5′ → 3′)</source>
+  <target>mRNA (5′ → 3′)</target></trans-unit>
+<trans-unit id="sc2b6c18334a4a2c4">
+  <source>Verify</source>
+  <target>စစ်ဆေးပါ</target></trans-unit>
+<trans-unit id="sfd69de53b512614c">
+  <source>Template strand (3′ → 5′)</source>
+  <target>ပုံစံခွက်ကြိုး (3′ → 5′)</target></trans-unit>
+<trans-unit id="sd2dcdd0542a8fea4">
+  <source>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}"/></source>
+  <target>အဆင့်- <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}"/></target></trans-unit>
+<trans-unit id="s168212e0837cec87">
+  <source>Biomolecule toolkit</source>
+  <target>ဇီဝမော်လီကျူး ကိရိယာများ</target></trans-unit>
+<trans-unit id="s38bf29b2e75f47b0">
+  <source>Add to goal</source>
+  <target>ရည်မှန်းချက်သို့ ထည့်ပါ</target></trans-unit>
+<trans-unit id="s24893a6832f0f492">
+  <source>Amino acid codon wheel</source>
+  <target>အမိုင်နိုအက်စစ် ကိုဒွန်ဘီး</target></trans-unit>
+<trans-unit id="s287f3acc3eb9b472">
+  <source>Search amino acid…</source>
+  <target>အမိုင်နိုအက်စစ် ရှာပါ…</target></trans-unit>
+<trans-unit id="s1c653e33ca520372">
+  <source>No matching amino acid.</source>
+  <target>ကိုက်ညီသည့် အမိုင်နိုအက်စစ် မရှိပါ။</target></trans-unit>
+<trans-unit id="s8eee4997d5077c4f">
+  <source>Next phase</source>
+  <target>နောက်အဆင့်</target></trans-unit>
+<trans-unit id="s94666bc4392af2e0">
+  <source>Protein</source>
+  <target>ပရိုတင်း</target></trans-unit>
+<trans-unit id="s7761bcd8570b355f">
+  <source>Need at least one full codon</source>
+  <target>အနည်းဆုံး ကိုဒွန်အပြည့်တစ်ခု လိုအပ်သည်</target></trans-unit>
+<trans-unit id="s038f32d1e53560d3">
+  <source>First codon is a stop</source>
+  <target>ပထမကိုဒွန်သည် ရပ်ကိုဒွန်ဖြစ်သည်</target></trans-unit>
+<trans-unit id="s1ccbca7e66155ca7">
+  <source>No polypeptide yet</source>
+  <target>ပေါ်လီပက်တိုက် မရှိသေးပါ</target></trans-unit>
+<trans-unit id="s2fa05f91c1baa29b">
+  <source>Remove <x id="0" equiv-text="${amino}"/></source>
+  <target><x id="0" equiv-text="${amino}"/> ကို ဖယ်ပါ</target></trans-unit>
+<trans-unit id="s3763f519c347a9f7">
+  <source>Now</source>
+  <target>လက်ရှိ</target></trans-unit>
+<trans-unit id="sc420f37e0d3ab496">
+  <source>Goal</source>
+  <target>ရည်မှန်းချက်</target></trans-unit>
+<trans-unit id="sac6b62745e086852">
+  <source>Set goal</source>
+  <target>ရည်မှန်းချက် သတ်မှတ်ပါ</target></trans-unit>
+<trans-unit id="sb6e3562f6d55a7cc">
+  <source>No target selected</source>
+  <target>ရည်မှန်းချက် မရွေးချယ်ရသေးပါ</target></trans-unit>
+<trans-unit id="sa47e8096a837775d">
+  <source>Steps (<x id="0" equiv-text="${stepCount}"/>)</source>
+  <target>လုပ်ဆောင်ချက်များ (<x id="0" equiv-text="${stepCount}"/>)</target></trans-unit>
+<trans-unit id="sd2023813cc70bf74">
+  <source>Steps</source>
+  <target>လုပ်ဆောင်ချက်များ</target></trans-unit>
+<trans-unit id="s0340219ffc4332bc">
+  <source>No mutations yet</source>
+  <target>ဗီဇပြောင်းလဲမှု မရှိသေးပါ</target></trans-unit>
+<trans-unit id="s245e84a8b135e5cb">
+  <source>Complete the previous phase first</source>
+  <target>ရှေ့အဆင့်ကို ဦးစွာ ပြီးအောင်လုပ်ပါ</target></trans-unit>
+<trans-unit id="s60d49bfe5a24a973">
+  <source>Reset all</source>
+  <target>အားလုံး ပြန်စပါ</target></trans-unit>
+<trans-unit id="s089316e8a1d10033">
+  <source>DNA Polymerase</source>
+  <target>DNA ပေါ်လီမရေးစ်</target></trans-unit>
+<trans-unit id="se152d63bc79170d8">
+  <source>Primase</source>
+  <target>ပရိုင်မေ့စ်</target></trans-unit>
+<trans-unit id="s2a15c8ca8c9a2d8e">
+  <source>Ligase</source>
+  <target>လိုင်ဂေ့စ်</target></trans-unit>
+<trans-unit id="se46865dbc5b25af4">
+  <source>Telomerase</source>
+  <target>တယ်လိုမရေးစ်</target></trans-unit>
+<trans-unit id="sa2dc00a7ad237d94">
+  <source>Activator</source>
+  <target>လှုံ့ဆော်ပစ္စည်း</target></trans-unit>
+<trans-unit id="sc40de2cffb1c2cde">
+  <source>Repressor</source>
+  <target>ဖိနှိပ်ပစ္စည်း</target></trans-unit>
+<trans-unit id="sb930b395d3c2705e">
+  <source>Spliceosome</source>
+  <target>စပလိုက်ဆိုဆိုမ်</target></trans-unit>
+<trans-unit id="sc756d9b7105ccf4d">
+  <source>Release Factor</source>
+  <target>လွှတ်ပေးသည့် အချက်</target></trans-unit>
+<trans-unit id="sa5d0762f345c17c0">
+  <source>Peptidyl Transferase</source>
+  <target>ပက်တီဒိုင်လ် ထရန်စဖာရေးစ်</target></trans-unit>
+<trans-unit id="s34de5e09f324aebe">
+  <source>Initiation Factor</source>
+  <target>စတင်စေသည့် အချက်</target></trans-unit>
+<trans-unit id="s338cca2d2f313247">
+  <source>Start over</source>
+  <target>အစမှ ပြန်စပါ</target></trans-unit>
+<trans-unit id="s0b376cb27a56b5b3">
+  <source>Are you sure you want to reset the <x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}"/> phase?</source>
+  <target><x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}"/> အဆင့်ကို ပြန်စလိုသည်မှာ သေချာပါသလား။</target></trans-unit>
+<trans-unit id="sd33f0c822db5d41f">
+  <source>Are you sure you want to reset all of your progress?</source>
+  <target>လုပ်ဆောင်ပြီးသမျှကို ပြန်စလိုသည်မှာ သေချာပါသလား။</target></trans-unit>
+<trans-unit id="s697ee6c1ecbf8bf4">
+  <source>Protein before and after</source>
+  <target>မပြောင်းမီနှင့် ပြောင်းပြီး ပရိုတင်း</target></trans-unit>
+<trans-unit id="s1788737137ec6d9e">
+  <source>Before</source>
+  <target>မပြောင်းမီ</target></trans-unit>
+<trans-unit id="sd7b3e01ac0e72549">
+  <source>After</source>
+  <target>ပြောင်းပြီး</target></trans-unit>
+<trans-unit id="s57a6e8529754da27">
+  <source>Translation codon</source>
+  <target>ဘာသာပြန်ခြင်း ကိုဒွန်</target></trans-unit>
+<trans-unit id="s7e9c8ef671bc5cfb">
+  <source>Ribosome</source>
+  <target>ရိုင်ဘိုဆိုမ်</target></trans-unit>
+<trans-unit id="s23c9d410886429dc">
+  <source>Polypeptide</source>
+  <target>ပေါ်လီပက်တိုက်</target></trans-unit>
+<trans-unit id="s804979bf331d972c">
+  <source>Sequence length is not divisible by 3.</source>
+  <target>အစဉ်အလျားကို ၃ ဖြင့် အကြွင်းမရှိ စား၍မရပါ။</target></trans-unit>
+<trans-unit id="sab0af7e5faa140ae">
+  <source>No stop codon in the sequence.</source>
+  <target>အစဉ်တွင် ရပ်ကိုဒွန် မရှိပါ။</target></trans-unit>
+<trans-unit id="sb4c55a444948b16e">
+  <source>Sequence already matches the target protein.</source>
+  <target>အစဉ်နှင့် ရည်မှန်းထားသော ပရိုတင်း ကိုက်ညီပြီးဖြစ်သည်။</target></trans-unit>
+<trans-unit id="s2282b01cbcbf9c2b">
+  <source>No target is set for this task.</source>
+  <target>ဤလုပ်ငန်းအတွက် ရည်မှန်းချက် မသတ်မှတ်ထားပါ။</target></trans-unit>
+<trans-unit id="sa6e2aea999eece63">
+  <source>The target protein is not valid. Use three-letter names such as Met-Leu-Phe.</source>
+  <target>ရည်မှန်းထားသော ပရိုတင်း မမှန်ပါ။ Met-Leu-Phe ကဲ့သို့ စာလုံးသုံးလုံးပါ အမည်များ သုံးပါ။</target></trans-unit>
+<trans-unit id="s95a5297e42475cf9">
+  <source>That is not the target yet.</source>
+  <target>ရည်မှန်းချက်နှင့် မကိုက်ညီသေးပါ။</target></trans-unit>
+<trans-unit id="s20af031bd95e56d5">
+  <source>The sequence ended without a stop codon.</source>
+  <target>အစဉ်သည် ရပ်ကိုဒွန်မပါဘဲ ဆုံးသွားသည်။</target></trans-unit>
+<trans-unit id="s85b83cbef03bb17a">
+  <source><x id="0" equiv-text="${runoff}"/> Lesson complete</source>
+  <target><x id="0" equiv-text="${runoff}"/> သင်ခန်းစာ ပြီးပါပြီ</target></trans-unit>
+<trans-unit id="s7542b1dfcc5fafee">
+  <source><x id="0" equiv-text="${runoff}"/> Continue to <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}"/>?</source>
+  <target><x id="0" equiv-text="${runoff}"/> <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}"/> သို့ ဆက်သွားမလား။</target></trans-unit>
+<trans-unit id="s8c0f547a5d30ec41">
+  <source>Mutations complete in 1 step. Lesson complete</source>
+  <target>ဗီဇပြောင်းလဲမှုကို တစ်ချက်တည်းဖြင့် ပြီးစီးသည်။ သင်ခန်းစာ ပြီးပါပြီ</target></trans-unit>
+<trans-unit id="s0ab22ff5ee969925">
+  <source>Mutations complete in <x id="0" equiv-text="${n}"/> steps. Lesson complete</source>
+  <target>ဗီဇပြောင်းလဲမှုကို <x id="0" equiv-text="${n}"/> ချက်ဖြင့် ပြီးစီးသည်။ သင်ခန်းစာ ပြီးပါပြီ</target></trans-unit>
+<trans-unit id="s3ac818c0f45f3971">
+  <source>Mutations complete in 1 step — continue to <x id="0" equiv-text="${nextLabel}"/>?</source>
+  <target>ဗီဇပြောင်းလဲမှုကို တစ်ချက်တည်းဖြင့် ပြီးစီးသည်။ <x id="0" equiv-text="${nextLabel}"/> သို့ ဆက်မလား။</target></trans-unit>
+<trans-unit id="sacce140196ab3015">
+  <source>Mutations complete in <x id="0" equiv-text="${n}"/> steps — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
+  <target>ဗီဇပြောင်းလဲမှုကို <x id="0" equiv-text="${n}"/> ချက်ဖြင့် ပြီးစီးသည်။ <x id="1" equiv-text="${nextLabel}"/> သို့ ဆက်မလား။</target></trans-unit>
+<trans-unit id="sbbbe7c4091afb870">
+  <source>Lesson complete</source>
+  <target>သင်ခန်းစာ ပြီးပါပြီ</target></trans-unit>
+<trans-unit id="s6924e77ccacbf07d">
+  <source><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}"/> complete — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
+  <target><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}"/> ပြီးပါပြီ။ <x id="1" equiv-text="${nextLabel}"/> သို့ ဆက်မလား။</target></trans-unit>
+<trans-unit id="s2edec333da31d910">
+  <source>That amino acid does not match the current codon. Check the codon wheel and try again.</source>
+  <target>အမိုင်နိုအက်စစ်သည် လက်ရှိကိုဒွန်နှင့် မကိုက်ညီပါ။ ကိုဒွန်ဘီးကို ကြည့်ပြီး ထပ်စမ်းကြည့်ပါ။</target></trans-unit>
+<trans-unit id="s53812b8b97c36a50">
+  <source>Substitution</source>
+  <target>အစားထိုးခြင်း</target></trans-unit>
+<trans-unit id="s50489ffb1bde152e">
+  <source>Insertion</source>
+  <target>ကြားထည့်ခြင်း</target></trans-unit>
+<trans-unit id="s9d668a34af4128ff">
+  <source>Deletion</source>
+  <target>ဖျက်ခြင်း</target></trans-unit>
+<trans-unit id="s5ada999b33ccc808">
+  <source>Insert</source>
+  <target>ကြားထည့်ပါ</target></trans-unit>
+<trans-unit id="s3ed7f5bc3a4ecbfc">
+  <source>Place the correct molecule at the fork to start.</source>
+  <target>စတင်ရန် မှန်ကန်သော မော်လီကျူးကို လမ်းခွဲတွင် ထားပါ။</target></trans-unit>
+<trans-unit id="sdca48c89098b4713">
+  <source>Place RNA polymerase at the fork to start.</source>
+  <target>စတင်ရန် RNA ပေါ်လီမရေးစ်ကို လမ်းခွဲတွင် ထားပါ။</target></trans-unit>
+<trans-unit id="sf6fe13ec38b3899c">
+  <source>Enter mRNA above, one base at a time.</source>
+  <target>အပေါ်တွင် mRNA ဘေ့စ်များကို တစ်ခုချင်း ထည့်ပါ။</target></trans-unit>
+<trans-unit id="s556a97f8fac1163f">
+  <source>Enter the full mRNA above and tap Verify. Bases are checked one by one.</source>
+  <target>အပေါ်တွင် mRNA အပြည့်ထည့်၍ စစ်ဆေးပါကို နှိပ်ပါ။ ဘေ့စ်များကို တစ်ခုချင်း စစ်ဆေးပါမည်။</target></trans-unit>
+<trans-unit id="sa67d37c5a5068ecf">
+  <source>Enter the full mRNA above and tap Verify.</source>
+  <target>အပေါ်တွင် mRNA အပြည့်ထည့်၍ စစ်ဆေးပါကို နှိပ်ပါ။</target></trans-unit>
+<trans-unit id="sf31894587b57d3d3">
+  <source>Add at least 3 bases to the template.</source>
+  <target>ပုံစံခွက်တွင် အနည်းဆုံး ဘေ့စ် ၃ ခု ထည့်ပါ။</target></trans-unit>
+<trans-unit id="s54802a0c13703508">
+  <source>Place the ribosome on the first codon.</source>
+  <target>ရိုင်ဘိုဆိုမ်ကို ပထမကိုဒွန်ပေါ်တွင် ထားပါ။</target></trans-unit>
+<trans-unit id="s2da686ea0118070f">
+  <source>Done without stop codon. Protein: <x id="0" equiv-text="${chain}"/></source>
+  <target>ရပ်ကိုဒွန်မပါဘဲ ပြီးစီးသည်။ ပရိုတင်း- <x id="0" equiv-text="${chain}"/></target></trans-unit>
+<trans-unit id="se0a503869fe73382">
+  <source>Done. Protein: <x id="0" equiv-text="${chain}"/></source>
+  <target>ပြီးစီးသည်။ ပရိုတင်း- <x id="0" equiv-text="${chain}"/></target></trans-unit>
+<trans-unit id="sffeb6238eaebaf45">
+  <source>Add more bases to continue.</source>
+  <target>ဆက်လုပ်ရန် ဘေ့စ်များ ထပ်ထည့်ပါ။</target></trans-unit>
+<trans-unit id="s678a3faf3a9d9179">
+  <source>Drag the amino acid for <x id="0" equiv-text="${codon}"/> onto the ribosome.</source>
+  <target><x id="0" equiv-text="${codon}"/> နှင့် ကိုက်ညီသည့် အမိုင်နိုအက်စစ်ကို ရိုင်ဘိုဆိုမ်ပေါ်သို့ ဆွဲချပါ။</target></trans-unit>
+<trans-unit id="sf9b923b92eadb001">
+  <source>Open the codon wheel and drag the matching amino acid onto the ribosome.</source>
+  <target>ကိုဒွန်ဘီးကို ဖွင့်ပြီး ကိုက်ညီသည့် အမိုင်နိုအက်စစ်ကို ရိုင်ဘိုဆိုမ်ပေါ်သို့ ဆွဲချပါ။</target></trans-unit>
+<trans-unit id="sfc172b84bc43f33b">
+  <source>Choose a target protein in the list.</source>
+  <target>စာရင်းမှ ရည်မှန်းထားသော ပရိုတင်းတစ်ခုကို ရွေးပါ။</target></trans-unit>
+<trans-unit id="scebdc1744d29ef03">
+  <source>Change the DNA to produce <x id="0" equiv-text="${protein}"/>. Then tap Verify.</source>
+  <target><x id="0" equiv-text="${protein}"/> ထုတ်လုပ်ရန် DNA ကို ပြောင်းလဲပါ။ ထို့နောက် စစ်ဆေးပါကို နှိပ်ပါ။</target></trans-unit>
+<trans-unit id="sba95fa977912fc92">
+  <source>Change the DNA to match the target. Then tap Verify.</source>
+  <target>ရည်မှန်းချက်နှင့် ကိုက်ညီရန် DNA ကို ပြောင်းလဲပါ။ ထို့နောက် စစ်ဆေးပါကို နှိပ်ပါ။</target></trans-unit>
+<trans-unit id="s85a8ea0f815496d6">
+  <source>Tap a base to substitute, insert, or delete.</source>
+  <target>အစားထိုးရန်၊ ကြားထည့်ရန် သို့မဟုတ် ဖျက်ရန် ဘေ့စ်တစ်ခုကို နှိပ်ပါ။</target></trans-unit>
+<trans-unit id="s2a0b8115d55a707d">
+  <source>Close codon reference</source>
+  <target>ကိုဒွန် အညွှန်းကို ပိတ်ပါ</target></trans-unit>
+<trans-unit id="sc5bd0325ae8fcdef">
+  <source>Open codon reference</source>
+  <target>ကိုဒွန် အညွှန်းကို ဖွင့်ပါ</target></trans-unit>
+<trans-unit id="s17ff11b9db4f8ea1">
+  <source>Codon reference</source>
+  <target>ကိုဒွန် အညွှန်း</target></trans-unit>
+<trans-unit id="sb601f2155ba0a663">
+  <source>Click an amino acid to add it to the goal.</source>
+  <target>ရည်မှန်းချက်သို့ ထည့်ရန် အမိုင်နိုအက်စစ်တစ်ခုကို နှိပ်ပါ။</target></trans-unit>
+<trans-unit id="sa714962540d54907">
+  <source>Amino acids</source>
+  <target>အမိုင်နိုအက်စစ်များ</target></trans-unit>
+<trans-unit id="s92db2a91389ecad6">
+  <source>Codon reference view</source>
+  <target>ကိုဒွန် အညွှန်းမြင်ကွင်း</target></trans-unit>
+<trans-unit id="sf3a969ef02d92b9c">
+  <source>Wheel</source>
+  <target>ဘီး</target></trans-unit>
+<trans-unit id="s3d249bb480032121">
+  <source>List</source>
+  <target>စာရင်း</target></trans-unit>
+<trans-unit id="s2ceb11be2290bb1b">
+  <source>Cancel</source>
+  <target>မလုပ်တော့ပါ</target></trans-unit>
+<trans-unit id="s10b847121e044069">
+  <source>Replication</source>
+  <target>ပုံတူကူးခြင်း</target></trans-unit>
+<trans-unit id="s8214d12128c7fa3f">
+  <source>Transcription</source>
+  <target>ကူးရေးခြင်း</target></trans-unit>
+<trans-unit id="sbef9e1084e69480c">
+  <source>Translation</source>
+  <target>ဘာသာပြန်ခြင်း</target></trans-unit>
+<trans-unit id="s5777bf3d61ed4d63">
+  <source>Mutations</source>
+  <target>ဗီဇပြောင်းလဲမှုများ</target></trans-unit>
+<trans-unit id="s17cb7d1e1cee3159">
+  <source>A, U, C, G</source>
+  <target>A၊ U၊ C၊ G</target></trans-unit>
+<trans-unit id="s2ca6fbd7c03f172a">
+  <source><x id="0" equiv-text="${this.mrnaRemaining}"/> base remaining</source>
+  <target>ဘေ့စ် <x id="0" equiv-text="${this.mrnaRemaining}"/> ခု ကျန်သည်</target></trans-unit>
+<trans-unit id="s8b29ff46839889f3">
+  <source><x id="0" equiv-text="${this.mrnaRemaining}"/> bases remaining</source>
+  <target>ဘေ့စ် <x id="0" equiv-text="${this.mrnaRemaining}"/> ခု ကျန်သည်</target></trans-unit>
+<trans-unit id="s9599807afc3aa65d">
+  <source>A, C, T or G</source>
+  <target>A၊ C၊ T သို့မဟုတ် G</target></trans-unit>
+<trans-unit id="s2a847aa5cd44c097">
+  <source>Visible phases</source>
+  <target>မြင်နိုင်သော အဆင့်များ</target></trans-unit>
+<trans-unit id="sc9aed757cb0921f6">
+  <source>Which processes students see. Choose phases reveals the individual toggles.</source>
+  <target>ကျောင်းသားများ မြင်ရမည့် လုပ်ငန်းစဉ်များ။ အဆင့်များရွေးပါက အဆင့်တစ်ခုချင်းစီ၏ ခလုတ်များ ပေါ်လာမည်။</target></trans-unit>
+<trans-unit id="s58d0cdc35411fd90">
+  <source>All phases</source>
+  <target>အဆင့်အားလုံး</target></trans-unit>
+<trans-unit id="s27e75f872acd9fcc">
+  <source>Choose phases</source>
+  <target>အဆင့်များ ရွေးပါ</target></trans-unit>
+<trans-unit id="s1ce1057fec59e955">
+  <source>Finish phases in order</source>
+  <target>အဆင့်များကို အစဉ်လိုက် ပြီးစေပါ</target></trans-unit>
+<trans-unit id="s75e1e6982e7fb3e4">
+  <source>Forward only after the previous visible phase is complete. Going back is always allowed.</source>
+  <target>ရှေ့တွင် မြင်နိုင်သော အဆင့်ပြီးမှသာ ဆက်သွားနိုင်သည်။ နောက်ပြန် အမြဲသွားနိုင်သည်။</target></trans-unit>
+<trans-unit id="s6417c89d1b7f451f">
+  <source>mRNA input</source>
+  <target>mRNA ထည့်သွင်းမှု</target></trans-unit>
+<trans-unit id="s32812b8edc0f9cf6">
+  <source>Base by base checks each base immediately. Whole sequence waits until Verify.</source>
+  <target>ဘေ့စ်တစ်ခုချင်းသည် ဘေ့စ်တစ်ခုစီကို ချက်ချင်း စစ်ဆေးသည်။ အစဉ်အပြည့်သည် စစ်ဆေးပါကို နှိပ်သည်အထိ စောင့်သည်။</target></trans-unit>
+<trans-unit id="s0810446cfacf5702">
+  <source>Base by base</source>
+  <target>ဘေ့စ်တစ်ခုချင်း</target></trans-unit>
+<trans-unit id="s927e02aedbb21001">
+  <source>Whole sequence</source>
+  <target>အစဉ်အပြည့်</target></trans-unit>
+<trans-unit id="s01a481ba6d085da0">
+  <source>Sequence check</source>
+  <target>အစဉ် စစ်ဆေးမှု</target></trans-unit>
+<trans-unit id="s593435e41145e82f">
+  <source>Instant: the correct prefix stays, the first wrong base flashes. With animation: base by base.</source>
+  <target>ချက်ချင်း- မှန်သည့် ရှေ့ပိုင်းကို ထားပြီး ပထမမှားသည့် ဘေ့စ် လင်းလက်မည်။ လှုပ်ရှားပုံဖြင့်- တစ်ခုချင်း စစ်မည်။</target></trans-unit>
+<trans-unit id="s619c213c4b109eb2">
+  <source>Instant</source>
+  <target>ချက်ချင်း</target></trans-unit>
+<trans-unit id="sac24f62c5aa1b7f3">
+  <source>With animation</source>
+  <target>လှုပ်ရှားပုံဖြင့်</target></trans-unit>
+<trans-unit id="s03ee3cfb0919c62c">
+  <source>Task</source>
+  <target>လုပ်ငန်း</target></trans-unit>
+<trans-unit id="s02a70051c874eafe">
+  <source>Free mutation</source>
+  <target>စိတ်ကြိုက် ဗီဇပြောင်းလဲမှု</target></trans-unit>
+<trans-unit id="sc8bad1059d4f26d3">
+  <source>Protein goal</source>
+  <target>ပရိုတင်း ရည်မှန်းချက်</target></trans-unit>
+<trans-unit id="sc65f1617b17fbf29">
+  <source>Mutations apply to all phases</source>
+  <target>ဗီဇပြောင်းလဲမှုကို အဆင့်အားလုံးတွင် အသုံးပြုပါ</target></trans-unit>
+<trans-unit id="s61bd9d8bf6b0328e">
+  <source>On: DNA edits also apply to replication, transcription, and translation. Off: Mutations tab only.</source>
+  <target>ဖွင့်ထားလျှင် DNA ပြောင်းလဲမှုကို ပုံတူကူးခြင်း၊ ကူးရေးခြင်းနှင့် ဘာသာပြန်ခြင်းတွင်လည်း အသုံးပြုသည်။ ပိတ်ထားလျှင် ဗီဇပြောင်းလဲမှု ကဏ္ဍတွင်သာ။</target></trans-unit>
+<trans-unit id="s1125d159f7e64df5">
+  <source>Display</source>
+  <target>ပြသမှု</target></trans-unit>
+<trans-unit id="sb67b82120563c611">
+  <source>Hints</source>
+  <target>အရိပ်အမြွက်များ</target></trans-unit>
+<trans-unit id="s4b4f57244195ad70">
+  <source>Short info cards on the canvas.</source>
+  <target>လုပ်ငန်းခွင်ပေါ်ရှိ သတင်းအချက်အလက် ကတ်တိုများ။</target></trans-unit>
+<trans-unit id="s66889c0d80c226c0">
+  <source>Sequence tab for students</source>
+  <target>ကျောင်းသားများအတွက် အစဉ် ကဏ္ဍ</target></trans-unit>
+<trans-unit id="sd19142a0bc9cb803">
+  <source>Students see the Sequence tab. Teachers always see it.</source>
+  <target>ကျောင်းသားများသည် အစဉ် ကဏ္ဍကို မြင်ရမည်။ ဆရာများသည် အမြဲမြင်ရသည်။</target></trans-unit>
+<trans-unit id="s3316194718a01c72">
+  <source>Codon dividers</source>
+  <target>ကိုဒွန် ပိုင်းခြားမျဉ်းများ</target></trans-unit>
+<trans-unit id="s10d01326a6a440ca">
+  <source>Lines between triplets in Mutations and Translation. Leftover bases are not grouped.</source>
+  <target>ဗီဇပြောင်းလဲမှုနှင့် ဘာသာပြန်ခြင်းတွင် သုံးခုစီအုပ်စုများအကြား မျဉ်းများ။ ကျန်ဘေ့စ်များကို အုပ်စုမဖွဲ့ပါ။</target></trans-unit>
+<trans-unit id="sbda51f19dde1c5ab">
+  <source>Highlight stop codons</source>
+  <target>ရပ်ကိုဒွန်များကို ထင်ရှားအောင်ပြပါ</target></trans-unit>
+<trans-unit id="s8f541de5ce0a6c98">
+  <source>Display only. Translation still stops when this is off.</source>
+  <target>ပြသမှုအတွက်သာ ဖြစ်သည်။ ၎င်းကို ပိတ်ထားလျှင်လည်း ဘာသာပြန်ခြင်း ရပ်မည်။</target></trans-unit>
+<trans-unit id="s75f8028fe9fdc992">
+  <source>Animation speed</source>
+  <target>လှုပ်ရှားပုံ အမြန်နှုန်း</target></trans-unit>
+<trans-unit id="sb01a02540766bd7b">
+  <source>Speed of replication, transcription, and translation (0.5–2×).</source>
+  <target>ပုံတူကူးခြင်း၊ ကူးရေးခြင်းနှင့် ဘာသာပြန်ခြင်း အမြန်နှုန်း (0.5–2×)။</target></trans-unit>
+<trans-unit id="sc1c543100106a311">
+  <source>Phenylalanine</source>
+  <target>ဖီနိုင်းလ်အလနင်း</target></trans-unit>
+<trans-unit id="s565802a551a16af0">
+  <source>Leucine</source>
+  <target>လူစင်း</target></trans-unit>
+<trans-unit id="sdddd1b134a8c1801">
+  <source>Isoleucine</source>
+  <target>အိုင်ဆိုလူစင်း</target></trans-unit>
+<trans-unit id="s021b43e85a41a5ab">
+  <source>Methionine</source>
+  <target>မက်သိုင်အိုနင်း</target></trans-unit>
+<trans-unit id="sbfd91665dda3ab82">
+  <source>Valine</source>
+  <target>ဗေးလင်း</target></trans-unit>
+<trans-unit id="s3394aa92066d72d1">
+  <source>Serine</source>
+  <target>ဆာရင်း</target></trans-unit>
+<trans-unit id="s714e9306d6fc5742">
+  <source>Proline</source>
+  <target>ပရိုလင်း</target></trans-unit>
+<trans-unit id="s72d29c02b0bd5009">
+  <source>Threonine</source>
+  <target>သရီယိုနင်း</target></trans-unit>
+<trans-unit id="s5921bc054a7cc9cb">
+  <source>Alanine</source>
+  <target>အလနင်း</target></trans-unit>
+<trans-unit id="sd7cbba428d17b394">
+  <source>Tyrosine</source>
+  <target>တိုက်ရိုစင်း</target></trans-unit>
+<trans-unit id="sbd670435d4216f96">
+  <source>Histidine</source>
+  <target>ဟစ်စတီဒင်း</target></trans-unit>
+<trans-unit id="s0ce47948e6075a11">
+  <source>Glutamine</source>
+  <target>ဂလူတမင်း</target></trans-unit>
+<trans-unit id="sd83d44e6c6331ca2">
+  <source>Asparagine</source>
+  <target>အက်စ်ပါရာဂျင်း</target></trans-unit>
+<trans-unit id="s58671d5013d985d3">
+  <source>Lysine</source>
+  <target>လိုင်စင်း</target></trans-unit>
+<trans-unit id="s874c14972d61bd24">
+  <source>Aspartate</source>
+  <target>အက်စ်ပါတိတ်</target></trans-unit>
+<trans-unit id="sc4b44d48bc52dae7">
+  <source>Glutamate</source>
+  <target>ဂလူတမိတ်</target></trans-unit>
+<trans-unit id="saddc3c690e0aec1d">
+  <source>Cysteine</source>
+  <target>ဆစ်စတီးင်း</target></trans-unit>
+<trans-unit id="s5ed188dc192a9dac">
+  <source>Tryptophan</source>
+  <target>ထရစ်ပ်တိုဖန်</target></trans-unit>
+<trans-unit id="s0d1f047ab3e6ee52">
+  <source>Arginine</source>
+  <target>အာဂျီနင်း</target></trans-unit>
+<trans-unit id="s1b5446351d67c728">
+  <source>Glycine</source>
+  <target>ဂလိုင်စင်း</target></trans-unit>
+<trans-unit id="sd9ad53251f2330a5">
+  <source>Stop</source>
+  <target>ရပ်</target></trans-unit>
+<trans-unit id="s8e51036f04e2da66">
+  <source>Show DNA replication in the simulation.</source>
+  <target>သရုပ်ပြစနစ်တွင် DNA ပုံတူကူးခြင်းကို ပြပါ။</target></trans-unit>
+<trans-unit id="sfd95250374de3ad2">
+  <source>Show DNA → mRNA in the simulation.</source>
+  <target>သရုပ်ပြစနစ်တွင် DNA → mRNA ကို ပြပါ။</target></trans-unit>
+<trans-unit id="sbb202a68e18603be">
+  <source>Show mRNA → protein in the simulation.</source>
+  <target>သရုပ်ပြစနစ်တွင် mRNA → ပရိုတင်းကို ပြပါ။</target></trans-unit>
+<trans-unit id="sf2329eb58502492f">
+  <source>Substitute, insert, or delete DNA bases.</source>
+  <target>DNA ဘေ့စ်များကို အစားထိုးပါ၊ ကြားထည့်ပါ သို့မဟုတ် ဖျက်ပါ။</target></trans-unit>
+<trans-unit id="s2c91e81ad907fc23">
+  <source>Sub <x id="0" equiv-text="${pos}"/></source>
+  <target>အစားထိုး <x id="0" equiv-text="${pos}"/></target></trans-unit>
+<trans-unit id="sd2fe06f5c2d6ad31">
+  <source>Ins <x id="0" equiv-text="${pos}"/></source>
+  <target>ကြားထည့် <x id="0" equiv-text="${pos}"/></target></trans-unit>
+<trans-unit id="s10a996dc5d35fea0">
+  <source>Del <x id="0" equiv-text="${pos}"/></source>
+  <target>ဖျက် <x id="0" equiv-text="${pos}"/></target></trans-unit>
+
+<trans-unit id="s799ce683231bcb81">
+  <source>Lesson</source>
+  <target>သင်ခန်းစာ</target></trans-unit>
+<trans-unit id="s61e7de489db05817">
+  <source>DNA sequence</source>
+  <target>DNA အစဉ်</target></trans-unit>
+<trans-unit id="s73a6524fbab29d6f">
+  <source>Target protein</source>
+  <target>ရည်မှန်းထားသော ပရိုတင်း</target></trans-unit>
+<trans-unit id="se492a93ea15c6ce4">
+  <source>Allow students to pan and zoom</source>
+  <target>ကျောင်းသားများကို မြင်ကွင်းရွှေ့ရန်နှင့် ချုံ့ချဲ့ရန် ခွင့်ပြုပါ</target></trans-unit>
+<trans-unit id="sba73d05da08111b5">
+  <source>Restore default sequence and target</source>
+  <target>မူလအစဉ်နှင့် ရည်မှန်းချက်ကို ပြန်ထားပါ</target></trans-unit>
+<trans-unit id="s6abc78aa8fca1e4d">
+  <source>Restore the default DNA sequence and clear the protein target?</source>
+  <target>မူလ DNA အစဉ်ကို ပြန်ထားပြီး ပရိုတင်း ရည်မှန်းချက်ကို ဖျက်မလား။</target></trans-unit>
+</body>
+</file>
+</xliff>
