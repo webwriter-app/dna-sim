@@ -138,22 +138,28 @@
   "license": "MIT",
   "author": "Jeremy Poroye",
   "scripts": {
-    "prepublishOnly": "npx @webwriter/build",
-    "dev": "npx @webwriter/build dev",
-    "localize": "node localization/build-locales.mjs",
+    "prepublishOnly": "npx @webwriter/build --shared-dependencies",
+    "dev": "npx @webwriter/build dev --shared-dependencies",
+    "localize": "node scripts/build-locales.mjs",
     "typecheck": "tsc --noEmit",
-    "localize:translate": "lit-localize extract && npx @webwriter/build localize && npm run localize",
-    "test": "node tests/chrome-regression.mjs"
+    "localize:translate": "lit-localize extract && npx @webwriter/build localize && npm run localize"
   },
   "dependencies": {
     "@lit/localize": "^0.12.2",
     "@shoelace-style/shoelace": "^2.20.1",
-    "@webwriter/lit": "^3.0.0",
-    "lit": "^3"
+    "@tabler/icons": "^3.52.0",
+    "@webwriter/lit": "^3.2.0",
+    "@webwriter/widget": "^1.2.0",
+    "lit": "^3.3.0"
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.8",
-    "@webwriter/build": "^1.13.1"
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "@webwriter/build": "^1.14.0",
+    "chai": "^6.3.0",
+    "mocha": "^12.0.3",
+    "typescript": "^7.0.2"
   },
   "overrides": {
     "@aidenlx/esbuild-plugin-inline-worker": {
@@ -163,13 +169,25 @@
   },
   "exports": {
     "./widgets/webwriter-dna-simulation.*": {
-      "source": "./widgets/webwriter-dna-simulation.ts",
+      "source": "./src/widgets/webwriter-dna-simulation.ts",
       "default": "./dist/widgets/webwriter-dna-simulation.*"
     },
     "./icon": "./icon.svg",
     "./editing-config.json": "./editing-config.json",
     "./snippets/dna-simulation.html": "./snippets/dna-simulation.html",
-    "./custom-elements.json": "./custom-elements.json"
+    "./custom-elements.json": "./custom-elements.json",
+    "./tests/data.*": {
+      "source": "./tests/data.test.ts",
+      "default": "./dist/tests/data.*"
+    },
+    "./tests/language.*": {
+      "source": "./tests/language.test.ts",
+      "default": "./dist/tests/language.*"
+    },
+    "./tests/simulation.*": {
+      "source": "./tests/simulation.test.ts",
+      "default": "./dist/tests/simulation.*"
+    }
   },
   "editingConfig": {
     "./snippets/dna-simulation": {}
