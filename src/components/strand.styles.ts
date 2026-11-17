@@ -132,10 +132,6 @@ export const strandStyles = css`
     animation: molecule-snap-in calc(0.35s / var(--dna-anim-speed)) ease-out;
   }
 
-  .molecule-snapped.is-fading-out {
-    animation: molecule-snap-out calc(0.35s / var(--dna-anim-speed)) ease forwards;
-  }
-
   /* Helicase arcs up-right and fades out after the last base pair splits. */
   .molecule-snapped.is-molecule-exit {
     transform-origin: 50% 100%;
@@ -194,11 +190,6 @@ export const strandStyles = css`
 
   .molecule-snapped img:active {
     cursor: grabbing;
-  }
-
-  .molecule-snapped.is-fading-out img {
-    pointer-events: none;
-    cursor: default;
   }
 
   .ribosome-inside {

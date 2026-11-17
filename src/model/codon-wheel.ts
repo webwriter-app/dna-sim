@@ -1,8 +1,5 @@
 import {GENETIC_CODE, isStartCodon, isStopCodon} from "./translation"
 
-/** Drag MIME for amino acids pulled from the codon wheel. */
-export const AMINO_DRAG_TYPE = "application/x-dna-amino-acid"
-
 export const AA_ONE_LETTER: Record<string, string> = {
   Phe: "F", Leu: "L", Ile: "I", Met: "M", Val: "V",
   Ser: "S", Pro: "P", Thr: "T", Ala: "A", Tyr: "Y",

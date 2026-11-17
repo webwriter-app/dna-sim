@@ -2,7 +2,7 @@
 import "mocha/mocha.js"
 import {assert} from "chai"
 import {getMochaConfig} from "@webwriter/build/test"
-import {mount, ready, reset, until, type Widget} from "./helpers"
+import {ready, reset, until, type Widget} from "./helpers"
 
 mocha.setup(getMochaConfig())
 

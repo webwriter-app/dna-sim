@@ -170,18 +170,3 @@ export function verifyMrnaInput(
   }
   return {ok: true, matchLength}
 }
-
-export function mrnaInputErrorMessage(msg: MsgFn, result: Extract<MrnaVerifyResult, {ok: false}>): string {
-  if (!result.got) {
-    return mrnaEmptyMessage(msg)
-  }
-  return mrnaIncorrectMessage(msg)
-}
-
-export function mrnaIncompleteMessageForDraft(
-  msg: MsgFn,
-  _typedLength: number,
-  _requiredLength: number,
-): string {
-  return mrnaIncompleteMessage(msg)
-}

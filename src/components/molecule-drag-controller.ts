@@ -4,7 +4,6 @@ import {
   MOLECULE_DRAG_SOURCE,
   MOLECULE_DRAG_TYPE,
   type BaukastenMolecule,
-  type MoleculeDragSource,
 } from "./baukasten"
 import {MOLECULE_DROP_SIZE, type DropFeedback} from "../model/molecule-drop"
 
@@ -44,7 +43,6 @@ export class MoleculeDragController implements ReactiveController {
   slotSnapFadeOut = false
 
   private _slotDragDepth = 0
-  private _dragSource: MoleculeDragSource | null = null
 
   constructor(private readonly _host: ReactiveControllerHost & MoleculeDragHost) {
     _host.addController(this)
@@ -75,7 +73,6 @@ export class MoleculeDragController implements ReactiveController {
         chip?.querySelector(".baukasten-molecule") ?? (e.target as Element | null)
       if (dragImage) e.dataTransfer.setDragImage(dragImage, 18, 18)
     }
-    this._dragSource = "baukasten"
     this.draggingMolecule = molecule
     this.dropFeedback = "none"
     this._host.requestUpdate()
@@ -101,7 +98,7 @@ export class MoleculeDragController implements ReactiveController {
     this.dropSlotHover = true
   }
 
-  readonly onSlotDragLeave = (e: DragEvent) => {
+  readonly onSlotDragLeave = () => {
     if (!this.draggingMolecule) return
     this._slotDragDepth = Math.max(0, this._slotDragDepth - 1)
     if (this._slotDragDepth === 0) {
@@ -237,7 +234,6 @@ export class MoleculeDragController implements ReactiveController {
 
   clear() {
     this.draggingMolecule = null
-    this._dragSource = null
     this.dropSlotHover = false
     this._slotDragDepth = 0
   }

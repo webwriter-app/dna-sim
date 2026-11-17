@@ -32,10 +32,6 @@ const AMINO_ACID_LOOKUP = new Map(
   AMINO_ACID_NAMES.map((name) => [name.toLowerCase(), name]),
 )
 
-export const AMINO_ACID_PICKER_NAMES: readonly string[] = [...AMINO_ACID_NAMES].sort(
-  (a, b) => a.localeCompare(b),
-)
-
 export function mutationTargetChain(raw: unknown): string[] {
   const parsed = parseTargetProtein(raw)
   return parsed.ok ? parsed.chain : []

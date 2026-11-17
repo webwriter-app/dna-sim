@@ -372,17 +372,6 @@ export const translationStyles = css`
     }
   }
 
-  @keyframes molecule-snap-out {
-    from {
-      opacity: 1;
-      transform: scale(1);
-    }
-    to {
-      opacity: 0;
-      transform: scale(0.82);
-    }
-  }
-
   .strand-connector {
     position: absolute;
     height: 4px;

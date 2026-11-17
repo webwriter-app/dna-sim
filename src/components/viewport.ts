@@ -101,13 +101,13 @@ export class ViewportController {
     this._notifyUserPanZoom()
   }
 
-  pointerMove(e: PointerEvent, viewportEl: HTMLElement) {
+  pointerMove(e: PointerEvent) {
     if (this._pointers.has(e.pointerId)) {
       this._pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
     }
 
     if (this._pointers.size === 2 && this._pinch) {
-      this._updatePinch(viewportEl)
+      this._updatePinch()
       return
     }
 
@@ -240,7 +240,7 @@ export class ViewportController {
     }
   }
 
-  private _updatePinch(viewportEl: HTMLElement) {
+  private _updatePinch() {
     if (!this._pinch) return
     const pts = [...this._pointers.values()]
     const dx = pts[1].x - pts[0].x

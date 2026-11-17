@@ -350,7 +350,6 @@ export function renderTranslationTrnas(
 /** Base-pair "rungs" between a correctly-matched tRNA's anticodon and the mRNA codon, same idea as .bp-bond in Replication. */
 export function renderTrnaBonds(
   vm: StrandViewModel,
-  strandH: number,
 ): TemplateResult | null {
   const candidates = [
     ...(vm.translation?.dockedTrnas ?? []),
@@ -459,7 +458,7 @@ export function renderTranslationStrand(msg: MsgFn, vm: StrandViewModel): Templa
         <div class="strand-pairs-wrap" style="height:${strandH}px; width:${pairsW}px">
           ${renderEnzymeSlot(msg, vm, strandH)}
           ${renderRibosomeInside(vm, strandH)}
-          ${renderTrnaBonds(vm, strandH)}
+          ${renderTrnaBonds(vm)}
           ${renderTranslationConnectors(mrna)}
           <div class="strand-pairs">${pairs}</div>
           ${renderTranslationTrnas(vm, strandH)}

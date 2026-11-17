@@ -21,7 +21,6 @@ export class DnaCanvasAlert extends LitElementWw {
   @property({type: Number}) accessor duration = CANVAS_ERROR_ALERT_MS
 
   private _outsideClickListening = false
-  private _outsideFrame = 0
   private _suppressDismiss = false
 
   disconnectedCallback() {
@@ -53,7 +52,7 @@ export class DnaCanvasAlert extends LitElementWw {
     if (!this.isConnected) return
     await alert.show()
     if (!this.isConnected) return
-    this._outsideFrame = requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
       if (this.isConnected) this._ensureOutsideClick()
     })
   }

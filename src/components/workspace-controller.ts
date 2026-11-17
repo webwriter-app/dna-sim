@@ -429,9 +429,7 @@ export class WorkspaceController implements ReactiveController {
   }
 
   private _onPointerMove = (e: PointerEvent) => {
-    const vp = this._viewportEl
-    if (!vp) return
-    this.vp.pointerMove(e, vp)
+    this.vp.pointerMove(e)
   }
 
   private _onPointerUp = (e: PointerEvent) => {

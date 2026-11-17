@@ -100,13 +100,6 @@ export function writePhaseEnableFlag(
   writeToggle(el, phaseEnableAttribute(key), phaseEnableHideAttribute(key), on)
 }
 
-export function resolvePhaseEnableFlags(
-  mode: PhaseSetMode,
-  flags: PhaseEnableFlags,
-): PhaseEnableFlags {
-  return mode === "custom" ? flags : ALL_PHASES_ENABLED
-}
-
 /**
  * Parse a persisted boolean attribute.
  * Default-true options must store `"true"` / `"false"`. Lit's Boolean type
@@ -213,20 +206,6 @@ export function resolveVisiblePhases(
   if (mode !== "custom") return [...CANONICAL_PHASES]
   const enabled = enabledPhasesFromFlags(flags)
   return enabled.length ? enabled : ["Replication"]
-}
-
-export function firstEnabledPhase(flags: PhaseEnableFlags): SimulationPhase {
-  return enabledPhasesFromFlags(flags)[0] ?? "Replication"
-}
-
-export function nextEnabledPhase(
-  flags: PhaseEnableFlags,
-  current: string,
-): SimulationPhase | null {
-  const enabled = enabledPhasesFromFlags(flags)
-  const i = enabled.indexOf(current as SimulationPhase)
-  if (i < 0) return enabled[0] ?? null
-  return enabled[i + 1] ?? null
 }
 
   /** Forward jumps require every earlier visible phase to be complete; going back is always allowed. */

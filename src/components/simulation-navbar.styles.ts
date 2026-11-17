@@ -93,11 +93,6 @@ export const simulationNavbarStyles = css`
     max-width: 18rem;
   }
 
-  .phase-bar-success {
-    color: #15803d;
-    font-weight: 600;
-  }
-
   .mutation-steps-dropdown {
     --sl-panel-background-color: #ffffff;
     --sl-panel-border-color: #e2e8f0;

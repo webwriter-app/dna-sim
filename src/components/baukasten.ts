@@ -102,7 +102,6 @@ export function baukastenForPhase(
 export const MOLECULE_DRAG_TYPE = "application/x-dna-molecule"
 export const MOLECULE_DRAG_SOURCE = "application/x-dna-molecule-source"
 
-export type MoleculeDragSource = "baukasten" | "slot"
 
 export function moleculeById(msg: MsgFn, id: string): BaukastenMolecule | undefined {
   const entry = MOLECULE_CATALOG[id]

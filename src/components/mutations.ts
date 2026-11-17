@@ -35,11 +35,6 @@ export function sanitizeDnaBase(raw: string): DnaBase | null {
   return DNA_BASES.has(base) ? (base as DnaBase) : null
 }
 
-export function complementDnaBase(base: string): DnaBase | null {
-  const b = sanitizeDnaBase(base)
-  return b === null ? null : COMP_DNA_BASE[b]
-}
-
 /**
  * Map a base the user chose for the *clicked* strand into the template-strand
  * value we actually store in `dnaSequence`.
@@ -115,18 +110,6 @@ export function formatMutationStepKindLabel(msg: MsgFn, step: MutationStep): str
   if (step.kind === "substitution") return msg(str`Sub ${pos}`)
   if (step.kind === "insertion") return msg(str`Ins ${pos}`)
   return msg(str`Del ${pos}`)
-}
-
-/** Compact chip label including bases, 1-based position on the template (3′ → 5′). */
-export function formatMutationStepLabel(msg: MsgFn, step: MutationStep): string {
-  const prefix = formatMutationStepKindLabel(msg, step)
-  if (step.kind === "substitution") {
-    return `${prefix} ${step.from ?? "?"}→${step.to ?? "?"}`
-  }
-  if (step.kind === "insertion") {
-    return `${prefix} ${step.to ?? "?"}`
-  }
-  return prefix
 }
 
 export function applyMutationStep(sequence: string, step: MutationStep): string | null {

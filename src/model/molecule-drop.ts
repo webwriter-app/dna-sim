@@ -102,7 +102,6 @@ export function expectedMoleculeId(
 export function dropErrorMessage(
   msg: MsgFn,
   phase: string,
-  droppedId: string,
   expectedId: string | null,
 ): string {
   if (phase === "Transcription" || phase === "Translation") {

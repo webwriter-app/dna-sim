@@ -7,7 +7,7 @@ import {
   expectedRnaBase,
   isTranscriptionComplete,
   mrnaEmptyMessage,
-  mrnaIncompleteMessageForDraft,
+  mrnaIncompleteMessage,
   mrnaIncorrectMessage,
   mrnaWrongBaseMessage,
   sanitizeMrnaInput,
@@ -440,7 +440,7 @@ export class TranscriptionController implements ReactiveController {
       return
     }
     if (this.mrnaDraft.length < targetLen) {
-      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this._host.msg, this.mrnaDraft.length, targetLen))
+      this._host.showErrorAlert(mrnaIncompleteMessage(this._host.msg))
       return
     }
 
@@ -464,7 +464,7 @@ export class TranscriptionController implements ReactiveController {
       return
     }
     if (result.matchLength < targetLen) {
-      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this._host.msg, this.mrnaDraft.length, targetLen))
+      this._host.showErrorAlert(mrnaIncompleteMessage(this._host.msg))
       return
     }
 
@@ -484,7 +484,7 @@ export class TranscriptionController implements ReactiveController {
       return
     }
     if (this.mrnaDraft.length < targetLen) {
-      this._host.showErrorAlert(mrnaIncompleteMessageForDraft(this._host.msg, this.mrnaDraft.length, targetLen))
+      this._host.showErrorAlert(mrnaIncompleteMessage(this._host.msg))
       return
     }
 

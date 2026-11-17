@@ -411,7 +411,7 @@ export class EnzymeController implements ReactiveController {
     }
 
     this.host.moleculeDrag.showDropError(
-      dropErrorMessage(this.host.msg, this.host.currentPhase, droppedId, expected),
+      dropErrorMessage(this.host.msg, this.host.currentPhase, expected),
       droppedId,
     )
     this.host.requestUpdate()
