@@ -9,6 +9,13 @@ export const mrnaStrandStyles = css`
     border-radius: 6px;
   }
 
+  .strand-pairs.is-mutations .bp-top:focus-visible,
+  .strand-pairs.is-mutations .bp-bottom:focus-visible {
+    outline: 2px solid var(--dna-accent, #2563eb);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
   .strand-pairs.is-mutations .bp-top:hover:not(.is-mutation-selected) img,
   .strand-pairs.is-mutations .bp-bottom:hover:not(.is-mutation-selected) img {
     filter:

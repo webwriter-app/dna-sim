@@ -1,4 +1,4 @@
-import {html, svg, type TemplateResult} from "lit"
+import {html, nothing, svg, type TemplateResult} from "lit"
 import {property, state} from "lit/decorators.js"
 import type {MsgFn} from "@lit/localize"
 import {LitElementWw} from "@webwriter/lit"
@@ -32,6 +32,7 @@ export type CodonDrawerTab = "wheel" | "list"
 
 export type CodonCardAction =
   | {action: "amino-pick"; aminoAcid: string}
+  | {action: "amino-place"; aminoAcid: string}
   | {action: "amino-drag-start"; payload: AminoDragPayload}
   | {action: "amino-drag-move"; payload: AminoDragPayload; clientX: number; clientY: number}
   | {action: "amino-drag-end"; payload: AminoDragPayload; clientX: number; clientY: number}
@@ -165,6 +166,14 @@ export class DnaCodonCard extends LitElementWw {
     window.addEventListener("pointercancel", end)
   }
 
+  /** Enter or Space: add to the goal (Mutations) or place on the ribosome (Translation). */
+  private _onAminoKeyDown = (e: KeyboardEvent, aminoAcid: string) => {
+    if (e.key !== "Enter" && e.key !== " ") return
+    e.preventDefault()
+    if (this.pickable) this._onAminoPick(e, aminoAcid)
+    else if (this.allowDrag) this._emit({action: "amino-place", aminoAcid})
+  }
+
   private _onAminoPick = (e: Event, aminoAcid: string) => {
     if (!this.pickable) return
     if (aminoAcid === "Stop") return
@@ -206,6 +215,10 @@ export class DnaCodonCard extends LitElementWw {
           return svg`
             <g
               class="wheel-amino ${arc.isStart ? "is-start" : ""} ${arc.isStop ? "is-stop" : ""} ${this.allowDrag ? "" : "is-static"} ${this.pickable && !arc.isStop ? "is-pickable" : ""} ${this._draggingId === arc.id ? "is-dragging" : ""}"
+              tabindex=${this.pickable || this.allowDrag ? "0" : nothing}
+              role=${this.pickable || this.allowDrag ? "button" : nothing}
+              aria-label=${arc.drag.aminoAcid}
+              @keydown=${(e: KeyboardEvent) => this._onAminoKeyDown(e, arc.drag!.aminoAcid)}
               @pointerdown=${(e: PointerEvent) => this._onAminoPointerDown(e, arc.drag!, arc.id)}
               @click=${(e: Event) => this._onAminoPick(e, arc.drag!.aminoAcid)}>
               ${this.pickable && !arc.isStop
@@ -237,7 +250,7 @@ export class DnaCodonCard extends LitElementWw {
       <svg
         class="codon-wheel"
         viewBox="0 0 400 400"
-        role="img"
+        role="group"
         aria-label="${this.msg("Amino acid codon wheel")}">
         ${this._renderRing("amino", R3_OUT, R_AA_OUT, (R3_OUT + R_AA_OUT) / 2, "amino")}
         ${this._renderRing("base3", R2_OUT, R3_OUT, (R2_OUT + R3_OUT) / 2, "base")}
@@ -291,6 +304,10 @@ export class DnaCodonCard extends LitElementWw {
                 <div
                   class="aa-cell ${entry.isStart ? "is-start" : ""} ${this.allowDrag ? "" : "is-static"} ${this.pickable ? "is-pickable" : ""} ${this._draggingId === dragId ? "is-dragging" : ""}"
                   title=${this.pickable ? this.msg("Add to goal") : ""}
+                  tabindex=${this.pickable || this.allowDrag ? "0" : nothing}
+                  role=${this.pickable || this.allowDrag ? "button" : nothing}
+                  aria-label=${localizedAminoAcidFullName(this.msg, entry.threeLetter)}
+                  @keydown=${(e: KeyboardEvent) => this._onAminoKeyDown(e, entry.threeLetter)}
                   @pointerdown=${(e: PointerEvent) => this._onAminoPointerDown(e, payload, dragId)}
                   @click=${(e: Event) => this._onAminoPick(e, entry.threeLetter)}>
                   <span class="aa-one-letter">${entry.oneLetter}</span>

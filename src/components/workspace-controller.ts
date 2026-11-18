@@ -15,6 +15,8 @@ export interface WorkspaceControllerOptions {
   getBottomReserve?: () => number
   /** Fired on viewport click (e.g. clear Mutations selection when clicking away). */
   onViewportClick?: (e: MouseEvent) => void
+  /** Accessible name of the focusable canvas. */
+  getLabel?: () => string
   /** Fired on user pan/zoom (dismiss overlays that are screen-anchored). */
   onUserPanZoom?: () => void
 }
@@ -274,6 +276,8 @@ export class WorkspaceController implements ReactiveController {
         <div
           class="workspace-viewport ${vp.isPanning ? "is-panning" : ""}"
           tabindex="0"
+          aria-label="${this.opts.getLabel?.() ?? ""}"
+          @keydown="${this._onKeyDown}"
           @click="${this._onViewportClick}"
           @pointerdown="${this._onPointerDown}"
           @pointermove="${this._onPointerMove}"
@@ -400,6 +404,10 @@ export class WorkspaceController implements ReactiveController {
 
   private _onDblClick = (e: MouseEvent) => {
     e.preventDefault()
+    this._recenter()
+  }
+
+  private _recenter() {
     const vp = this._viewportEl
     const content = this._contentEl
     if (!vp || !content) return
@@ -412,6 +420,7 @@ export class WorkspaceController implements ReactiveController {
     )
     // Recenter moves the strand under a screen-fixed menu — dismiss like pan/zoom.
     this.opts.onUserPanZoom?.()
+    this._host.requestUpdate()
   }
 
   private _onViewportClick = (e: MouseEvent) => {
@@ -422,6 +431,25 @@ export class WorkspaceController implements ReactiveController {
     const vp = this._viewportEl
     if (!vp) return
     this.vp.wheel(e, vp)
+  }
+
+  /** Arrow keys pan, plus and minus zoom, 0 or Home recentre; only while the canvas itself has focus. */
+  private _onKeyDown = (e: KeyboardEvent) => {
+    if (e.target !== e.currentTarget || e.altKey || e.ctrlKey || e.metaKey) return
+    const vp = this._viewportEl
+    if (!vp) return
+    const step = e.shiftKey ? 160 : 40
+    switch (e.key) {
+      case "ArrowLeft": this.vp.panBy(step, 0); break
+      case "ArrowRight": this.vp.panBy(-step, 0); break
+      case "ArrowUp": this.vp.panBy(0, step); break
+      case "ArrowDown": this.vp.panBy(0, -step); break
+      case "+": case "=": this.vp.zoomBy(10, vp); break
+      case "-": case "_": this.vp.zoomBy(-10, vp); break
+      case "0": case "Home": this._recenter(); break
+      default: return
+    }
+    e.preventDefault()
   }
 
   private _onPointerDown = (e: PointerEvent) => {

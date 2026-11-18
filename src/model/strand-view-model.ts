@@ -90,6 +90,7 @@ export interface StrandDropHandlers {
   onSlotDragLeave?: (e: DragEvent) => void
   onSlotDrop?: (e: DragEvent) => void
   onSnappedPointerDown?: (e: PointerEvent) => void
+  onSnappedKeyDown?: (e: KeyboardEvent) => void
   onDropSlotAnimationEnd?: (e: AnimationEvent) => void
   onMrnaBaseAnimationEnd?: (e: AnimationEvent) => void
   /** Fires when a replication base-pair split transform transition finishes. */
@@ -107,6 +108,7 @@ export interface MutationsUI {
   selectedIndex: number | null
   selectedStrand: MutationStrandSide | null
   onBaseClick?: (index: number, strand: MutationStrandSide, e: MouseEvent) => void
+  onBaseKeyDown?: (index: number, strand: MutationStrandSide, e: KeyboardEvent) => void
 }
 
 export interface StrandViewModel {

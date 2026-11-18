@@ -1,5 +1,6 @@
 import {html, type TemplateResult} from "lit"
-import type {MsgFn} from "@lit/localize"
+import {str, type MsgFn} from "@lit/localize"
+import {ifDefined} from "lit/directives/if-defined.js"
 import {RNA_ICON, DNA_ICON, stopCodonClass, codonDividerClass, renderEnzymeSlot} from "./render-strand-shared"
 
 
@@ -165,6 +166,7 @@ export function renderStrand(msg: MsgFn, vm: StrandViewModel): TemplateResult {
   const mutationSelectedIndex = mutationsActive ? (vm.mutations?.selectedIndex ?? null) : null
   const mutationSelectedStrand = mutationsActive ? (vm.mutations?.selectedStrand ?? null) : null
   const onMutationBaseClick = mutationsActive ? vm.mutations?.onBaseClick : undefined
+  const onMutationBaseKey = mutationsActive ? vm.mutations?.onBaseKeyDown : undefined
   const mutationsMrna =
     mutationsActive && vm.markStopCodons ? mrnaFromTemplate(dnaSequence) : ""
 
@@ -187,6 +189,13 @@ export function renderStrand(msg: MsgFn, vm: StrandViewModel): TemplateResult {
         ? (e: MouseEvent) => onMutationBaseClick(i, strand, e)
         : undefined
 
+    const baseKey = (strand: MutationStrandSide) =>
+      onMutationBaseKey
+        ? (e: KeyboardEvent) => onMutationBaseKey(i, strand, e)
+        : undefined
+    const baseLabel = (base: string) =>
+      onMutationBaseKey ? msg(str`Base ${i + 1}: ${base}`) : undefined
+
     const topClick = mutationClick("template")
     const bottomClick = mutationClick("complement")
 
@@ -195,6 +204,10 @@ export function renderStrand(msg: MsgFn, vm: StrandViewModel): TemplateResult {
         <div
           class="bp-top ${topSelected ? "is-mutation-selected" : ""}"
           style="transform:translateY(${topY}px)"
+          tabindex=${ifDefined(onMutationBaseKey ? "0" : undefined)}
+          role=${ifDefined(onMutationBaseKey ? "button" : undefined)}
+          aria-label=${ifDefined(baseLabel(base))}
+          @keydown=${baseKey("template")}
           @click=${topClick}
           @contextmenu=${topClick ? (e: MouseEvent) => e.preventDefault() : undefined}
           @transitionend="${replSplitHandler}">
@@ -208,6 +221,10 @@ export function renderStrand(msg: MsgFn, vm: StrandViewModel): TemplateResult {
             <div
               class="bp-bottom ${bottomSelected ? "is-mutation-selected" : ""}"
               style="transform:translateY(${botY}px)"
+              tabindex=${ifDefined(onMutationBaseKey ? "0" : undefined)}
+              role=${ifDefined(onMutationBaseKey ? "button" : undefined)}
+              aria-label=${ifDefined(baseLabel(comp))}
+              @keydown=${baseKey("complement")}
               @click=${bottomClick}
               @contextmenu=${bottomClick ? (e: MouseEvent) => e.preventDefault() : undefined}
               @transitionend="${replSplitHandler}">

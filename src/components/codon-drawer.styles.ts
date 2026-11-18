@@ -136,12 +136,12 @@ export const codonDrawerStyles = css`
   }
 
   .drawer-tab.active {
-    background: var(--sl-color-primary-600, #2563eb);
+    background: var(--dna-accent, var(--sl-color-primary-600, #2563eb));
     color: #ffffff;
   }
 
   .drawer-tab:focus-visible {
-    outline: 2px solid var(--sl-color-primary-400, #60a5fa);
+    outline: 2px solid var(--dna-accent, var(--sl-color-primary-400, #60a5fa));
     outline-offset: -2px;
   }
 

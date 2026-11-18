@@ -16,7 +16,7 @@ export const canvasInfoButtonStyles = css`
     padding: 0;
     border: none;
     background: transparent;
-    color: #2563eb;
+    color: var(--dna-accent, #2563eb);
     cursor: pointer;
     pointer-events: auto;
     opacity: 1;

@@ -15,6 +15,9 @@ import type {WebwriterDnaSimulation} from "../widgets/webwriter-dna-simulation"
 /** The authored lesson (DNA sequence and target protein) and its JSON data block. */
 export class LessonController implements ReactiveController {
   value: Lesson = DEFAULT_LESSON
+  /** Sequence received through the `sequence-from` effect; shown instead of the authored one while set. */
+  linkedSequence: string | null = null
+  private shown = DEFAULT_LESSON.dnaSequence
   private readonly data: ReturnType<typeof jsonData<LessonBlock>>
 
   constructor(private readonly host: WebwriterDnaSimulation) {
@@ -52,10 +55,12 @@ export class LessonController implements ReactiveController {
     const {host} = this
     if (host.data !== null && !host.dataReady && !reset) return
     const lesson = readLesson(host, host.dataReady && !this.data.invalid ? this.data.get() : null)
-    const changedSequence = lesson.dnaSequence !== this.value.dnaSequence
+    const shown = this.linkedSequence || lesson.dnaSequence
+    const changedSequence = shown !== this.shown
     const changedTarget = lesson.mutationTargetProtein !== this.value.mutationTargetProtein
     this.value = lesson
-    if (reset || changedSequence) host.flow.useDnaSequence(lesson.dnaSequence)
+    this.shown = shown
+    if (reset || changedSequence) host.flow.useDnaSequence(shown)
     if (changedTarget) {
       host.mutationEdits.feedback = null
       host.phaseCompletion.revoke("Mutations")

@@ -183,6 +183,12 @@ export const strandStyles = css`
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.28));
   }
 
+  .molecule-snapped img:focus-visible,
+  .ribosome-border:focus-visible {
+    outline: 2px solid var(--dna-accent, #2563eb);
+    outline-offset: 2px;
+  }
+
   .molecule-snapped.is-locked img {
     pointer-events: none;
     cursor: default;

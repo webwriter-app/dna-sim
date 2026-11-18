@@ -37,7 +37,7 @@ export const simulationNavbarStyles = css`
     border: none;
     border-right: 1px solid #cbd5e1;
     background: #f8fafc;
-    color: #334155;
+    color: var(--dna-text, #334155);
     font-family: inherit;
     font-size: 0.85rem;
     font-weight: 600;
@@ -55,12 +55,12 @@ export const simulationNavbarStyles = css`
   }
 
   .nav-tab.active {
-    background: var(--sl-color-primary-600, #2563eb);
+    background: var(--dna-accent, var(--sl-color-primary-600, #2563eb));
     color: #ffffff;
   }
 
   .nav-tab:focus-visible {
-    outline: 2px solid var(--sl-color-primary-400, #60a5fa);
+    outline: 2px solid var(--dna-accent, var(--sl-color-primary-400, #60a5fa));
     outline-offset: -2px;
   }
 
@@ -84,7 +84,8 @@ export const simulationNavbarStyles = css`
     height: 100%;
     padding: 0 0.75rem;
     flex-wrap: nowrap;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .phase-bar-input {
@@ -329,13 +330,14 @@ export const simulationNavbarStyles = css`
     height: 100%;
     padding: 0 0.75rem;
     flex-wrap: nowrap;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .child-nav-label {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #475569;
+    color: var(--ww-text-color, #475569);
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -484,6 +486,16 @@ export const simulationNavbarStyles = css`
     min-width: 2.25rem;
     padding: 0 0.25rem;
     transition: filter 0.2s, transform 0.2s;
+  }
+
+  sl-button[variant="primary"]::part(base) {
+    background-color: var(--dna-accent, var(--sl-color-primary-600));
+    border-color: var(--dna-accent, var(--sl-color-primary-600));
+  }
+
+  .baukasten-chip:focus-visible {
+    outline: 2px solid var(--dna-accent, #2563eb);
+    outline-offset: 1px;
   }
 
   .base-buttons sl-button::part(base):hover { filter: brightness(0.95); transform: scale(1.1); }

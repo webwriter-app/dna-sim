@@ -137,6 +137,9 @@ export class NavbarController {
       case "molecule-drag-start":
         host.startMoleculeDrag(action.nativeEvent, action.moleculeId)
         break
+      case "molecule-place":
+        host.enzymes.placeMolecule(action.moleculeId)
+        break
       case "molecule-drag-end":
         host.moleculeDrag.onDragEnd()
         break

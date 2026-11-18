@@ -1,0 +1,7 @@
+export const validFasta = ">template strand\nTACGAAATTCCG\nGGATC\n"
+export const rnaFasta = ">mRNA\nuacgaaauu\n"
+export const multiFasta = ">first\nTACGAA\n>second\nCCCCCC\n"
+export const headerlessFasta = "tac gaa\n"
+export const invalidFasta = ">bad\nTACXGA\n"
+export const emptyFasta = ">nothing\n\n"
+export const shortFasta = ">short\nTA\n"

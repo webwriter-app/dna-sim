@@ -9,6 +9,9 @@ import {
   canRemoveRibosomeFromCodon,
   dropErrorMessage,
   expectedMoleculeId,
+  replicationDropActive,
+  transcriptionDropActive,
+  translationDropActive,
 } from "../model/molecule-drop"
 import type {WebwriterDnaSimulation} from "../widgets/webwriter-dna-simulation"
 
@@ -316,12 +319,12 @@ export class EnzymeController implements ReactiveController {
     return false
   }
 
-  onSnappedPointerDown = (e: PointerEvent) => {
-    if (!this.canRemoveSnappedEnzyme() || e.button !== 0) return
-
+  /** Take the snapped enzyme off the fork; returns it, or undefined when it cannot be removed. */
+  private _unsnapEnzyme() {
+    if (!this.canRemoveSnappedEnzyme()) return undefined
     const enzymeId = this.snappedEnzymeId()
     const molecule = enzymeId ? moleculeById(this.host.msg, enzymeId) : undefined
-    if (!molecule) return
+    if (!molecule) return undefined
 
     if (this.host.currentPhase === "Replication") {
       this.snappedHelicase = false
@@ -331,6 +334,13 @@ export class EnzymeController implements ReactiveController {
       this.host.translation.unsnap()
       this.host.codonDrawer.setOpen(false)
     }
+    return molecule
+  }
+
+  onSnappedPointerDown = (e: PointerEvent) => {
+    if (!this.canRemoveSnappedEnzyme() || e.button !== 0) return
+    const molecule = this._unsnapEnzyme()
+    if (!molecule) return
 
     this.host.moleculeDrag.beginPointerRemove(e, molecule, () => {
       if (molecule.id === "helicase") {
@@ -342,6 +352,24 @@ export class EnzymeController implements ReactiveController {
         this.host.codonDrawer.openForRibosome()
       }
     })
+  }
+
+  /** Keyboard removal of the snapped enzyme (Delete or Backspace). */
+  onSnappedKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== "Delete" && e.key !== "Backspace") return
+    e.preventDefault()
+    if (!this._unsnapEnzyme()) return
+    this.host.stopTimer()
+    this.host.requestUpdate()
+  }
+
+  /** Place a toolkit molecule without dragging (Enter, Space or tap on its chip). */
+  placeMolecule(moleculeId: string) {
+    const {currentPhase: phase, dnaSequence} = this.host
+    const length = dnaSequence.length
+    if (!(replicationDropActive(phase, length) || transcriptionDropActive(phase, length) || translationDropActive(phase, length))) return
+    this.host.moleculeDrag.clear()
+    this._placeEnzyme(moleculeId)
   }
 
   expectedEnzymeId(): string | null {
@@ -382,8 +410,10 @@ export class EnzymeController implements ReactiveController {
     e.preventDefault()
     e.stopPropagation()
 
-    const droppedId = this.host.moleculeDrag.takeDraggedMoleculeId(e)
+    this._placeEnzyme(this.host.moleculeDrag.takeDraggedMoleculeId(e))
+  }
 
+  private _placeEnzyme(droppedId: string | null) {
     if (!droppedId || this.enzymeSlotOccupied()) {
       this.host.requestUpdate()
       return

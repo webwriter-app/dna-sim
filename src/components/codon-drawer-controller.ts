@@ -35,6 +35,11 @@ export class CodonDrawerController implements ReactiveController {
     }
     if (this.host.currentPhase !== "Translation") return
     switch (e.detail.action) {
+      case "amino-place": {
+        const result = this.host.translation.tryPlaceAminoAcid(e.detail.aminoAcid)
+        if (result === "ok" || result === "complete") this.host.requestUpdate()
+        break
+      }
       case "amino-drag-start":
         this.host.translation.setAminoDropHover(false)
         break

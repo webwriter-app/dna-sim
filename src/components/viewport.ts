@@ -78,6 +78,20 @@ export class ViewportController {
     this._notifyUserPanZoom()
   }
 
+  /** Keyboard pan by screen pixels; same gate as the wheel. */
+  panBy(dx: number, dy: number) {
+    if (!this.cb.isEnabled()) return
+    this.panX += dx
+    this.panY += dy
+    this._notifyUserPanZoom()
+  }
+
+  /** Keyboard zoom around the viewport centre; same gate as Ctrl+wheel. */
+  zoomBy(delta: number, viewportEl: HTMLElement) {
+    if (!this.cb.isEnabled()) return
+    this._zoomAtPoint(viewportEl.clientWidth / 2, viewportEl.clientHeight / 2, delta)
+  }
+
   pointerDown(e: PointerEvent, isBackground: boolean) {
     if (!this.cb.isEnabled()) return
 
@@ -95,7 +109,11 @@ export class ViewportController {
     if (!mousePan && !touchPan) return
 
     e.preventDefault()
-    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    try {
+      ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    } catch {
+      // The pointer may already be gone; the pan still works through the viewport's own events.
+    }
     this._drag = { px: e.clientX, py: e.clientY, ox: this.panX, oy: this.panY }
     this.isPanning = true
     this._notifyUserPanZoom()

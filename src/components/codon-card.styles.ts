@@ -37,6 +37,12 @@ export const codonCardStyles = css`
     cursor: grab;
   }
 
+  .wheel-amino:focus-visible,
+  .aa-cell:focus-visible {
+    outline: 2px solid var(--dna-accent, #2563eb);
+    outline-offset: 2px;
+  }
+
   .wheel-amino.is-static {
     cursor: default;
   }

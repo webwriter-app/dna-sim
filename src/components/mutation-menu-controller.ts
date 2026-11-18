@@ -24,6 +24,20 @@ export class MutationMenuController implements ReactiveController {
     this.host.mutations.openAt(index, strand)
   }
 
+  /** Enter or Space on a focused base opens its menu and moves focus into it. */
+  onBaseKeyDown = (index: number, strand: MutationStrandSide, e: KeyboardEvent) => {
+    if (e.key !== "Enter" && e.key !== " ") return
+    e.preventDefault()
+    e.stopPropagation()
+    if (this.host.currentPhase !== "Mutations") return
+    if (index < 0 || index >= this.host.mutationsSequence.length) return
+    this.host.mutations.openAt(index, strand)
+    this.host.afterRender(() => {
+      const item = this.host.renderRoot.querySelector(".mutation-menu-item")
+      if (item instanceof HTMLElement) item.focus()
+    })
+  }
+
   /** Clear Mutations selection/menu when clicking empty canvas (base clicks stopPropagation). */
   onViewportClick = (_e: MouseEvent) => {
     if (this.host.currentPhase !== "Mutations") return

@@ -1,5 +1,6 @@
 import {html, type TemplateResult} from "lit"
 import {keyed} from "lit/directives/keyed.js"
+import {ifDefined} from "lit/directives/if-defined.js"
 import type {MsgFn} from "@lit/localize"
 import {RNA_ICON, enzymeStep, slotStyle, stopCodonClass, codonDividerClass, renderEnzymeSlot} from "./render-strand-shared"
 
@@ -112,6 +113,9 @@ export function renderRibosomeBorder(
             src="${ribosomeBorderSvg}"
             alt="${msg("Ribosome")}"
             draggable="false"
+            tabindex=${ifDefined(tx.removable ? "0" : undefined)}
+            role=${ifDefined(tx.removable ? "button" : undefined)}
+            @keydown="${tx.removable ? h?.onSnappedKeyDown : undefined}"
             @pointerdown="${onDown}"/>
         `
         : null}
@@ -408,6 +412,9 @@ export function renderSnappedMolecule(
         height="${rect.size}"
         alt="${localizedMoleculeName(msg, snapped.id)}"
         draggable="false"
+        tabindex=${ifDefined(snapped.removable ? "0" : undefined)}
+        role=${ifDefined(snapped.removable ? "button" : undefined)}
+        @keydown="${snapped.removable ? h?.onSnappedKeyDown : undefined}"
         @pointerdown="${snapped.removable ? h?.onSnappedPointerDown : undefined}"/>
     </div>
   `

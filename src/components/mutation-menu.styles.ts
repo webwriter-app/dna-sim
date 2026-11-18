@@ -134,7 +134,7 @@ export const mutationMenuStyles = css`
   .mutation-menu-item:hover,
   .mutation-menu-item.is-active,
   .mutation-menu-option:hover {
-    background: var(--sl-color-primary-600, #2563eb);
+    background: var(--dna-accent, var(--sl-color-primary-600, #2563eb));
     color: #ffffff;
   }
 

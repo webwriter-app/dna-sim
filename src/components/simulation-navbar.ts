@@ -77,6 +77,7 @@ export type NavbarAction =
   | {action: "mrna-append-base"; base: string}
   | {action: "molecule-drag-start"; moleculeId: string; nativeEvent: DragEvent}
   | {action: "molecule-drag-end"}
+  | {action: "molecule-place"; moleculeId: string}
   | {action: "reset-simulation"}
   | {action: "mutation-verify"}
   | {action: "mutation-step-select"; stepIndex: number}
@@ -411,6 +412,15 @@ export class DnaSimulationNavbar extends LitElementWw {
         class="baukasten-chip ${mol.isDragging ? "is-dragging" : ""}"
         title="${mol.name}"
         draggable="true"
+        tabindex="0"
+        role="button"
+        aria-label=${this.msg(str`Place ${mol.name}`)}
+        @click=${() => this._emit({action: "molecule-place", moleculeId: mol.id})}
+        @keydown=${(e: KeyboardEvent) => {
+          if (e.key !== "Enter" && e.key !== " ") return
+          e.preventDefault()
+          this._emit({action: "molecule-place", moleculeId: mol.id})
+        }}
         @dragstart=${(e: DragEvent) =>
           this._emit({action: "molecule-drag-start", moleculeId: mol.id, nativeEvent: e})}
         @dragend=${() => this._emit({action: "molecule-drag-end"})}>

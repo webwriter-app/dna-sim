@@ -37,6 +37,7 @@ import {LessonController} from "../components/lesson-controller"
 import {AlertsController} from "../components/alerts-controller"
 import {LayoutController} from "../components/layout-controller"
 import {SimulationView} from "../components/simulation-view"
+import {localizedPhaseLabel} from "../components/localize-text"
 import {phaseHintText} from "../components/phase-hint"
 import {NavbarController} from "../components/navbar-controller"
 import {
@@ -52,8 +53,6 @@ import {
   type MoleculeDragHost,
 } from "../components/molecule-drag-controller"
 import {PhaseCompletionController} from "../components/phase-completion-controller"
-import {
-} from "../components/mutations"
 import {MutationsController} from "../components/mutations-controller"
 import {ResetController} from "../components/reset-controller"
 import {
@@ -66,9 +65,10 @@ import {
   readMrnaInputModeAttr,
 } from "../model/transcription"
 import {lessonOptions} from "../components/drawer-options"
+import {FASTA_MAX_BASES} from "../model/fasta"
+import {PublishedSignals} from "../components/published-signals"
+import {exportFastaFile, importFastaFile} from "../components/fasta-files"
 import {LESSON_DATA_TYPE} from "../model/lesson-data"
-import {
-} from "../model/lesson-data"
 import {
   PHASE_ENABLE_KEYS,
   DEFAULT_PHASE_SET_MODE,
@@ -106,6 +106,29 @@ import {
  * `src/components/` (workspace, navbar, transcription, translation, enzymes, codon drawer,
  * mutation menu and edits, reset); each reaches the widget through a host interface.
  *
+ * @part canvas - The pan and zoom area that shows the strands.
+ * @part navbar - The tab and phase bar above the canvas.
+ *
+ * Theme: text follows `--ww-text-color` and `--ww-font-family`; the active tab, focus rings and
+ * primary buttons follow `--ww-theme-accent-1`. Base colours stay fixed because they carry meaning.
+ *
+ * Keyboard: Tab reaches the toolkit, the canvas, bases (Mutations) and the codon reference.
+ * On the canvas, arrow keys pan (Shift for larger steps), plus and minus zoom, 0 or Home recentre.
+ * Enter or Space on a toolkit chip places the molecule; on an amino acid it places it on the
+ * ribosome (Translation) or adds it to the goal (Mutations). Delete removes a placed enzyme.
+ *
+ * Print: the controls are hidden; a caption names the phase and the template strand.
+ *
+ * Files: a FASTA file (`.fasta`, `.fa`) imports as the template strand (first record; RNA is read as
+ * DNA; 3 to 2000 bases of A, C, G, T). Export writes the authored strand as `.fasta` (3′ → 5′, named in
+ * the header). Target protein and settings are not part of FASTA and stay unchanged on import.
+ *
+ * Signals: `phase` (string, the open phase), `sequence` (string, the template strand as shown, with a
+ * learner's mutations) and `complete` (boolean, every visible phase finished).
+ *
+ * Effect: `sequence-from` takes a string signal and shows its A, C, G, T letters instead of the authored
+ * sequence while it is not empty. Nothing is written to the document.
+ *
  * @summary Simulate DNA replication, transcription, and translation in phases, including animations.
  */
 @customElement("webwriter-dna-simulation")
@@ -142,6 +165,20 @@ export class WebwriterDnaSimulation extends LitElementWw implements Transcriptio
     transcription: {label: (widget: {msg: MsgFn}) => widget.msg("Transcription")},
     mutations: {label: (widget: {msg: MsgFn}) => widget.msg("Mutations")},
     display: {label: (widget: {msg: MsgFn}) => widget.msg("Display")},
+    advanced: {label: (widget: {msg: MsgFn}) => widget.msg("Advanced"), advanced: true},
+  }
+
+  static convertFrom = {".fasta": "importFasta", ".fa": "importFasta"}
+  static convertTo = {".fasta": "exportFasta"}
+
+  static effects = {
+    "sequence-from": {
+      label: (widget: {msg: MsgFn}) => widget.msg("DNA sequence from"),
+      connect(this: WebwriterDnaSimulation, source: {get(): unknown}, lifetime: AbortSignal) {
+        this.published.source.set(source)
+        lifetime.addEventListener("abort", () => this.published.source.set(null), {once: true})
+      },
+    },
   }
 
   get actions() {
@@ -172,6 +209,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements Transcriptio
   workspace = new WorkspaceController(this, {
     getZoomLevel: () => this.zoomLevel,
     setZoomLevel: (z) => { this.zoomLevel = z },
+    getLabel: () => this.msg("DNA simulation canvas"),
     getPanEnabled: () => this.allowStudentPan || this.editable,
     onViewportClick: (e) => this.mutationMenu.onViewportClick(e),
     onUserPanZoom: () => this.mutations.dismiss(),
@@ -208,6 +246,10 @@ export class WebwriterDnaSimulation extends LitElementWw implements Transcriptio
   alerts = new AlertsController(this)
 
   layout = new LayoutController(this)
+
+  published = new PublishedSignals()
+  /** Public read-only signals, stable for the life of the element. */
+  get signals() { return this.published.signals }
 
   @state() accessor currentPhase = "Replication"
   @state() accessor dnaSequence = DEFAULT_DNA_SEQUENCE
@@ -364,11 +406,18 @@ export class WebwriterDnaSimulation extends LitElementWw implements Transcriptio
 
   protected willUpdate() {
     this.transcription.syncModes()
+    const linked = this.published.source.get()?.get()
+    const next = typeof linked === "string" ? sanitizeDnaSequence(linked).slice(0, FASTA_MAX_BASES) : null
+    if ((next || null) !== this.lesson.linkedSequence) {
+      this.lesson.linkedSequence = next || null
+      this.lesson.sync()
+    }
   }
 
   protected updated(changed: PropertyValues<this>) {
     super.updated(changed)
     if (changed.has("editable")) this.refreshDrawer()
+    this.published.update(this)
     this.alerts.syncHintExpansion()
     this.navbar.syncView(this.renderRoot)
     const codonCard = this.renderRoot.querySelector("dna-codon-card")
@@ -386,6 +435,14 @@ export class WebwriterDnaSimulation extends LitElementWw implements Transcriptio
 
   restoreLessonDefaults() {
     this.lesson.restoreDefaults()
+  }
+
+  importFasta(file: File) {
+    return importFastaFile(this, file)
+  }
+
+  exportFasta() {
+    return exportFastaFile(this)
   }
 
   setPhase(phase: string) {
@@ -495,8 +552,12 @@ export class WebwriterDnaSimulation extends LitElementWw implements Transcriptio
 
   render() {
     return html`
+      <div class="print-caption">
+        ${localizedPhaseLabel(this.msg, this.currentPhase)} · ${this.msg("Template strand (3′ → 5′)")} <code>${this.dnaSequence}</code>
+      </div>
       <div class="sim-shell" style=${styleMap(this.layout.style)}>
         <dna-simulation-navbar
+          part="navbar"
           contenteditable="false"
           .showSequenceTab=${this.view.sequenceTabVisible}
           .phases=${this.view.visiblePhases}
@@ -505,7 +566,7 @@ export class WebwriterDnaSimulation extends LitElementWw implements Transcriptio
         </dna-simulation-navbar>
 
         <div class="canvas-row" contenteditable="false">
-          <div class="canvas-area">
+          <div class="canvas-area" part="canvas">
             ${this.workspace.render(renderStrandContent(this))}
             <div class="canvas-overlays">
               ${renderCanvasOverlays(this)}

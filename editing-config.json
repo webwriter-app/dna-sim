@@ -371,7 +371,14 @@
       "mt": "Simulazzjoni tad-DNA",
       "sr": "ДНК симулација"
     },
-    "uninsertable": true
+    "uninsertable": true,
+    "importFormats": [
+      ".fasta",
+      ".fa"
+    ],
+    "exportFormats": [
+      ".fasta"
+    ]
   },
   "./snippets/dna-simulation": {
     "label": {

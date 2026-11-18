@@ -22,6 +22,11 @@ export const workspaceStyles = css`
     background: #ffffff;
   }
 
+  .workspace-viewport:focus-visible {
+    outline: 2px solid var(--dna-accent, #2563eb);
+    outline-offset: -2px;
+  }
+
   .workspace-viewport.is-panning {
     cursor: grabbing;
   }
@@ -48,12 +53,41 @@ export const workspaceStyles = css`
     width: max-content;
   }
 
+  .print-caption {
+    display: none;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dna-text);
+  }
+
+  .print-caption code {
+    font-family: ui-monospace, monospace;
+    letter-spacing: 0.08em;
+    overflow-wrap: anywhere;
+  }
+
   @media print {
     :host {
       height: auto;
       min-height: 0;
+      max-width: 100%;
       overflow: visible;
       break-inside: avoid;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .print-caption {
+      display: block;
+    }
+
+    .molecule-drop-slot,
+    .mutation-menu-popup,
+    dna-canvas-alert,
+    dna-phase-complete-toast {
+      display: none !important;
     }
 
     .sim-shell {

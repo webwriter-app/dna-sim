@@ -125,6 +125,7 @@ export function renderStrandContent(w: WebwriterDnaSimulation) {
           selectedIndex: w.mutations.selectedIndex,
           selectedStrand: w.mutations.selectedStrand,
           onBaseClick: w.mutationMenu.onBaseClick,
+          onBaseKeyDown: w.mutationMenu.onBaseKeyDown,
         }
       : null,
     dropHandlers: {
@@ -133,6 +134,7 @@ export function renderStrandContent(w: WebwriterDnaSimulation) {
       onSlotDragLeave: w.moleculeDrag.onSlotDragLeave,
       onSlotDrop: w.enzymes.onSlotDrop,
       onSnappedPointerDown: w.enzymes.onSnappedPointerDown,
+      onSnappedKeyDown: w.enzymes.onSnappedKeyDown,
       onDropSlotAnimationEnd: w.moleculeDrag.onDropSlotAnimationEnd,
       onMrnaBaseAnimationEnd: w.transcription.onBaseAnimationEnd,
       onReplicationSplitTransitionEnd: w.enzymes.onReplicationSplitTransitionEnd,

@@ -10,12 +10,17 @@ export const widgetStyles = css`
     --color-uracil:   #e07428;
     --dna-navbar-height: 0px;
     --dna-anim-speed: 1;
+    --dna-accent: var(--ww-theme-accent-1, var(--sl-color-primary-600, #2563eb));
+    --dna-text: var(--ww-text-color, #334155);
 
-    font-family: var(--sl-font-sans, sans-serif);
+    font-family: var(--ww-font-family, var(--sl-font-sans, sans-serif));
+    color: var(--ww-text-color, inherit);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 300px;
+    max-width: 2100px;
     height: auto;
     min-height: 400px;
     border: 2px solid #cbd5e1;
@@ -134,6 +139,6 @@ export const widgetStyles = css`
   .reset-confirm-dialog::part(body) {
     font-size: 0.95rem;
     line-height: 1.4;
-    color: #334155;
+    color: var(--dna-text);
   }
 `

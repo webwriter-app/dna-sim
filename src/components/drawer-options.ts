@@ -76,9 +76,9 @@ export function lessonOptions(
     showInfoCards: boolean(msg("Hints"), "display", msg("Short info cards on the canvas.")),
     showSequenceTab: boolean(msg("Sequence tab for students"), "display",
       msg("Students see the Sequence tab. Teachers always see it.")),
-    markCodons: boolean(msg("Codon dividers"), "display",
+    markCodons: boolean(msg("Codon dividers"), "advanced",
       msg("Lines between triplets in Mutations and Translation. Leftover bases are not grouped.")),
-    markStopCodons: boolean(msg("Highlight stop codons"), "display",
+    markStopCodons: boolean(msg("Highlight stop codons"), "advanced",
       msg("Display only. Translation still stops when this is off.")),
     allowStudentPan: boolean(msg("Allow students to pan and zoom"), "display"),
     animationSpeed: {

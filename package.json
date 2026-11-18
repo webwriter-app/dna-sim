@@ -11,6 +11,19 @@
     "isced2011-3",
     "iscedf2013-0511",
     "iscedf2013-0512",
+    "widget-editable",
+    "widget-configurable",
+    "widget-stateful",
+    "widget-allows-pointer-input",
+    "widget-allows-keyboard-input",
+    "widget-allows-touch-input",
+    "widget-responsive",
+    "widget-themeable",
+    "widget-printable",
+    "widget-reactive",
+    "widget-testable",
+    "widget-convertible-from-text/x-fasta",
+    "widget-convertible-to-text/x-fasta",
     "widget-lang-en",
     "widget-lang-en-US",
     "widget-lang-en-GB",
@@ -179,6 +192,10 @@
     "./tests/data.*": {
       "source": "./tests/data.test.ts",
       "default": "./dist/tests/data.*"
+    },
+    "./tests/conversions.*": {
+      "source": "./tests/conversions.test.ts",
+      "default": "./dist/tests/conversions.*"
     },
     "./tests/language.*": {
       "source": "./tests/language.test.ts",
