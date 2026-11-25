@@ -45,11 +45,11 @@
   <source>Verify</source>
 <target>Prüfen</target></trans-unit>
 <trans-unit id="s2ca6fbd7c03f172a">
-  <source><x id="0" equiv-text="${this.mrnaRemaining}" /> base remaining</source>
-<target><x id="0" equiv-text="${this.mrnaRemaining}" /> Base übrig</target></trans-unit>
+  <source><x id="0" equiv-text="${this.mrnaRemaining}"/> base remaining</source>
+<target><x id="0" equiv-text="${this.mrnaRemaining}"/> Base übrig</target></trans-unit>
 <trans-unit id="s8b29ff46839889f3">
-  <source><x id="0" equiv-text="${this.mrnaRemaining}" /> bases remaining</source>
-<target><x id="0" equiv-text="${this.mrnaRemaining}" /> Basen übrig</target></trans-unit>
+  <source><x id="0" equiv-text="${this.mrnaRemaining}"/> bases remaining</source>
+<target><x id="0" equiv-text="${this.mrnaRemaining}"/> Basen übrig</target></trans-unit>
 <trans-unit id="s7761bcd8570b355f">
   <source>Need at least one full codon</source>
 <target>Mindestens ein vollständiges Codon nötig</target></trans-unit>
@@ -60,8 +60,8 @@
   <source>No polypeptide yet</source>
 <target>Noch kein Polypeptid</target></trans-unit>
 <trans-unit id="s2fa05f91c1baa29b">
-  <source>Remove <x id="0" equiv-text="${amino}" /></source>
-<target><x id="0" equiv-text="${amino}" /> entfernen</target></trans-unit>
+  <source>Remove <x id="0" equiv-text="${amino}"/></source>
+<target><x id="0" equiv-text="${amino}"/> entfernen</target></trans-unit>
 <trans-unit id="s3763f519c347a9f7">
   <source>Now</source>
 <target>Aktuell</target></trans-unit>
@@ -75,8 +75,8 @@
   <source>No target selected</source>
 <target>Kein Ziel ausgewählt</target></trans-unit>
 <trans-unit id="sa47e8096a837775d">
-  <source>Steps (<x id="0" equiv-text="${stepCount}" />)</source>
-<target>Schritte (<x id="0" equiv-text="${stepCount}" />)</target></trans-unit>
+  <source>Steps (<x id="0" equiv-text="${stepCount}"/>)</source>
+<target>Schritte (<x id="0" equiv-text="${stepCount}"/>)</target></trans-unit>
 <trans-unit id="sd2023813cc70bf74">
   <source>Steps</source>
 <target>Schritte</target></trans-unit>
@@ -96,8 +96,8 @@
   <source>A, C, T or G</source>
 <target>A, C, T oder G</target></trans-unit>
 <trans-unit id="sd2dcdd0542a8fea4">
-  <source>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}" /></source>
-<target>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}" /></target></trans-unit>
+  <source>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}"/></source>
+<target>Phase: <x id="0" equiv-text="${localizedPhaseLabel(this.msg, this.currentPhase)}"/></target></trans-unit>
 <trans-unit id="s168212e0837cec87">
   <source>Biomolecule toolkit</source>
 <target>Biomolekül-Baukasten</target></trans-unit>
@@ -327,20 +327,20 @@
   <source>Mutations complete in 1 step. Lesson complete</source>
 <target>Mutationen in 1 Schritt abgeschlossen. Lektion beendet.</target></trans-unit>
 <trans-unit id="s0ab22ff5ee969925">
-  <source>Mutations complete in <x id="0" equiv-text="${n}" /> steps. Lesson complete</source>
-<target>Mutationen in <x id="0" equiv-text="${n}" /> Schritten abgeschlossen. Lektion beendet.</target></trans-unit>
+  <source>Mutations complete in <x id="0" equiv-text="${n}"/> steps. Lesson complete</source>
+<target>Mutationen in <x id="0" equiv-text="${n}"/> Schritten abgeschlossen. Lektion beendet.</target></trans-unit>
 <trans-unit id="s3ac818c0f45f3971">
-  <source>Mutations complete in 1 step — continue to <x id="0" equiv-text="${nextLabel}" />?</source>
-<target>Mutationen in einem Schritt abgeschlossen. Weiter zu <x id="0" equiv-text="${nextLabel}" />?</target></trans-unit>
+  <source>Mutations complete in 1 step — continue to <x id="0" equiv-text="${nextLabel}"/>?</source>
+<target>Mutationen in einem Schritt abgeschlossen. Weiter zu <x id="0" equiv-text="${nextLabel}"/>?</target></trans-unit>
 <trans-unit id="sacce140196ab3015">
-  <source>Mutations complete in <x id="0" equiv-text="${n}" /> steps — continue to <x id="1" equiv-text="${nextLabel}" />?</source>
-<target>Mutationen in <x id="0" equiv-text="${n}" /> Schritten abgeschlossen. Weiter zu <x id="1" equiv-text="${nextLabel}" />?</target></trans-unit>
+  <source>Mutations complete in <x id="0" equiv-text="${n}"/> steps — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
+<target>Mutationen in <x id="0" equiv-text="${n}"/> Schritten abgeschlossen. Weiter zu <x id="1" equiv-text="${nextLabel}"/>?</target></trans-unit>
 <trans-unit id="sbbbe7c4091afb870">
   <source>Lesson complete</source>
 <target>Lektion abgeschlossen</target></trans-unit>
 <trans-unit id="s6924e77ccacbf07d">
-  <source><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}" /> complete — continue to <x id="1" equiv-text="${nextLabel}" />?</source>
-<target><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}" /> abgeschlossen. Weiter zu <x id="1" equiv-text="${nextLabel}" />?</target></trans-unit>
+  <source><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}"/> complete — continue to <x id="1" equiv-text="${nextLabel}"/>?</source>
+<target><x id="0" equiv-text="${localizedPhaseLabel(msg, phase)}"/> abgeschlossen. Weiter zu <x id="1" equiv-text="${nextLabel}"/>?</target></trans-unit>
 <trans-unit id="s41d21a050a929393">
   <source>No molecule is needed at this position.</source>
 <target>An dieser Stelle ist kein Molekül nötig.</target></trans-unit>
@@ -357,23 +357,23 @@
   <source>Wrong molecule for this position.</source>
 <target>Falsches Molekül für diese Position.</target></trans-unit>
 <trans-unit id="s109fde6bd09eef65">
-  <source>No molecules are available for "<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}" />" yet.</source>
-<target>Für „<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}" />“ sind noch keine Moleküle verfügbar.</target></trans-unit>
+  <source>No molecules are available for "<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}"/>" yet.</source>
+<target>Für „<x id="0" equiv-text="${localizedPhaseLabel(msg, host.currentPhase)}"/>“ sind noch keine Moleküle verfügbar.</target></trans-unit>
 <trans-unit id="s2c91e81ad907fc23">
-  <source>Sub <x id="0" equiv-text="${pos}" /></source>
-<target>Sub <x id="0" equiv-text="${pos}" /></target></trans-unit>
+  <source>Sub <x id="0" equiv-text="${pos}"/></source>
+<target>Sub <x id="0" equiv-text="${pos}"/></target></trans-unit>
 <trans-unit id="sd2fe06f5c2d6ad31">
-  <source>Ins <x id="0" equiv-text="${pos}" /></source>
-<target>Ins <x id="0" equiv-text="${pos}" /></target></trans-unit>
+  <source>Ins <x id="0" equiv-text="${pos}"/></source>
+<target>Ins <x id="0" equiv-text="${pos}"/></target></trans-unit>
 <trans-unit id="s10a996dc5d35fea0">
-  <source>Del <x id="0" equiv-text="${pos}" /></source>
-<target>Del <x id="0" equiv-text="${pos}" /></target></trans-unit>
+  <source>Del <x id="0" equiv-text="${pos}"/></source>
+<target>Del <x id="0" equiv-text="${pos}"/></target></trans-unit>
 <trans-unit id="s338cca2d2f313247">
   <source>Start over</source>
 <target>Von vorn</target></trans-unit>
 <trans-unit id="s0b376cb27a56b5b3">
-  <source>Are you sure you want to reset the <x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}" /> phase?</source>
-<target>Möchten Sie die Phase „<x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}" />“ wirklich zurücksetzen?</target></trans-unit>
+  <source>Are you sure you want to reset the <x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}"/> phase?</source>
+<target>Möchten Sie die Phase „<x id="0" equiv-text="${localizedPhaseLabel(this._host.msg, this._host.currentPhase)}"/>“ wirklich zurücksetzen?</target></trans-unit>
 <trans-unit id="sd33f0c822db5d41f">
   <source>Are you sure you want to reset all of your progress?</source>
 <target>Gesamten Fortschritt wirklich zurücksetzen?</target></trans-unit>
@@ -447,11 +447,11 @@
   <source>The sequence ended without a stop codon.</source>
 <target>Die Sequenz endet ohne Stoppcodon.</target></trans-unit>
 <trans-unit id="s85b83cbef03bb17a">
-  <source><x id="0" equiv-text="${runoff}" /> Lesson complete</source>
-<target><x id="0" equiv-text="${runoff}" /> Lektion abgeschlossen</target></trans-unit>
+  <source><x id="0" equiv-text="${runoff}"/> Lesson complete</source>
+<target><x id="0" equiv-text="${runoff}"/> Lektion abgeschlossen</target></trans-unit>
 <trans-unit id="s7542b1dfcc5fafee">
-  <source><x id="0" equiv-text="${runoff}" /> Continue to <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}" />?</source>
-<target><x id="0" equiv-text="${runoff}" /> Weiter zu <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}" />?</target></trans-unit>
+  <source><x id="0" equiv-text="${runoff}"/> Continue to <x id="1" equiv-text="${localizedPhaseLabel(host.msg, next)}"/>?</source>
+<target><x id="0" equiv-text="${runoff}"/> Weiter zu <x id="1" equiv-text="${localizedPhaseLabel(this.msg, next)}"/>?</target></trans-unit>
 <trans-unit id="s2edec333da31d910">
   <source>That amino acid does not match the current codon. Check the codon wheel and try again.</source>
 <target>Falsche Aminosäure. Codonrad prüfen und erneut versuchen.</target></trans-unit>
@@ -489,17 +489,17 @@
   <source>Place the ribosome on the first codon.</source>
 <target>Ribosom auf das erste Codon legen.</target></trans-unit>
 <trans-unit id="s2da686ea0118070f">
-  <source>Done without stop codon. Protein: <x id="0" equiv-text="${chain}" /></source>
-<target>Fertig ohne Stoppcodon. Protein: <x id="0" equiv-text="${chain}" /></target></trans-unit>
+  <source>Done without stop codon. Protein: <x id="0" equiv-text="${chain}"/></source>
+<target>Fertig ohne Stoppcodon. Protein: <x id="0" equiv-text="${chain}"/></target></trans-unit>
 <trans-unit id="se0a503869fe73382">
-  <source>Done. Protein: <x id="0" equiv-text="${chain}" /></source>
-<target>Fertig. Protein: <x id="0" equiv-text="${chain}" /></target></trans-unit>
+  <source>Done. Protein: <x id="0" equiv-text="${chain}"/></source>
+<target>Fertig. Protein: <x id="0" equiv-text="${chain}"/></target></trans-unit>
 <trans-unit id="sffeb6238eaebaf45">
   <source>Add more bases to continue.</source>
 <target>Mehr Basen hinzufügen, um fortzufahren.</target></trans-unit>
 <trans-unit id="s678a3faf3a9d9179">
-  <source>Drag the amino acid for <x id="0" equiv-text="${codon}" /> onto the ribosome.</source>
-<target>Aminosäure für <x id="0" equiv-text="${codon}" /> auf das Ribosom ziehen.</target></trans-unit>
+  <source>Drag the amino acid for <x id="0" equiv-text="${codon}"/> onto the ribosome.</source>
+<target>Aminosäure für <x id="0" equiv-text="${codon}"/> auf das Ribosom ziehen.</target></trans-unit>
 <trans-unit id="sf9b923b92eadb001">
   <source>Open the codon wheel and drag the matching amino acid onto the ribosome.</source>
 <target>Codonrad öffnen und passende Aminosäure auf das Ribosom ziehen.</target></trans-unit>
@@ -507,8 +507,8 @@
   <source>Choose a target protein in the list.</source>
 <target>Zielprotein in der Liste auswählen.</target></trans-unit>
 <trans-unit id="scebdc1744d29ef03">
-  <source>Change the DNA to produce <x id="0" equiv-text="${protein}" />. Then tap Verify.</source>
-<target>DNA so ändern, dass <x id="0" equiv-text="${protein}" /> entsteht. Dann Prüfen tippen.</target></trans-unit>
+  <source>Change the DNA to produce <x id="0" equiv-text="${protein}"/>. Then tap Verify.</source>
+<target>DNA so ändern, dass <x id="0" equiv-text="${protein}"/> entsteht. Dann Prüfen tippen.</target></trans-unit>
 <trans-unit id="sba95fa977912fc92">
   <source>Change the DNA to match the target. Then tap Verify.</source>
 <target>DNA an das Ziel anpassen. Dann Prüfen tippen.</target></trans-unit>
@@ -542,6 +542,36 @@
 <trans-unit id="s2ceb11be2290bb1b">
   <source>Cancel</source>
 <target>Abbrechen</target></trans-unit>
+<trans-unit id="s37a72add7a5db207">
+  <source>The file contains no sequence.</source>
+</trans-unit>
+<trans-unit id="s9a878954747a7e3f">
+  <source>Invalid base "<x id="0" equiv-text="${error.character}"/>" at position <x id="1" equiv-text="${error.position}"/>. Only A, C, G and T are allowed.</source>
+</trans-unit>
+<trans-unit id="s21b31b4acb36f606">
+  <source>The sequence needs at least <x id="0" equiv-text="${error.min}"/> bases.</source>
+</trans-unit>
+<trans-unit id="sb1c85422ddee6187">
+  <source>The sequence is longer than <x id="0" equiv-text="${error.max}"/> bases.</source>
+</trans-unit>
+<trans-unit id="s05d659db878a1be7">
+  <source>The lesson cannot be edited right now.</source>
+</trans-unit>
+<trans-unit id="s7970b73f688a69b2">
+  <source>Base <x id="0" equiv-text="${i + 1}"/>: <x id="1" equiv-text="${base}"/></source>
+</trans-unit>
+<trans-unit id="sa3c633840a11619e">
+  <source>Place <x id="0" equiv-text="${mol.name}"/></source>
+</trans-unit>
+<trans-unit id="s21b06c38fc4164db">
+  <source>Advanced</source>
+</trans-unit>
+<trans-unit id="sfb2affb2ce391ba5">
+  <source>DNA sequence from</source>
+</trans-unit>
+<trans-unit id="s34b3d6affaa35287">
+  <source>DNA simulation canvas</source>
+</trans-unit>
 </body>
 </file>
 </xliff>
