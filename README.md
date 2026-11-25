@@ -1,5 +1,5 @@
-# Dna Sim (`@webwriter/dna-sim@1.0.1`)
-[License: MIT](LICENSE) | Version: 1.0.1
+# Dna Sim (`@webwriter/dna-sim@2.0.0`)
+[License: MIT](LICENSE) | Version: 2.0.0
 
 Simulate DNA replication, transcription, and translation in phases, including animations.
 
