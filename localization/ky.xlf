@@ -545,33 +545,43 @@
   <target>Демейки ДНК тизмегин калыбына келтирип, белок максатын тазалоо керекпи?</target></trans-unit>
 <trans-unit id="s37a72add7a5db207">
   <source>The file contains no sequence.</source>
+<target>Файлда ырааттуулук жок.</target>
 </trans-unit>
 <trans-unit id="s9a878954747a7e3f">
   <source>Invalid base "<x id="0" equiv-text="${error.character}"/>" at position <x id="1" equiv-text="${error.position}"/>. Only A, C, G and T are allowed.</source>
+<target><x id="1" equiv-text="${error.position}"/>-орундагы жараксыз «<x id="0" equiv-text="${error.character}"/>» негизи. A, C, G жана T гана уруксат берилет.</target>
 </trans-unit>
 <trans-unit id="s21b31b4acb36f606">
   <source>The sequence needs at least <x id="0" equiv-text="${error.min}"/> bases.</source>
+<target>Ырааттуулукка кеминде <x id="0" equiv-text="${error.min}"/> негиз керек.</target>
 </trans-unit>
 <trans-unit id="sb1c85422ddee6187">
   <source>The sequence is longer than <x id="0" equiv-text="${error.max}"/> bases.</source>
+<target>Ырааттуулук <x id="0" equiv-text="${error.max}"/> негизден узун.</target>
 </trans-unit>
 <trans-unit id="s05d659db878a1be7">
   <source>The lesson cannot be edited right now.</source>
+<target>Азыр сабакты түзөтүү мүмкүн эмес.</target>
 </trans-unit>
 <trans-unit id="s7970b73f688a69b2">
   <source>Base <x id="0" equiv-text="${i + 1}"/>: <x id="1" equiv-text="${base}"/></source>
+<target><x id="0" equiv-text="${i + 1}"/>-негиз: <x id="1" equiv-text="${base}"/></target>
 </trans-unit>
 <trans-unit id="sa3c633840a11619e">
   <source>Place <x id="0" equiv-text="${mol.name}"/></source>
+<target><x id="0" equiv-text="${mol.name}"/> жайгаштырыңыз</target>
 </trans-unit>
 <trans-unit id="s21b06c38fc4164db">
   <source>Advanced</source>
+<target>Өркүндөтүлгөн</target>
 </trans-unit>
 <trans-unit id="sfb2affb2ce391ba5">
   <source>DNA sequence from</source>
+<target>ДНК ырааттуулугунун булагы</target>
 </trans-unit>
 <trans-unit id="s34b3d6affaa35287">
   <source>DNA simulation canvas</source>
+<target>ДНК симуляциясынын холсту</target>
 </trans-unit>
 </body>
 </file>

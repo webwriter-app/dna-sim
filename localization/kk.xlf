@@ -545,33 +545,43 @@
   <target>Әдепкі ДНҚ тізбегін қалпына келтіріп, ақуыз мақсатын өшіру керек пе?</target></trans-unit>
 <trans-unit id="s37a72add7a5db207">
   <source>The file contains no sequence.</source>
+<target>Файлда реттілік жоқ.</target>
 </trans-unit>
 <trans-unit id="s9a878954747a7e3f">
   <source>Invalid base "<x id="0" equiv-text="${error.character}"/>" at position <x id="1" equiv-text="${error.position}"/>. Only A, C, G and T are allowed.</source>
+<target><x id="1" equiv-text="${error.position}"/>-орындағы жарамсыз «<x id="0" equiv-text="${error.character}"/>» негізі. Тек A, C, G және T рұқсат етіледі.</target>
 </trans-unit>
 <trans-unit id="s21b31b4acb36f606">
   <source>The sequence needs at least <x id="0" equiv-text="${error.min}"/> bases.</source>
+<target>Реттілікте кемінде <x id="0" equiv-text="${error.min}"/> негіз болуы керек.</target>
 </trans-unit>
 <trans-unit id="sb1c85422ddee6187">
   <source>The sequence is longer than <x id="0" equiv-text="${error.max}"/> bases.</source>
+<target>Реттілік <x id="0" equiv-text="${error.max}"/> негізден ұзын.</target>
 </trans-unit>
 <trans-unit id="s05d659db878a1be7">
   <source>The lesson cannot be edited right now.</source>
+<target>Қазір сабақты өңдеу мүмкін емес.</target>
 </trans-unit>
 <trans-unit id="s7970b73f688a69b2">
   <source>Base <x id="0" equiv-text="${i + 1}"/>: <x id="1" equiv-text="${base}"/></source>
+<target><x id="0" equiv-text="${i + 1}"/>-негіз: <x id="1" equiv-text="${base}"/></target>
 </trans-unit>
 <trans-unit id="sa3c633840a11619e">
   <source>Place <x id="0" equiv-text="${mol.name}"/></source>
+<target><x id="0" equiv-text="${mol.name}"/> орналастырыңыз</target>
 </trans-unit>
 <trans-unit id="s21b06c38fc4164db">
   <source>Advanced</source>
+<target>Қосымша</target>
 </trans-unit>
 <trans-unit id="sfb2affb2ce391ba5">
   <source>DNA sequence from</source>
+<target>ДНҚ реттілігі, көзі:</target>
 </trans-unit>
 <trans-unit id="s34b3d6affaa35287">
   <source>DNA simulation canvas</source>
+<target>ДНҚ симуляциясының кенепі</target>
 </trans-unit>
 </body>
 </file>

@@ -545,33 +545,43 @@
   <target>Të rikthehet sekuenca e parazgjedhur e ADN-së dhe të hiqet objektivi i proteinës?</target></trans-unit>
 <trans-unit id="s37a72add7a5db207">
   <source>The file contains no sequence.</source>
+<target>Skedari nuk përmban sekuencë.</target>
 </trans-unit>
 <trans-unit id="s9a878954747a7e3f">
   <source>Invalid base "<x id="0" equiv-text="${error.character}"/>" at position <x id="1" equiv-text="${error.position}"/>. Only A, C, G and T are allowed.</source>
+<target>Bazë e pavlefshme “<x id="0" equiv-text="${error.character}"/>” në pozicionin <x id="1" equiv-text="${error.position}"/>. Lejohen vetëm A, C, G dhe T.</target>
 </trans-unit>
 <trans-unit id="s21b31b4acb36f606">
   <source>The sequence needs at least <x id="0" equiv-text="${error.min}"/> bases.</source>
+<target>Sekuenca duhet të ketë të paktën <x id="0" equiv-text="${error.min}"/> baza.</target>
 </trans-unit>
 <trans-unit id="sb1c85422ddee6187">
   <source>The sequence is longer than <x id="0" equiv-text="${error.max}"/> bases.</source>
+<target>Sekuenca është më e gjatë se <x id="0" equiv-text="${error.max}"/> baza.</target>
 </trans-unit>
 <trans-unit id="s05d659db878a1be7">
   <source>The lesson cannot be edited right now.</source>
+<target>Mësimi nuk mund të redaktohet tani.</target>
 </trans-unit>
 <trans-unit id="s7970b73f688a69b2">
   <source>Base <x id="0" equiv-text="${i + 1}"/>: <x id="1" equiv-text="${base}"/></source>
+<target>Baza <x id="0" equiv-text="${i + 1}"/>: <x id="1" equiv-text="${base}"/></target>
 </trans-unit>
 <trans-unit id="sa3c633840a11619e">
   <source>Place <x id="0" equiv-text="${mol.name}"/></source>
+<target>Vendosni <x id="0" equiv-text="${mol.name}"/></target>
 </trans-unit>
 <trans-unit id="s21b06c38fc4164db">
   <source>Advanced</source>
+<target>Të avancuara</target>
 </trans-unit>
 <trans-unit id="sfb2affb2ce391ba5">
   <source>DNA sequence from</source>
+<target>Sekuenca e ADN-së nga</target>
 </trans-unit>
 <trans-unit id="s34b3d6affaa35287">
   <source>DNA simulation canvas</source>
+<target>Kanavaca e simulimit të ADN-së</target>
 </trans-unit>
 </body>
 </file>

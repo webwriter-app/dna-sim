@@ -545,33 +545,43 @@
   <target>Відновити стандартну послідовність ДНК і очистити цільовий білок?</target></trans-unit>
 <trans-unit id="s37a72add7a5db207">
   <source>The file contains no sequence.</source>
+<target>Файл не містить послідовності.</target>
 </trans-unit>
 <trans-unit id="s9a878954747a7e3f">
   <source>Invalid base "<x id="0" equiv-text="${error.character}"/>" at position <x id="1" equiv-text="${error.position}"/>. Only A, C, G and T are allowed.</source>
+<target>Недопустима основа «<x id="0" equiv-text="${error.character}"/>» у позиції <x id="1" equiv-text="${error.position}"/>. Дозволені лише A, C, G і T.</target>
 </trans-unit>
 <trans-unit id="s21b31b4acb36f606">
   <source>The sequence needs at least <x id="0" equiv-text="${error.min}"/> bases.</source>
+<target>Послідовність має містити щонайменше <x id="0" equiv-text="${error.min}"/> основ.</target>
 </trans-unit>
 <trans-unit id="sb1c85422ddee6187">
   <source>The sequence is longer than <x id="0" equiv-text="${error.max}"/> bases.</source>
+<target>Послідовність довша за <x id="0" equiv-text="${error.max}"/> основ.</target>
 </trans-unit>
 <trans-unit id="s05d659db878a1be7">
   <source>The lesson cannot be edited right now.</source>
+<target>Зараз урок не можна редагувати.</target>
 </trans-unit>
 <trans-unit id="s7970b73f688a69b2">
   <source>Base <x id="0" equiv-text="${i + 1}"/>: <x id="1" equiv-text="${base}"/></source>
+<target>Основа <x id="0" equiv-text="${i + 1}"/>: <x id="1" equiv-text="${base}"/></target>
 </trans-unit>
 <trans-unit id="sa3c633840a11619e">
   <source>Place <x id="0" equiv-text="${mol.name}"/></source>
+<target>Розмістіть <x id="0" equiv-text="${mol.name}"/></target>
 </trans-unit>
 <trans-unit id="s21b06c38fc4164db">
   <source>Advanced</source>
+<target>Додатково</target>
 </trans-unit>
 <trans-unit id="sfb2affb2ce391ba5">
   <source>DNA sequence from</source>
+<target>Послідовність ДНК із</target>
 </trans-unit>
 <trans-unit id="s34b3d6affaa35287">
   <source>DNA simulation canvas</source>
+<target>Полотно симуляції ДНК</target>
 </trans-unit>
 </body>
 </file>
