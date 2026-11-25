@@ -1,7 +1,7 @@
 # Dna Sim (`@webwriter/dna-sim@2.0.0`)
 [License: MIT](LICENSE) | Version: 2.0.0
 
-Simulate DNA replication, transcription, and translation in phases, including animations.
+Explore DNA structure and genetics through interactive simulations.
 
 ## Snippets
 [Snippets](https://webwriter.app/docs/snippets/snippets/) are examples and templates using the package's widgets.
@@ -158,4 +158,4 @@ npm install @webwriter/dna-sim
 
 
 ---
-*Generated with @webwriter/build@1.14.0*
+*Generated with @webwriter/build@1.15.0*

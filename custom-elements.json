@@ -671,9 +671,7 @@
           },
           "summary": "Simulate DNA replication, transcription, and translation in phases, including animations.",
           "tagName": "webwriter-dna-simulation",
-          "customElement": true,
-          "modulePath": "src/widgets/webwriter-dna-simulation.ts",
-          "definitionPath": "src/widgets/webwriter-dna-simulation.ts"
+          "customElement": true
         }
       ],
       "exports": [
