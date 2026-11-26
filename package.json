@@ -1,6 +1,6 @@
 {
   "name": "@webwriter/dna-sim",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "repository": "https://github.com/webwriter-app/dna-sim",
   "description": "Explore DNA structure and genetics through interactive simulations.",
   "keywords": [
@@ -163,6 +163,7 @@
       "default": "./dist/widgets/webwriter-dna-simulation.*"
     },
     "./icon": "./icon.svg",
+    "./preview": "./assets/preview.mp4",
     "./editing-config.json": "./editing-config.json",
     "./snippets/dna-simulation.html": "./snippets/dna-simulation.html",
     "./custom-elements.json": "./custom-elements.json",
