@@ -1,5 +1,5 @@
-# Dna Sim (`@webwriter/dna-sim@2.1.1`)
-[License: MIT](LICENSE) | Version: 2.1.1
+# Dna Sim (`@webwriter/dna-sim@2.1.2`)
+[License: MIT](LICENSE) | Version: 2.1.2
 
 Explore DNA structure and genetics through interactive simulations.
 
